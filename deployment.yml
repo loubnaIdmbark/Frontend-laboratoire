@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-laboratoire
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend-laboratoire
+  template:
+    metadata:
+      labels:
+        app: frontend-laboratoire
+    spec:
+      containers:
+        - name: angular-container
+          image: loubnaidm/frontend-laboratoire:latest
+          ports:
+            - containerPort: 80
