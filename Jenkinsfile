@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build Angular App') {
             steps {
-                  bat 'ng build --configuration production'
+                bat 'ng build --configuration production'
             }
         }
 
