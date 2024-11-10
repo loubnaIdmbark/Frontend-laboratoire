@@ -14,7 +14,7 @@ RUN npm install
 COPY . .
 
 # Construire l'application Angular pour la production
-RUN npm run build --project Frontend-laboratoire --configuration production
+ng build frontend-laboratoire --configuration production
 
 # Étape 2: Créer l'image finale pour le déploiement
 FROM nginx:alpine
