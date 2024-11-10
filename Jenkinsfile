@@ -4,25 +4,25 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                bat 'npm install'
             }
         }
 
         stage('Build Angular App') {
             steps {
-                sh 'ng build --prod'
+                bat 'ng build --prod'
             }
         }
 
         stage('Run Tests') {
             steps {
-                sh 'ng test --watch=false'
+                bat 'ng test --watch=false'
             }
         }
 
         stage('Lint') {
             steps {
-                sh 'ng lint'
+                bat 'ng lint'
             }
         }
 
@@ -38,7 +38,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'docker-credentials-id') {
-                        sh "docker push frontend-laboratoire:latest"
+                        bat "docker push frontend-laboratoire:latest"
                     }
                 }
             }
@@ -46,7 +46,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                sh 'kubectl apply -f deployment.yaml'
+                bat 'kubectl apply -f deployment.yaml'
             }
         }
     }
