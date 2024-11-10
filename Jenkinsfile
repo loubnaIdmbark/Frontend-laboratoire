@@ -31,16 +31,16 @@ pipeline {
                bat 'docker build -t loubnaidm/frontend-laboratoire:latest -f Dockerfile .'
            }
        }
-         stage('Push Docker Image') {
-                    steps {
-                        script {
-
-                            docker.withRegistry('https://docker.io', 'docker-credentials-id') {
-                                docker.image(DOCKER_IMAGE).push()
-                            }
-                        }
-                    }
-                }
+      stage('Push Docker Image') {
+                  steps {
+                      withCredentials([usernamePassword(credentialsId: 'docker-credentials-id', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                          bat """
+                              echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+                              docker push loubnaidm/frontend-laboratoire:latest
+                          """
+                      }
+                  }
+              }
 
         stage('Deploy to Kubernetes') {
             steps {
