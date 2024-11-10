@@ -32,7 +32,7 @@ pipeline {
                                bat 'docker build -t loubnaidm/frontend-laboratoire:latest .'
                            }
         }
-
+}
         stage('Push Docker Image') {
             steps {
                 script {
