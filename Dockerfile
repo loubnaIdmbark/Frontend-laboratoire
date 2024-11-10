@@ -14,7 +14,7 @@ RUN npm install -g @angular/cli
 COPY . .
 
 # Build the Angular app for production
-RUN ng build frontend-laboratoire --configuration production
+RUN ng build Frontend-laboratoire --configuration production
 
 # Step 2: Create the final image for deployment using Nginx
 FROM nginx:alpine
