@@ -26,13 +26,11 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-             steps {
-                           dir('frontend-laboratoire') {
-                               bat 'docker build -t loubnaidm/frontend-laboratoire:latest .'
-                           }
-        }
-}
+       stage('Build Docker Image') {
+           steps {
+               bat 'docker build -t loubnaidm/frontend-laboratoire:latest -f Dockerfile .'
+           }
+       }
         stage('Push Docker Image') {
             steps {
                 script {
