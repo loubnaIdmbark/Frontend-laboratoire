@@ -1,29 +1,23 @@
-# Étape 1: Construire l'application Angular
+# Step 1: Build the Angular application
 FROM node:18 AS build
 
-# Définir le répertoire de travail
 WORKDIR /app
 
-# Copier les fichiers package.json et package-lock.json
+# Copy package.json and install dependencies
 COPY package*.json ./
-
-# Installer les dépendances
 RUN npm install
 
-# Copier tout le reste du projet
+# Install Angular CLI globally
+RUN npm install -g @angular/cli
+
+# Copy the rest of the application
 COPY . .
 
-# Construire l'application Angular pour la production
+# Build the Angular app for production
 RUN ng build frontend-laboratoire --configuration production
 
-# Étape 2: Créer l'image finale pour le déploiement
+# Step 2: Create the final image for deployment using Nginx
 FROM nginx:alpine
 
-# Copier les fichiers générés par le build de Angular dans le répertoire de NGINX
+# Copy the built Angular app from the build stage
 COPY --from=build /app/dist/frontend-laboratoire /usr/share/nginx/html
-
-# Exposer le port 80 pour l'accès à l'application
-EXPOSE 80
-
-# Commande de démarrage du serveur NGINX
-CMD ["nginx", "-g", "daemon off;"]
