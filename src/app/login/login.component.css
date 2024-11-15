@@ -1,0 +1,141 @@
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Utilise toute la hauteur de l'écran */
+}
+.navbar {
+
+  width: 100%;
+  height: 7%;
+  background-color: rgba(51, 51, 51, 0.8);
+  color: white;
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-between;
+
+  align-items: center;
+}
+footer {
+  background-color: rgba(51, 51, 51, 0.8);
+  color: white;
+  padding: 20px 0;
+  align-items: center;
+}
+
+footer p {
+  margin: 0;
+  font-size: 14px;
+}
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navbar-links, .navbar-social {
+  display: flex;
+  gap: 20px;
+}
+
+.navbar-links li {
+  list-style: none;
+}
+
+.navbar-links a, .navbar-social a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.navbar-social a {
+  font-size: 1.2rem;
+}
+.auth-container {
+  background-image: url("../../../public/img_1.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  backdrop-filter: blur(10px);
+}
+
+.auth-card {
+  background-color: transparent;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgb(28, 26, 26);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.auth-card:hover {
+  transform: translateY(-5px); /* Effet de survol */
+  box-shadow: 0 12px 24px rgb(28, 26, 26);
+}
+
+.auth-card h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  color: #1c1a1a;
+}
+
+.auth-card form {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-card input {
+  background-color: #f9f9f9;
+  margin-bottom: 1rem;
+  padding: 0.8rem;
+  font-size: 16px;
+  border: 1px solid rgba(218, 206, 211, 0.35);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.auth-card input:focus {
+  border-color: rgb(28, 26, 26); /* Changer la couleur de la bordure lorsqu'un champ est sélectionné */
+}
+
+.auth-card button {
+  padding: 0.8rem;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.auth-card button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px); /* Effet de survol sur le bouton */
+}
+
+.auth-card button:active {
+  transform: translateY(0); /* Réinitialise l'effet de survol lors du clic */
+}
+
+.auth-card a {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 1rem;
+  transition: color 0.3s;
+}
+
+.auth-card a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}

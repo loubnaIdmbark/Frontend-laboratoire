@@ -1,0 +1,43 @@
+<!-- Conteneur principal pour la page entière -->
+<div class="page-container">
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container">
+      <ul class="navbar-links">
+        <li><a href="#home">Page d'accueil</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Conteneur principal pour l'authentification -->
+  <div class="auth-container">
+    <div class="auth-card">
+      <h2>{{ isLogin ? 'Connexion' : 'Inscription' }}</h2>
+
+      <!-- Formulaire de connexion -->
+      <form *ngIf="isLogin" [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <input type="email" formControlName="email" placeholder="Email" required />
+        <input type="password" formControlName="password" placeholder="Mot de passe" required />
+        <button type="submit">Se connecter</button>
+        <a (click)="toggleAuthMode()">Créer un compte</a>
+      </form>
+
+      <!-- Formulaire d'inscription -->
+      <form *ngIf="!isLogin" [formGroup]="signupForm" (ngSubmit)="onSignup()">
+        <input type="text" formControlName="name" placeholder="Nom complet" required />
+        <input type="email" formControlName="email" placeholder="Email" required />
+        <input type="password" formControlName="password" placeholder="Mot de passe" required />
+        <input type="password" formControlName="confirmPassword" placeholder="Confirmer le mot de passe" required />
+        <button type="submit">S'inscrire</button>
+        <a (click)="toggleAuthMode()">Déjà un compte ? Se connecter</a>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer text-center">
+    <div class="container">
+      <p>&copy; 2024 Laboratoire. Tous droits réservés.</p>
+    </div>
+  </footer>
+</div>

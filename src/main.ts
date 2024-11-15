@@ -1,10 +1,12 @@
-// @ts-ignore
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
-import { LaboratoireComponent } from './app/laboratoire/laboratoire.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { AccueilComponent } from './app/accueil/accueil.component';
-bootstrapApplication(AccueilComponent, {
-  providers: [provideHttpClient(), provideAnimationsAsync()],
-})
-  .catch(err => console.error(err));
+import { AppComponent } from './app/app.component';
+import { appRoutes } from './app/app.routes';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(appRoutes),
+    provideHttpClient()
+  ]
+}).catch(err => console.error(err));
