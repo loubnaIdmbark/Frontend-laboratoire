@@ -1,0 +1,231 @@
+<!-- En-tête de la page -->
+<!-- Navbar -->
+
+<nav class="navbar">
+  <div class="container">
+    <ul class="navbar-links">
+      <li><a href="accueil#home">Accueil</a></li>
+      <li><a href="/accueil#about">A propos de nous</a></li>
+      <li><a href="/accueil#services">Services</a></li>
+      <li><a href="/accueil#testimonials">Témoignages</a></li>
+      <li><a href="/accueil#contact">Contact</a></li>
+
+
+    </ul>
+
+  </div>
+</nav>
+
+
+<!-- Header Section -->
+<header class="header" id="home">
+  <div class="container header-content">
+
+    <h1 class="text-center mb-4">Bienvenue </h1>
+    <hr class="divider">
+    <p>Optimisez la gestion de vos laboratoires avec des outils modernes pour la gestion des ressources, des échantillons et des résultats. Simplifiez la planification et la communication au sein de votre équipe.</p>
+    <div class="header-buttons">
+      <button (click)="navigateToLogin()" class="btn btn-secondary">Se connecter</button>
+      <button (click)="navigateToSignin()" class="btn btn-secondary">S'inscrire</button>
+
+    </div>
+  </div>
+</header>
+
+
+
+<!-- Section below header
+<section class="section-services">
+  <div class="container">
+    <h2>Professional treatments</h2>
+    <p>Details about services offered...</p>
+  </div>
+</section>
+
+<header class="bg-primary text-white text-center py-5" id="pricing">
+  <div class="container">
+    <h1 class="display-4">Bienvenue sur notre Clinique</h1>
+    <p class="lead">Des soins de qualité pour vous et votre famille</p>
+    <a href="#contact" class="btn btn-light btn-lg mt-3">Contactez-nous</a>
+  </div>
+</header>-->
+
+
+<!-- Section À propos -->
+<section class="py-5 about" id="about">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <!-- Texte à gauche -->
+      <div class="col-md-6">
+        <h2 class="text-center mb-4">À propos de nous</h2>
+
+        <p class="lead">Bienvenue dans notre réseau de laboratoires, dédiés à offrir des services de santé de qualité, accessibles et fiables. Nous mettons à disposition des équipements modernes et des équipes de professionnels qualifiés pour assurer des analyses précises et rapides.</p>
+        <p class="lead">Notre mission est de soutenir nos patients dans la gestion de leur santé en leur offrant des services adaptés à leurs besoins, tout en garantissant un environnement accueillant et sécurisé. Chaque visiteur est pris en charge avec une attention particulière, dans le respect des normes sanitaires les plus strictes. Nous sommes fiers d'être un partenaire de confiance pour votre bien-être et celui de votre famille.</p>
+        <a href="#contact" class="btn btn-primary mt-3">Contactez-nous maintenant</a>
+      </div>
+
+      <!-- Image à droite via CSS -->
+      <div class="col-md-6 image-container"></div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<!-- Section Services -->
+
+<section class="bg-light py-5 service" id="services">
+  <div class="container">
+    <h2 class="text-center mb-4">Les services de nos laboratoires</h2>
+    <div class="row">
+      <!-- Service 1: Analyses sanguines -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+          <div class="about-card shadow-lg p-4 text-center bg-white d-flex flex-column justify-content-between" style="height: 100%; min-height: 300px;">
+            <i class="fas fa-vial fa-4x mb-3 text-primary"></i>
+            <h5 class="card-title">Analyses sanguines</h5>
+            <p class="card-text">Nous offrons une large gamme d'analyses sanguines pour diagnostiquer et suivre l'état de santé des patients avec précision et rapidité.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 2: Tests de diagnostic -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+          <div class="about-card shadow-lg p-4 text-center bg-white d-flex flex-column justify-content-between" style="height: 100%; min-height: 300px;">
+            <i class="fas fa-flask fa-4x mb-3 text-primary"></i>
+            <h5 class="card-title">Tests de diagnostic</h5>
+            <p class="card-text">Des tests de diagnostic avancés pour des analyses cliniques de haute précision, permettant une détection précoce des maladies.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 3: Imagerie médicale -->
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm border-0">
+          <div class="about-card shadow-lg p-4 text-center bg-white d-flex flex-column justify-content-between" style="height: 100%; min-height: 300px;">
+            <i class="fas fa-x-ray fa-4x mb-3 text-primary"></i>
+            <h5 class="card-title">Imagerie médicale</h5>
+            <p class="card-text">Services d'imagerie de haute technologie pour effectuer des examens comme les radiographies, les échographies et plus encore pour une analyse détaillée.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Lien vers Font Awesome pour les icônes -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+
+<!-- Section Témoignages --><section class="py-5" id="testimonials">
+  <div class="container text-center">
+    <h2 class="text-center mb-4">Ce que disent nos patients :</h2>
+    <div id="testimonialCarousel" class="carousel slide" data-bs-ride="carousel">
+      <div class="carousel-inner">
+
+        <!-- Témoignage 1 -->
+        <div class="carousel-item active">
+          <div class="d-flex flex-column align-items-center">
+            <!-- Image du patient (utilisée comme arrière-plan dans le CSS) -->
+            <div class="testimonial-image patient1 mb-3"></div>
+            <!-- Icône de citation -->
+            <div class="quote-icon">
+            <!-- Témoignage et nom du patient -->
+            <p class="lead">❝ Un service exceptionnel et des médecins très compétents<br>
+              L'accueil chaleureux et les équipements modernes<br> du laboratoire m'ont beaucoup impressionné.
+              Le personnel était professionnel <br> et a pris le temps de bien expliquer chaque étape du processus.</p></div>
+            <p class="font-italic">- HAMZA KARBOUB</p>
+            <div class="rating">
+              ★★★★★ <!-- Étoiles -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Témoignage 2 -->
+        <div class="carousel-item">
+          <div class="d-flex flex-column align-items-center">
+            <!-- Image du patient (utilisée comme arrière-plan dans le CSS) -->
+            <div class="testimonial-image patient2 mb-3"></div>
+            <!-- Icône de citation -->
+            <div class="quote-icon">
+            <!-- Témoignage et nom du patient -->
+            <p class="lead">❝ Une expérience très positive.<br> Les résultats de mes analyses ont été fournis rapidement,<br>
+              et j'ai apprécié la propreté et le professionnalisme du laboratoire.<br>
+              Je recommande vivement ce service.Des soins attentifs et professionnels.</p></div>
+            <p class="font-italic">- LOUBNA IDM'BARK</p>
+            <div class="rating">
+              ★★★★★ <!-- Étoiles -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Contrôles du carousel -->
+      <a class="carousel-control-prev" href="#testimonialCarousel" role="button" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+        <span>Précédent</span>
+      </a>
+      <a class="carousel-control-next" href="#testimonialCarousel" role="button" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+        <span>Suivant</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+
+
+<!-- Section Contact -->
+<section class="contact-section text-dark py-5" id="contact">
+  <div class="container">
+    <h2 class="text-center mb-4">Contactez-nous</h2>
+    <form>
+      <!-- Champ Nom -->
+      <div class="form-group mb-4">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-user"></i></span>
+          </div>
+          <input type="text" class="form-control" id="name" placeholder="Votre nom" required>
+        </div>
+      </div>
+
+      <!-- Champ Email -->
+      <div class="form-group mb-4">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+          </div>
+          <input type="email" class="form-control" id="email" placeholder="Votre email" required>
+        </div>
+      </div>
+
+      <!-- Champ Message -->
+      <div class="form-group mb-4">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text"><i class="fas fa-comment"></i></span>
+          </div>
+          <textarea class="form-control" id="message" rows="4" placeholder="Votre message" required></textarea>
+        </div>
+      </div>
+
+      <!-- Bouton Envoyer -->
+      <button type="submit" class="btn btn-primary mt-3 px-5 py-2">Envoyer</button>
+    </form>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-4">
+  <div class="container">
+    <p>&copy; 2024 Laboratoire. Tous droits réservés.</p>
+
+  </div>
+</footer>

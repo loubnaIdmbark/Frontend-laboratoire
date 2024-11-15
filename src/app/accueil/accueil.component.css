@@ -1,0 +1,294 @@
+/* Style de la barre de navigation */
+.navbar {
+  position: fixed;
+  width: 100%;
+  height: 7%;
+  background-color: rgba(51, 51, 51, 0.8);
+  color: white;
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.navbar-links, .navbar-social {
+  display: flex;
+  gap: 20px;
+}
+
+.navbar-links li {
+  list-style: none;
+}
+
+.navbar-links a, .navbar-social a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
+}
+
+.navbar-social a {
+  font-size: 1.2rem;
+}
+.service{
+  background-image: url('../../../public/service.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 80px 0;
+  color: #1c1a1a;
+  text-align: center;
+  height: 100vh; /* Hauteur de 100% de la fenêtre */
+}
+/* Style de l'en-tête */
+.header {
+  background-image: url('../../../public/background-image.jpg');
+  background-size: cover;
+  background-position: center;
+  padding: 80px 0;
+  color: #1c1a1a;
+  text-align: center;
+  height: 100vh; /* Hauteur de 100% de la fenêtre */
+}
+.divider {
+  width: 50%;
+  margin: 0 auto 20px auto;
+
+}
+
+.header-content{
+  margin-top: 8%;
+}
+
+
+.header p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.header-buttons .btn {
+  padding: 10px 20px;
+  margin: 0 10px;
+  font-size: 1rem;
+}
+
+.btn-primary {
+  background-color: #a00043;
+  color: white;
+  border: none;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #3a7da9;
+  border: 1px solid #577d96;
+}
+
+/* Style des sections avec une hauteur uniforme */
+section {
+  height: 100vh; /* Hauteur de chaque section égale à 100% de la fenêtre */
+  padding: 60px 0;
+}
+
+.section-services,
+#about,
+#services,
+#testimonials,
+#contact {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.section-services h2,
+#about h2,
+#services h2,
+#testimonials h2,
+#contact h2 {
+  font-size: 2rem;
+  color: #333;
+}
+
+/* Footer Styles */
+footer {
+  background-color: #e6e9ec; /* Fond sombre */
+  color: white; /* Texte en blanc */
+  padding: 20px 0; /* Espacement vertical */
+}
+
+footer p {
+  margin: 0;
+  font-size: 14px;
+}
+/* Style de la section "À propos" */
+/* Style global pour la section "À propos" */
+.about {
+  background-color: rgba(194, 242, 248, 0.22);
+
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+
+.image-container {
+  background-image: url('../../../public/test.avif');
+  background-size: cover;
+  background-position: center;
+  height: 414px;
+  border-radius: 0.8rem;
+}
+.about p.lead {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 40px;
+}
+.about .btn-primary {
+  background-color: #007bff;
+  border-radius: 50px;
+  padding: 10px 20px;
+}
+
+
+/* Carte de chaque colonne avec plus d'interactivité */
+.about-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+}
+
+.about-card:hover {
+  transform: translateY(-10px); /* Effet de levée lors du survol */
+  box-shadow: 0 20px 30px rgba(0, 0, 0, 0.2); /* Ombre plus marquée */
+}
+
+.about-card i {
+  color: #0056b3;
+  margin-bottom: 15px;
+}
+
+.about-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.about-card p {
+  font-size: 1rem;
+  color: #777;
+  line-height: 1.5;
+}
+
+@media (max-width: 767px) {
+  /* Adapter le style pour les petits écrans */
+  .about-card {
+    padding: 20px;
+  }
+
+
+
+  #about p.lead {
+    font-size: 1.1rem;
+  }
+}
+/* Style pour l'image de témoignage */
+.testimonial-image {
+  width: 150px;
+  height: 150px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}
+
+/* Image pour le premier patient */
+.patient1 {
+  background-image: url('../../../public/P1.jpg');
+}
+
+/* Image pour le deuxième patient */
+.patient2 {
+  background-image: url('../../../public/P2.jpg');
+}
+#testimonials .testimonial-content {
+  position: relative;
+  padding: 20px;
+  border: 1px solid #1c1a1a;
+  border-radius: 8px;
+  display: inline-block;
+  max-width: 600px;
+  margin: auto;
+}
+
+
+#testimonials .quote-icon {
+  font-size: 20rem;
+  color: #1c1a1a;
+  margin-bottom: 10px;
+}
+
+#testimonials .rating {
+  color: #FFD700; /* Couleur dorée pour les étoiles */
+  font-size: 1.5rem;
+  margin-top: 10px;
+}
+
+.input-group .input-group-text {
+  background-color: #88b4dc;
+  color: #fff;
+  border: none;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+}
+
+.input-group .form-control {
+  border-left: none;
+  border-radius: 0 5px 5px 0;
+  transition: all 0.3s ease;
+}
+
+.input-group .form-control:focus {
+  box-shadow: 0px 0px 10px rgba(0, 123, 255, 0.6);
+  border-color: #0056b3;
+}
+
+.contact-section .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+  padding: 12px 30px;
+  font-weight: 600;
+  border-radius: 30px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.contact-section .btn-primary:hover {
+  background-color: #0056b3;
+  box-shadow: 0px 4px 15px rgba(0, 123, 255, 0.4);
+  transform: scale(1.05);
+}
+
+/* Style général du formulaire */
+.contact-section {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
