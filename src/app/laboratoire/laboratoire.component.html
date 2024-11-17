@@ -1,119 +1,107 @@
-<!DOCTYPE html>
-<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestion des Laboratoires</title>
-  <link rel="stylesheet" href="laboratoire.component.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-
-<!-- Barre latérale -->
-<div class="sidebar">
-  <h3>Menu</h3>
+<div class="sidebar" [class.collapsed]="isSidebarCollapsed">
+  <button class="toggle-btn" (click)="toggleSidebar()">
+    <i class="fas" [ngClass]="isSidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+  </button>
+  <h3 *ngIf="!isSidebarCollapsed">Menu</h3>
   <ul>
-    <li><a href="#"><i class="fas fa-home"></i> Accueil</a></li>
-    <li><a href="#"><i class="fas fa-flask"></i> Laboratoires</a></li>
-    <li><a href="#"><i class="fas fa-users"></i> Utilisateurs</a></li>
-    <li><a href="#"><i class="fas fa-user-injured"></i> Patients</a></li>
-    <li><a href="#"><i class="fas fa-vial"></i> Analyses</a></li>
-    <li><a href="#"><i class="fas fa-cog"></i> Paramètres</a></li>
-    <li><a href="#"><i class="fas fa-question-circle"></i> Aide</a></li>
+    <li>
+      <a
+        href="#"
+        [class.active]="activeMenu === 'home'"
+        (click)="activeMenu = 'home'">
+        <i class="fas fa-home"></i> <span *ngIf="!isSidebarCollapsed">Accueil</span>
+      </a>
+    </li>
+    <li>
+      <a
+        href="#"
+        [class.active]="activeMenu === 'labs'"
+        (click)="activeMenu = 'labs'">
+        <i class="fas fa-flask"></i> <span *ngIf="!isSidebarCollapsed">Laboratoires</span>
+      </a>
+    </li>
   </ul>
 </div>
 
 <!-- Contenu principal -->
 <div class="main-content">
-  <div class="navbar">
-    <a href="#">Gestion des Laboratoires</a>
-    <button class="add-laboratoire-btn" (click)="toggleAddForm()">Ajouter laboratoire</button>
+
+
+
+
+  <!-- Barre de recherche -->
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Rechercher un laboratoire par nom..."
+      [(ngModel)]="searchQuery"
+      (input)="filterLaboratoires()"
+    />
   </div>
-
-  <!-- Affichage conditionnel du formulaire d'ajout ou de la liste de laboratoires -->
-  <div *ngIf="showAddForm" class="form-container">
-    <!-- Formulaires successifs pour ajouter un laboratoire -->
-    <form *ngIf="step === 1" [formGroup]="laboratoireForm">
-      <h2>Formulaire Laboratoire</h2>
-      <div class="form-row">
-        <label for="nom">Nom :</label>
-        <input id="nom" formControlName="nom" type="text" placeholder="Nom du laboratoire">
-      </div>
-      <div class="form-row">
-        <label for="nrc">NRC :</label>
-        <input id="nrc" formControlName="nrc" type="text" placeholder="Numéro NRC">
-      </div>
-      <div class="form-row">
-        <label for="actif">Actif :</label>
-        <input id="actif" formControlName="actif" type="checkbox">
-      </div>
-      <div class="form-row">
-        <label for="dateActivation">Date d'Activation :</label>
-        <input id="dateActivation" formControlName="dateActivation" type="date">
-      </div>
-      <button type="button" class="next-button" (click)="nextStep()">Suivant</button>
-    </form>
-
-    <form *ngIf="step === 2" [formGroup]="contactForm">
-      <h2>Formulaire Contact</h2>
-      <div class="form-row">
-        <label for="numTel">Numéro de Téléphone :</label>
-        <input id="numTel" formControlName="numTel" type="text" placeholder="Téléphone">
-      </div>
-      <div class="form-row">
-        <label for="fax">Fax :</label>
-        <input id="fax" formControlName="fax" type="text" placeholder="Fax">
-      </div>
-      <div class="form-row">
-        <label for="email">Email :</label>
-        <input id="email" formControlName="email" type="email" placeholder="Email">
-      </div>
-      <button type="button" class="previous-button" (click)="previousStep()">Précédent</button>
-      <button type="button" class="next-button" (click)="nextStep()">Suivant</button>
-    </form>
-
-    <form *ngIf="step === 3" [formGroup]="adresseForm">
-      <h2>Formulaire Adresse</h2>
-      <div class="form-row">
-        <label for="numVoie">Numéro de Voie :</label>
-        <input id="numVoie" formControlName="numVoie" type="text" placeholder="Numéro de Voie">
-      </div>
-      <div class="form-row">
-        <label for="nomVoie">Nom de la Voie :</label>
-        <input id="nomVoie" formControlName="nomVoie" type="text" placeholder="Nom de la Voie">
-      </div>
-      <div class="form-row">
-        <label for="codePostal">Code Postal :</label>
-        <input id="codePostal" formControlName="codePostal" type="text" placeholder="Code Postal">
-      </div>
-      <div class="form-row">
-        <label for="ville">Ville :</label>
-        <input id="ville" formControlName="ville" type="text" placeholder="Ville">
-      </div>
-      <div class="form-row">
-        <label for="commune">Commune :</label>
-        <input id="commune" formControlName="commune" type="text" placeholder="Commune">
-      </div>
-      <button type="button" class="previous-button" (click)="previousStep()">Précédent</button>
-      <button type="button" class="enregistrer-button" (click)="onSubmit()">Enregistrer</button>
-    </form>
+  <div *ngIf="filteredLaboratoires.length === 0" class="no-results">
+    Aucun laboratoire trouvé pour "{{ searchQuery }}".
   </div>
+<!-- Contenu principal -->
 
-  <div *ngIf="!showAddForm" class="card-container">
-    <h2>Liste des laboratoires existants</h2>
-    <div *ngFor="let laboratoire of laboratoires" class="card">
-      <img [src]="laboratoire.logo" alt="Logo" class="logo" *ngIf="laboratoire.logo">
-      <div class="card-content">
-        <h3>{{ laboratoire.nom }}</h3>
-        <p><strong>NRC :</strong> {{ laboratoire.nrc }}</p>
-        <p><strong>Actif :</strong> {{ laboratoire.actif ? 'Oui' : 'Non' }}</p>
-        <p><strong>Date d'Activation :</strong> {{ laboratoire.dateActivation | date: 'dd/MM/yyyy' }}</p>
-      </div>
-      <button (click)="modifierLaboratoire(laboratoire)" class="edit-btn">Modifier</button>
-      <button (click)="archiverLaboratoire(laboratoire.id)" class="archive-btn">Archiver</button>
+
+  <div class="modal" [ngClass]="{ 'show': isModalVisible }">
+    <div class="modal-content">
+      <h2>Ajouter un laboratoire</h2>
+      <button class="close-modal" (click)="toggleModal()">X</button>
+      <form [formGroup]="laboratoireForm" (ngSubmit)="onSubmit()">
+        <div class="form-row">
+          <label for="nom">Nom :</label>
+          <input id="nom" formControlName="nom" type="text" placeholder="Nom du laboratoire">
+        </div>
+        <div class="form-row">
+          <label for="nrc">NRC :</label>
+          <input id="nrc" formControlName="nrc" type="text" placeholder="Numéro NRC">
+        </div>
+        <div class="form-row">
+          <label for="logo">Logo :</label>
+          <input id="logo" type="file" (change)="onFileChange($event)" />
+        </div>
+        <div class="form-row">
+          <label for="dateActivation">Date d'activation :</label>
+          <input id="dateActivation" formControlName="dateActivation" type="date">
+        </div>
+        <div class="form-row">
+          <label for="active">Actif :</label>
+          <input id="active" formControlName="active" type="checkbox">
+        </div>
+        <button type="submit" [disabled]="!laboratoireForm.valid">Enregistrer</button>
+      </form>
     </div>
   </div>
-</div>
 
-</body>
-</html>
+  <!-- Liste des laboratoires -->
+  <!-- Liste des laboratoires -->
+  <div class="card-container">
+    <div *ngFor="let laboratoire of filteredLaboratoires" class="card" (click)="toggleDetails(laboratoire)">
+      <img *ngIf="laboratoire.logo" [src]="laboratoire.logo" alt="Logo du laboratoire" class="logo">
+      <div class="card-content">
+        <h3>{{ laboratoire.nom }}</h3>
+      </div>
+      <div *ngIf="selectedLaboratoire === laboratoire" class="card-details">
+        <p><strong>NRC :</strong> {{ laboratoire.nrc }}</p>
+        <p><strong>Actif :</strong> {{ laboratoire.active ? 'Oui' : 'Non' }}</p>
+        <p><strong>Date d'Activation :</strong> {{ laboratoire.dateActivation | date: 'dd/MM/yyyy' }}</p>
+        <button (click)="archiverLaboratoire(laboratoire.id)" class="archive-btn">Archiver</button>
+      </div>
+    </div>
+
+    <!-- Carte d'ajout (symbole +) -->
+    <div class="card add-card" (click)="toggleModal()">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+      <div class="card-content">
+        Ajouter un laboratoire<br><br>
+        <i class="fas fa-plus"></i>
+      </div>
+    </div>
+  </div>
+
+
+</div>

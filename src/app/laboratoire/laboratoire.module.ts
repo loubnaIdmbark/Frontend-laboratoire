@@ -6,7 +6,7 @@ import { LaboratoireComponent } from './laboratoire.component';
 
 @NgModule({
   declarations: [],
-  imports: [CommonModule, ReactiveFormsModule, LaboratoireComponent],
+  imports: [ CommonModule, ReactiveFormsModule, LaboratoireComponent],
   exports: [LaboratoireComponent]
 })
 export class LaboratoireModule {}

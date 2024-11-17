@@ -7,7 +7,7 @@ export interface Laboratoire {
   nom: string;
   logo: string;
   nrc: string;
-  actif: boolean;
+  active: boolean;
   dateActivation: string;
 }
 

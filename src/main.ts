@@ -3,8 +3,9 @@ import { provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { AppComponent } from './app/app.component';
 import { appRoutes } from './app/app.routes';
+import {LaboratoireComponent} from './app/laboratoire/laboratoire.component';
 
-bootstrapApplication(AppComponent, {
+bootstrapApplication(LaboratoireComponent, {
   providers: [
     provideRouter(appRoutes),
     provideHttpClient()
