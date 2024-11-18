@@ -30,4 +30,5 @@ describe('LaboratoireComponent', () => {
 
     expect(component.laboratoireForm.valid).toBeTrue();
   });
+
 });

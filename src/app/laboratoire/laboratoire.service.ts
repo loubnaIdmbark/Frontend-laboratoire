@@ -14,12 +14,14 @@ export interface Laboratoire {
 export interface ContactLaboratoire {
   id:number;
   numTel: string;
-  fax: string;
+  fax: number;
   email: string;
+  fkIdLaboratoire:number;
+  fkIdAdresse:number;
 }
 
 export interface AdresseLaboratoire {
-  id?: number;
+  id:number;
   numVoie: string;
   nomVoie: string;
   codePostal: string;
@@ -33,7 +35,7 @@ export interface AdresseLaboratoire {
 export class LaboratoireService {
   private apiUrl = 'http://localhost:8088/laboratoire';
   private contactUrl = 'http://localhost:8088/contactLaboratoire';
-  private adresseUrl = 'http://localhost:8088/adresseLaboratoire';
+  private adresseUrl = 'http://localhost:8088/adresse';
 
   constructor(private http: HttpClient) {}
 
@@ -46,6 +48,14 @@ export class LaboratoireService {
   getLaboratoire(): Observable<Laboratoire[]> {
     return this.http.get<Laboratoire[]>(this.apiUrl);
   }
+
+  getAdresse(): Observable<AdresseLaboratoire[]> {
+    return this.http.get<AdresseLaboratoire[]>(this.adresseUrl);
+  }
+  getContact(): Observable<ContactLaboratoire[]> {
+    return this.http.get<ContactLaboratoire[]>(this.contactUrl);
+  }
+
 
   // Récupération d'un laboratoire par ID
   getLaboratoryById(id: number): Observable<Laboratoire> {

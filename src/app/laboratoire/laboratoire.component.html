@@ -44,7 +44,7 @@
   <div *ngIf="filteredLaboratoires.length === 0" class="no-results">
     Aucun laboratoire trouvé pour "{{ searchQuery }}".
   </div>
-<!-- Contenu principal -->
+  <!-- Contenu principal -->
 
 
   <div class="modal" [ngClass]="{ 'show': isModalVisible }">
@@ -76,8 +76,9 @@
             <input id="active" formControlName="active" type="checkbox">
           </div>
         </div>
-
+      </form>
         <!-- Étape 2 : Adresse -->
+        <form [formGroup]="adresseForm" (ngSubmit)="onSubmit()">
         <div *ngIf="currentStep === 2">
           <h2>Adresse</h2>
           <div class="form-row">
@@ -101,13 +102,14 @@
             <input id="commune" formControlName="commune" type="text" placeholder="Commune">
           </div>
         </div>
-
+        </form>
         <!-- Étape 3 : Contact -->
+          <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
         <div *ngIf="currentStep === 3">
           <h2>Contact</h2>
           <div class="form-row">
-            <label for="telephone">Téléphone :</label>
-            <input id="telephone" formControlName="telephone" type="text" placeholder="Téléphone">
+            <label for="numTel">Téléphone :</label>
+            <input id="numTel" formControlName="numTel" type="text" placeholder="Téléphone">
           </div>
           <div class="form-row">
             <label for="fax">Fax :</label>
@@ -125,8 +127,8 @@
           <button type="button" class="suivant" *ngIf="currentStep < 3" (click)="nextStep()">Suivant</button>
           <button type="submit" *ngIf="currentStep === 3" [disabled]="!laboratoireForm.valid">Enregistrer</button>
         </div>
-      </form>
 
+          </form>
     </div>
   </div>
 

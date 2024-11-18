@@ -24,26 +24,33 @@ export class LaboratoireComponent implements OnInit {
 
   currentStep: number = 1; // Étape actuelle
   laboratoireForm: FormGroup;
+  adresseForm: FormGroup;
+  contactForm: FormGroup;
   searchQuery: string = ''; // Valeur de recherche
 
   constructor(private laboratoireService: LaboratoireService, private fb: FormBuilder) {
+    // Formulaire pour le laboratoire
     this.laboratoireForm = this.fb.group({
-      // Étape 1 : Informations sur le laboratoire
       nom: ['', Validators.required],
       nrc: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
       logo: [null],
       dateActivation: ['', Validators.required],
       active: [false],
+    });
 
-      // Étape 2 : Adresse
+    // Formulaire pour l'adresse
+    this.adresseForm = this.fb.group({
       numVoie: [null, Validators.required],
       nomVoie: ['', Validators.required],
       codePostal: [null, [Validators.required, Validators.pattern('^[0-9]{5}$')]],
       ville: ['', Validators.required],
       commune: ['', Validators.required],
+    });
 
-      // Étape 3 : Contact
-      telephone: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+    // Formulaire pour le contact
+    this.contactForm = this.fb.group({
+      numTel: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      fax: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
     });
   }
@@ -55,13 +62,19 @@ export class LaboratoireComponent implements OnInit {
   toggleModal(): void {
     this.isModalVisible = !this.isModalVisible;
     if (!this.isModalVisible) {
-      this.laboratoireForm.reset();
-      this.currentStep = 1; // Réinitialise l'étape à 1
+      this.resetForms();
     }
   }
 
   toggleSidebar(): void {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
+
+  resetForms(): void {
+    this.laboratoireForm.reset();
+    this.adresseForm.reset();
+    this.contactForm.reset();
+    this.currentStep = 1;
   }
 
   // Navigation entre les étapes
@@ -79,27 +92,43 @@ export class LaboratoireComponent implements OnInit {
 
   // Gestion de la soumission
   onSubmit(): void {
-    if (this.laboratoireForm.valid) {
+    if (this.laboratoireForm.valid ) {
       const laboratoire = this.laboratoireForm.value;
+      const adresse = this.adresseForm.value;
+      const contact = this.contactForm.value;
 
-      if (!laboratoire.logo) {
-        laboratoire.logo = null;
-      }
-
-      // Validation de la date d'activation
-      const currentDate = new Date();
-      const dateActivation = new Date(laboratoire.dateActivation);
-      if (dateActivation < currentDate) {
-        alert('La date d\'activation ne peut pas être dans le passé.');
-        return;
-      }
-
-      // Appel au service pour ajouter un laboratoire
+      // Étape 1 : Ajouter le laboratoire
       this.laboratoireService.addLaboratoire(laboratoire).subscribe({
-        next: () => {
+        next: (response) => {
+          const labId = response.id;  // Récupération de l'ID du laboratoire
+          console.log(labId);
           alert('Laboratoire ajouté avec succès !');
-          this.chargerLaboratoires();
-          this.toggleModal();
+
+          // Étape 2 : Ajouter l'adresse
+          this.laboratoireService.addAdresseLaboratoire(adresse).subscribe({
+            next: (adresseResponse) => {
+              const adresseId = adresseResponse.id;  // Récupération de l'ID de l'adresse
+              console.log(adresseId);
+
+              // Étape 3 : Ajouter le contact avec labId et adresseId
+              const contactWithFk = { ...contact, laboratoire: { id: labId },  adresse: { id: adresseId } };
+              this.laboratoireService.addContactLaboratoire(contactWithFk).subscribe({
+                next: () => {
+                  alert('Contact ajouté avec succès !');
+                  this.chargerLaboratoires();
+                  this.toggleModal();
+                },
+                error: (err) => {
+                  console.error('Erreur lors de l’ajout du contact :', err);
+                  alert('Erreur lors de l’ajout du contact.');
+                },
+              });
+            },
+            error: (err) => {
+              console.error('Erreur lors de l’ajout de l’adresse :', err);
+              alert('Erreur lors de l’ajout de l’adresse.');
+            },
+          });
         },
         error: (err) => {
           console.error('Erreur lors de l’ajout du laboratoire :', err);
@@ -107,9 +136,12 @@ export class LaboratoireComponent implements OnInit {
         },
       });
     } else {
-      alert('Veuillez remplir tous les champs requis.');
+      alert('Veuillez remplir tous les formulaires correctement.');
     }
   }
+
+
+
 
   chargerLaboratoires(): void {
     this.laboratoireService.getLaboratoire().subscribe({
