@@ -12,13 +12,14 @@ export interface Laboratoire {
 }
 
 export interface ContactLaboratoire {
+  id:number;
   numTel: string;
   fax: string;
   email: string;
 }
 
 export interface AdresseLaboratoire {
-  id?: number; // id optionnel car il peut ne pas être défini initialement
+  id?: number;
   numVoie: string;
   nomVoie: string;
   codePostal: string;

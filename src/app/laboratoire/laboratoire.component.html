@@ -49,36 +49,90 @@
 
   <div class="modal" [ngClass]="{ 'show': isModalVisible }">
     <div class="modal-content">
-      <h2>Ajouter un laboratoire</h2>
+
       <button class="close-modal" (click)="toggleModal()">X</button>
       <form [formGroup]="laboratoireForm" (ngSubmit)="onSubmit()">
-        <div class="form-row">
-          <label for="nom">Nom :</label>
-          <input id="nom" formControlName="nom" type="text" placeholder="Nom du laboratoire">
+        <!-- Étape 1 : Informations sur le laboratoire -->
+        <div *ngIf="currentStep === 1">
+          <h2>Ajouter un laboratoire</h2>
+          <div class="form-row">
+            <label for="nom">Nom :</label>
+            <input id="nom" formControlName="nom" type="text" placeholder="Nom du laboratoire">
+          </div>
+          <div class="form-row">
+            <label for="nrc">NRC :</label>
+            <input id="nrc" formControlName="nrc" type="text" placeholder="Numéro NRC">
+          </div>
+          <div class="form-row">
+            <label for="logo">Logo :</label>
+            <input id="logo" type="file" (change)="onFileChange($event)" />
+          </div>
+          <div class="form-row">
+            <label for="dateActivation">Date d'activation :</label>
+            <input id="dateActivation" formControlName="dateActivation" type="date">
+          </div>
+          <div class="form-row">
+            <label for="active">Actif :</label>
+            <input id="active" formControlName="active" type="checkbox">
+          </div>
         </div>
-        <div class="form-row">
-          <label for="nrc">NRC :</label>
-          <input id="nrc" formControlName="nrc" type="text" placeholder="Numéro NRC">
+
+        <!-- Étape 2 : Adresse -->
+        <div *ngIf="currentStep === 2">
+          <h2>Adresse</h2>
+          <div class="form-row">
+            <label for="numVoie">Numéro de Voie :</label>
+            <input id="numVoie" formControlName="numVoie" type="number" placeholder="Numéro de la voie">
+          </div>
+          <div class="form-row">
+            <label for="nomVoie">Nom de Voie :</label>
+            <input id="nomVoie" formControlName="nomVoie" type="text" placeholder="Nom de la voie">
+          </div>
+          <div class="form-row">
+            <label for="codePostal">Code Postal :</label>
+            <input id="codePostal" formControlName="codePostal" type="number" placeholder="Code Postal">
+          </div>
+          <div class="form-row">
+            <label for="ville">Ville :</label>
+            <input id="ville" formControlName="ville" type="text" placeholder="Ville">
+          </div>
+          <div class="form-row">
+            <label for="commune">Commune :</label>
+            <input id="commune" formControlName="commune" type="text" placeholder="Commune">
+          </div>
         </div>
-        <div class="form-row">
-          <label for="logo">Logo :</label>
-          <input id="logo" type="file" (change)="onFileChange($event)" />
+
+        <!-- Étape 3 : Contact -->
+        <div *ngIf="currentStep === 3">
+          <h2>Contact</h2>
+          <div class="form-row">
+            <label for="telephone">Téléphone :</label>
+            <input id="telephone" formControlName="telephone" type="text" placeholder="Téléphone">
+          </div>
+          <div class="form-row">
+            <label for="fax">Fax :</label>
+            <input id="fax" formControlName="fax" type="text" placeholder="Fax">
+          </div>
+          <div class="form-row">
+            <label for="email">Email :</label>
+            <input id="email" formControlName="email" type="email" placeholder="Email">
+          </div>
         </div>
-        <div class="form-row">
-          <label for="dateActivation">Date d'activation :</label>
-          <input id="dateActivation" formControlName="dateActivation" type="date">
+
+        <!-- Navigation entre les étapes -->
+        <div class="form-navigation">
+          <button type="button" class="precedent" *ngIf="currentStep > 1" (click)="previousStep()">Précédent</button>
+          <button type="button" class="suivant" *ngIf="currentStep < 3" (click)="nextStep()">Suivant</button>
+          <button type="submit" *ngIf="currentStep === 3" [disabled]="!laboratoireForm.valid">Enregistrer</button>
         </div>
-        <div class="form-row">
-          <label for="active">Actif :</label>
-          <input id="active" formControlName="active" type="checkbox">
-        </div>
-        <button type="submit" [disabled]="!laboratoireForm.valid">Enregistrer</button>
       </form>
+
     </div>
   </div>
 
+
   <!-- Liste des laboratoires -->
-  <!-- Liste des laboratoires -->
+
   <div class="card-container">
     <div *ngFor="let laboratoire of filteredLaboratoires" class="card" (click)="toggleDetails(laboratoire)">
       <img *ngIf="laboratoire.logo" [src]="laboratoire.logo" alt="Logo du laboratoire" class="logo">
