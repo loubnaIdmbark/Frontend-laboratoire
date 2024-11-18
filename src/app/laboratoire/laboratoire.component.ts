@@ -114,7 +114,7 @@ export class LaboratoireComponent implements OnInit {
               const contactWithFk = { ...contact, laboratoire: { id: labId },  adresse: { id: adresseId } };
               this.laboratoireService.addContactLaboratoire(contactWithFk).subscribe({
                 next: () => {
-                  alert('Contact ajouté avec succès !');
+
                   this.chargerLaboratoires();
                   this.toggleModal();
                 },

@@ -72,6 +72,9 @@ export class LaboratoireService {
     return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
   }
 
+  deleteContact(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.contactUrl}/delete/${id}`);
+  }
   // Ajout d'une adresse pour un laboratoire
   addAdresseLaboratoire(adresseData: AdresseLaboratoire): Observable<AdresseLaboratoire> {
     return this.http.post<AdresseLaboratoire>(`${this.adresseUrl}/add`, adresseData);
