@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Laboratoire, LaboratoireService } from './laboratoire.service';
 import {CommonModule, DatePipe} from '@angular/common';
+import {Router, RouterOutlet} from '@angular/router';
+import {SidebarComponent} from '../sidebar/sidebar.component';
 @Component({
   selector: 'app-laboratoire',
   templateUrl: './laboratoire.component.html',
@@ -10,7 +12,9 @@ import {CommonModule, DatePipe} from '@angular/common';
     CommonModule,
     ReactiveFormsModule,
     DatePipe,
-    FormsModule
+    FormsModule,
+    RouterOutlet,
+    SidebarComponent,
   ],
   standalone: true
 })
@@ -28,7 +32,7 @@ export class LaboratoireComponent implements OnInit {
   contactForm: FormGroup;
   searchQuery: string = ''; // Valeur de recherche
 
-  constructor(private laboratoireService: LaboratoireService, private fb: FormBuilder) {
+  constructor(private laboratoireService: LaboratoireService, private fb: FormBuilder,private router: Router) {
     // Formulaire pour le laboratoire
     this.laboratoireForm = this.fb.group({
       nom: ['', Validators.required],
@@ -117,6 +121,7 @@ export class LaboratoireComponent implements OnInit {
 
                   this.chargerLaboratoires();
                   this.toggleModal();
+
                 },
                 error: (err) => {
                   console.error('Erreur lors de l’ajout du contact :', err);
@@ -140,7 +145,9 @@ export class LaboratoireComponent implements OnInit {
     }
   }
 
-
+  navigateToDetails(id: number): void {
+    this.router.navigate(['/details', id]).then(r => ' ');
+  }
 
 
   chargerLaboratoires(): void {

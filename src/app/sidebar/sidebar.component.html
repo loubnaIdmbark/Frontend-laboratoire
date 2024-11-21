@@ -1,1 +1,29 @@
-<p>sidebar works!</p>
+<head>
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    rel="stylesheet">
+</head>
+<div class="sidebar" [class.collapsed]="isSidebarCollapsed">
+  <button class="toggle-btn" (click)="toggleSidebar()">
+    <i class="fas" [ngClass]="isSidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+  </button>
+  <h3 *ngIf="!isSidebarCollapsed">Menu</h3>
+  <ul>
+    <li>
+      <a
+        href="#"
+        [class.active]="activeMenu === 'home'"
+        (click)="activeMenu = 'home'">
+        <i class="fas fa-home"></i> <span *ngIf="!isSidebarCollapsed">Accueil</span>
+      </a>
+    </li>
+    <li>
+      <a
+        href="laboratoire"
+        [class.active]="activeMenu === 'labs'"
+        (click)="activeMenu = 'labs'">
+        <i class="fas fa-flask"></i> <span *ngIf="!isSidebarCollapsed">Laboratoires</span>
+      </a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,315 @@
+/* Conteneur principal */
+.main-content {
+  margin-left: 250px; /* Largeur de la sidebar */
+  padding: 20px;
+  transition: margin-left 0.3s ease-in-out;
+  background-color: rgba(58, 125, 169, 0.1); /* Fond clair */
+  height: 100%;
+
+}
+
+/* Détails du laboratoire */
+.laboratoire-details {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
+  height: 100%;
+  margin: auto;
+}
+
+.laboratoire-content {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Image du laboratoire */
+.laboratoire-image {
+  flex: 1;
+  text-align: center;
+}
+
+.laboratoire-image img.logo {
+  max-width: 300px;
+  border-radius: 8px;
+  border: 2px solid #ddd;
+  padding: 5px;
+  background-color: #f9f9f9;
+}
+
+/* Informations du laboratoire */
+.laboratoire-info {
+  flex: 2;
+  font-size: 1rem;
+  color: #555;
+}
+
+h1 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+p {
+  margin: 10px 0;
+}
+
+/* Boutons */
+.archive-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.archive-btn:hover {
+  background-color: #c0392b;
+}
+
+.modifier-btn {
+  background-color: #546fef;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.modifier-btn:hover {
+  background-color: #425bb5;
+}
+
+.ajouter-btn {
+  background-color: #546fef;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  margin-left: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.ajouter-btn:hover {
+  background-color: #425bb5;
+}
+
+/* Formulaire (Modal) */
+.modal {
+  display: none; /* Par défaut, le modal est caché */
+}
+
+./* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal.show {
+  display: flex;
+}
+/* Conteneur de la modale : plus large et horizontal */
+.modal-content {
+  background: linear-gradient(135deg, #e4f1fa, #e2e7ea);
+  border-radius: 20px;
+  width: 700px; /* Augmenté pour plus d'horizontalité */
+  padding: 40px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  transform: scale(0.9);
+  animation: pop-in 0.3s forwards ease-in-out;
+  color: #1c1a1a;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espace entre les éléments */
+}
+
+/* Animation d'apparition */
+@keyframes pop-in {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-content h2 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  color: #1c1a1a;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Bouton de fermeture */
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #1c1a1a;
+  transition: transform 0.2s ease;
+}
+
+.close-modal:hover {
+  transform: rotate(90deg);
+}
+
+/* Formulaire */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espace entre le label et l'input */
+  margin-bottom: 20px;
+}
+
+.form-row label {
+  flex: 0 0 150px; /* Taille fixe pour les labels */
+  font-size: 0.95rem;
+  color: rgb(28, 26, 26);
+  font-weight: 500;
+  text-align: right; /* Aligne le texte à droite */
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="number"],
+.form-row input[type="date"],
+.form-row input[type="file"] {
+  flex: 1; /* Les inputs prennent tout l'espace restant */
+  padding: 12px 15px;
+  border: 1px solid rgb(28, 26, 26);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(51, 51, 51, 0.66);
+  font-size: 1rem;
+  outline: none;
+  transition: background 0.3s, border 0.3s;
+}
+
+.form-row input[type="text"]:focus,
+.form-row input[type="email"]:focus,
+.form-row input[type="date"]:focus,
+.form-row input[type="number"]:focus,
+.form-row input[type="file"]:focus {
+  background: rgba(218, 206, 211, 0.35);
+  border-color: #1c1a1a;
+}
+
+b/* Bouton de soumission */
+button[type="submit"] {
+  margin-left: 40%;
+  padding: 15px;
+  background-color: #3a7da9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(106, 17, 203, 0.3);
+}
+
+button[type="submit"]:disabled {
+  background: linear-gradient(90deg, #ccc, #ddd);
+  cursor: not-allowed;
+}
+
+
+/* Tableau des contacts */
+.contacts-container {
+  padding: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f4f4f4;
+}
+
+.loading {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 80px;
+  }
+
+  .laboratoire-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .laboratoire-image img.logo {
+    margin-bottom: 20px;
+  }
+
+  .modal-content {
+    width: 90%;
+    flex-direction: column;
+  }
+
+  .form-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-row label {
+    text-align: left;
+    flex: unset;
+  }
+
+  .form-row input {
+    width: 100%;
+  }
+}

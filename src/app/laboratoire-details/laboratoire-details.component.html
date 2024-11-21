@@ -1,0 +1,105 @@
+<app-sidebar></app-sidebar>
+<div class="main-content ">
+  <div *ngIf="laboratoire" class="card">
+    <div class="card-header text-center">
+      <h1 class="card-title">Détails du Laboratoire</h1>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <!-- Section de l'image -->
+        <div class="col-md-4 text-center">
+          <img
+            [src]="laboratoire.logo"
+            alt="Logo du laboratoire"
+            class="img-fluid rounded shadow-sm"
+          />
+        </div>
+
+        <!-- Section des informations -->
+        <div class="col-md-8">
+          <p><strong>ID :</strong> {{ laboratoire.id }}</p>
+          <p><strong>Nom :</strong> {{ laboratoire.nom }}</p>
+          <p><strong>Numéro de registre de commerce :</strong> {{ laboratoire.nrc }}</p>
+          <p><strong>Date d'activation :</strong> {{ laboratoire.dateActivation | date }}</p>
+
+          <p><strong>Actif :</strong>
+            <span [class.text-success]="laboratoire.active" [class.text-danger]="!laboratoire.active">
+              {{ laboratoire.active ? 'Oui' : 'Non' }}
+            </span>
+          </p>
+          <div class="mt-4" *ngIf="laboratoire.contacts && laboratoire.contacts.length > 0">
+            <p><strong>Adresse : </strong>
+              {{ laboratoire.contacts[0].adresse.numVoie }} {{ laboratoire.contacts[0].adresse.nomVoie }},
+              {{ laboratoire.contacts[0].adresse.codePostal }} {{ laboratoire.contacts[0].adresse.ville }},
+              {{ laboratoire.contacts[0].adresse.commune }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contacts Section -->
+      <div class="mt-4">
+
+        <table class="table table-striped table-bordered">
+          <thead class="thead-dark">
+          <tr>
+            <th>Contacts</th>
+            <th>Email</th>
+            <th>Téléphone</th>
+            <th>Fax</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let contact of laboratoire.contacts; let i = index">
+            <td>{{ i + 1 }}</td>
+            <td>{{ contact.email }}</td>
+            <td>{{ contact.numTel }}</td>
+            <td>{{ contact.fax }}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+
+    </div>
+
+    <!-- Boutons d'action -->
+    <div class="card-footer text-center">
+      <button (click)="archiverLaboratoire(laboratoire.id)" class="archive-btn">Archiver</button>
+      <button (click)="updateLaboratoroire(laboratoire.id)" class="modifier-btn">Modifier</button>
+      <button (click)="toggleModal()" class="ajouter-btn">Ajouter Contact</button>
+    </div>
+  </div>
+
+  <!-- Modal Form -->
+  <div class="modal " [ngClass]="{ 'show d-block': isModalVisible, 'd-none': !isModalVisible }" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ajouter un Contact</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="toggleModal()"></button>
+        </div>
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit(laboratoire.id,laboratoire.contacts[0].adresse.id)">
+          <div class="modal-body">
+            <div class="form-row">
+              <label for="numTel" class="form-label">Téléphone :</label>
+              <input id="numTel" formControlName="numTel" type="text" class="form-control" placeholder="Téléphone">
+            </div>
+            <div class="form-row">
+              <label for="fax" class="form-label">Fax :</label>
+              <input id="fax" formControlName="fax" type="text" class="form-control" placeholder="Fax">
+            </div>
+            <div class="form-row">
+              <label for="email" class="form-label">Email :</label>
+              <input id="email" formControlName="email" type="email" class="form-control" placeholder="Email">
+            </div>
+          </div>
+          <div class="modal-footer">
+
+            <button type="submit" class="submit">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

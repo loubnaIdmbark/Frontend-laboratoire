@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {map, Observable} from 'rxjs';
 
 export interface Laboratoire {
   id: number;
@@ -9,6 +9,7 @@ export interface Laboratoire {
   nrc: string;
   active: boolean;
   dateActivation: string;
+ contacts:ContactLaboratoire[];
 }
 
 export interface ContactLaboratoire {
@@ -48,22 +49,32 @@ export class LaboratoireService {
   getLaboratoire(): Observable<Laboratoire[]> {
     return this.http.get<Laboratoire[]>(this.apiUrl);
   }
+  getLaboratoireById(id: number): Observable<Laboratoire> {
+    return this.http.get<Laboratoire>(`${this.apiUrl}/${id}`);
+  }
+
 
   getAdresse(): Observable<AdresseLaboratoire[]> {
     return this.http.get<AdresseLaboratoire[]>(this.adresseUrl);
   }
   getContact(): Observable<ContactLaboratoire[]> {
+
     return this.http.get<ContactLaboratoire[]>(this.contactUrl);
+
+  }
+  getContactsByLaboratoireId(laboratoireId: number): Observable<ContactLaboratoire[]> {
+
+    return this.getContact().pipe(
+      map((contacts) =>
+        contacts.filter((contact) => contact.fkIdLaboratoire === laboratoireId)
+      )
+    );
   }
 
 
-  // Récupération d'un laboratoire par ID
-  getLaboratoryById(id: number): Observable<Laboratoire> {
-    return this.http.get<Laboratoire>(`${this.apiUrl}/${id}`);
-  }
 
   // Mise à jour d'un laboratoire existant
-  updateLaboratory(id: number, lab: Partial<Laboratoire>): Observable<Laboratoire> {
+  updateLaboratoroire(id: number, lab: Partial<Laboratoire>): Observable<Laboratoire> {
     return this.http.put<Laboratoire>(`${this.apiUrl}/${id}`, lab);
   }
 

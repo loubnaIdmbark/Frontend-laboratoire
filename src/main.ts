@@ -5,7 +5,7 @@ import { AppComponent } from './app/app.component';
 import { appRoutes } from './app/app.routes';
 import {LaboratoireComponent} from './app/laboratoire/laboratoire.component';
 
-bootstrapApplication(LaboratoireComponent, {
+bootstrapApplication(AppComponent, {
   providers: [
     provideRouter(appRoutes),
     provideHttpClient()

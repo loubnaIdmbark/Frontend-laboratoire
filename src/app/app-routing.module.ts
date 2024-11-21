@@ -3,8 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccueilComponent } from './accueil/accueil.component';
 import { LoginComponent } from './login/login.component';
 import { LaboratoireComponent } from './laboratoire/laboratoire.component';
+import { LaboratoireDetailsComponent} from './laboratoire-details/laboratoire-details.component';
+import {AppComponent} from './app.component';
 
 const routes: Routes = [
+  { path: 'details/:id', component: LaboratoireDetailsComponent },
   { path: 'accueil', component: AccueilComponent },
   { path: 'login', component: LoginComponent },
 
@@ -14,7 +17,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+
+  imports: [RouterModule.forRoot(routes), LaboratoireDetailsComponent, AppComponent,LaboratoireComponent],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

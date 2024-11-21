@@ -5,23 +5,23 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { AccueilComponent } from './accueil/accueil.component';
 import { LaboratoireComponent } from './laboratoire/laboratoire.component';
-
+import { LaboratoireDetailsComponent} from  './laboratoire-details/laboratoire-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     AccueilComponent,LaboratoireComponent,
-
+    LaboratoireDetailsComponent
   ],
     imports: [
         BrowserModule,
       ReactiveFormsModule,
         AppRoutingModule,
-
+      LaboratoireDetailsComponent,
       CommonModule, // Pipe 'date'
       FormsModule, // Formulaires basés sur template
 
