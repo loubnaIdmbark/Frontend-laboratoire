@@ -110,7 +110,7 @@ p {
   display: none; /* Par défaut, le modal est caché */
 }
 
-./* Modal */
+
 .modal {
   position: fixed;
   top: 0;
@@ -124,10 +124,8 @@ p {
   z-index: 10;
 }
 
-.modal.show {
-  display: flex;
-}
-/* Conteneur de la modale : plus large et horizontal */
+
+
 .modal-content {
   background: linear-gradient(135deg, #e4f1fa, #e2e7ea);
   border-radius: 20px;
@@ -222,8 +220,8 @@ p {
   border-color: #1c1a1a;
 }
 
-b/* Bouton de soumission */
-button[type="submit"] {
+
+.submit {
   margin-left: 40%;
   padding: 15px;
   background-color: #3a7da9;
@@ -312,4 +310,26 @@ table th {
   .form-row input {
     width: 100%;
   }
+}
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
+}
+.modal.show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
+}
+.d-block {
+  display: block !important;
+}
+.d-none {
+  display: none !important;
 }

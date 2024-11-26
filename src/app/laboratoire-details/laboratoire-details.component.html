@@ -17,7 +17,7 @@
 
         <!-- Section des informations -->
         <div class="col-md-8">
-          <p><strong>ID :</strong> {{ laboratoire.id }}</p>
+
           <p><strong>Nom :</strong> {{ laboratoire.nom }}</p>
           <p><strong>Numéro de registre de commerce :</strong> {{ laboratoire.nrc }}</p>
           <p><strong>Date d'activation :</strong> {{ laboratoire.dateActivation | date }}</p>
@@ -66,13 +66,18 @@
     <!-- Boutons d'action -->
     <div class="card-footer text-center">
       <button (click)="archiverLaboratoire(laboratoire.id)" class="archive-btn">Archiver</button>
-      <button (click)="updateLaboratoroire(laboratoire.id)" class="modifier-btn">Modifier</button>
+      <button (click)="toggleModalEdit(laboratoire)" class="modifier-btn">Modifier</button>
       <button (click)="toggleModal()" class="ajouter-btn">Ajouter Contact</button>
+
     </div>
   </div>
 
   <!-- Modal Form -->
-  <div class="modal " [ngClass]="{ 'show d-block': isModalVisible, 'd-none': !isModalVisible }" tabindex="-1">
+  <div
+    class="modal"
+    [ngClass]="{ 'show d-block': isModalVisible, 'd-none': !isModalVisible }"
+    tabindex="-1"
+  >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -99,7 +104,82 @@
             <button type="submit" class="submit">Enregistrer</button>
           </div>
         </form>
+
+
       </div>
     </div>
   </div>
-</div>
+    <div
+      class="modal"
+      [ngClass]="{ 'show d-block': isEditModalVisible, 'd-none': !isEditModalVisible }"
+      tabindex="-1"
+      role="dialog"
+    >
+    <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modifier le Laboratoire</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="isEditModalVisible = false"></button>
+          </div>
+          <form [formGroup]="editLaboratoireForm" (ngSubmit)="onEditLaboratoireSubmit(laboratoire.id)">
+            <div class="modal-body">
+              <div class="form-row">
+                <label for="nom">Nom :</label>
+                <input
+                  id="nom"
+                  formControlName="nom"
+                  type="text"
+                  class="form-control"
+                  placeholder="Nom du laboratoire"
+                />
+              </div>
+              <div class="form-row">
+                <label for="nrc">NRC :</label>
+                <input
+                  id="nrc"
+                  formControlName="nrc"
+                  type="text"
+                  class="form-control"
+                  placeholder="Numéro NRC"
+                />
+              </div>
+              <div class="form-row">
+                <label for="logo">Logo :</label>
+                <input
+                  id="logo"
+                  type="file"
+                  class="form-control"
+                  (change)="onFileChange($event)"
+                />
+              </div>
+              <div class="form-row">
+                <label for="dateActivation">Date d'activation :</label>
+                <input
+                  id="dateActivation"
+                  formControlName="dateActivation"
+                  type="date"
+                  class="form-control"
+                />
+              </div>
+              <div class="form-row">
+                <label for="active">Actif :</label>
+                <input
+                  id="active"
+                  formControlName="active"
+                  type="checkbox"
+                  class="form-check-input"
+                />
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="submit">Enregistrer</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+

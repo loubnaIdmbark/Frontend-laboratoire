@@ -74,7 +74,7 @@ export class LaboratoireService {
 
 
   // Mise à jour d'un laboratoire existant
-  updateLaboratoroire(id: number, lab: Partial<Laboratoire>): Observable<Laboratoire> {
+  updateLaboratoroire(id: number, lab: FormData): Observable<Laboratoire> {
     return this.http.put<Laboratoire>(`${this.apiUrl}/${id}`, lab);
   }
 
