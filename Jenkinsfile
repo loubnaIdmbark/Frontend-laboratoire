@@ -23,20 +23,22 @@ pipeline {
             }
         }
 
-       // stage('Run Tests') {
-      //  when {
-           //    expression { return !params.SKIP_TESTS }
-             //       }
-           // steps {
-            //    bat 'ng test --watch=false --browsers=ChromeHeadless'
-          //  }
+        // Uncomment and enable this stage if tests need to be run
+        // stage('Run Tests') {
+        //     when {
+        //         expression { return !params.SKIP_TESTS }
+        //     }
+        //     steps {
+        //         bat 'ng test --watch=false --browsers=ChromeHeadless'
+        //     }
+        // }
 
-//}
-      //  stage('Lint') {
-         //   steps {
-       //         bat 'ng lint'
-            }
-        //}
+        // Uncomment and enable this stage if linting is required
+        // stage('Lint') {
+        //     steps {
+        //         bat 'ng lint'
+        //     }
+        // }
 
         stage('Build Docker Image') {
             steps {
@@ -74,4 +76,3 @@ pipeline {
         }
     }
 }
-
