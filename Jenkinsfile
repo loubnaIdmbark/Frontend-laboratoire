@@ -25,10 +25,10 @@ pipeline {
             }
         }
 
-        stage('Run Tests') {
-        when {
-               expression { return !params.SKIP_TESTS }
-                    }
+       // stage('Run Tests') {
+      //  when {
+           //    expression { return !params.SKIP_TESTS }
+             //       }
            // steps {
             //    bat 'ng test --watch=false --browsers=ChromeHeadless'
           //  }
