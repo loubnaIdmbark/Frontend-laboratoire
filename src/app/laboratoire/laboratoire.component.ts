@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Laboratoire, LaboratoireService } from './laboratoire.service';
+
 import {CommonModule, DatePipe} from '@angular/common';
 import {Router, RouterOutlet} from '@angular/router';
 import {SidebarComponent} from '../sidebar/sidebar.component';

@@ -1,6 +1,7 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, withPreloading} from '@angular/router';
 import {ContactLaboratoire, LaboratoireService} from '../laboratoire/laboratoire.service';
+import {utilisateur , UtilisateurService} from '../laboratoire/utilisateurs.service'
 import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {SidebarComponent} from '../sidebar/sidebar.component';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -24,6 +25,7 @@ export class LaboratoireDetailsComponent implements OnInit {
   isModalVisible: boolean = false;
   contactForm: FormGroup;
   laboratoire: any;
+  utilisateur:any;
   contacts: ContactLaboratoire[] = [];
   editLaboratoireForm: FormGroup;
   isLoading: boolean = false; // Pour afficher un état de chargement
@@ -34,6 +36,7 @@ export class LaboratoireDetailsComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private laboratoireService: LaboratoireService,
+  private UtilisateurService:UtilisateurService,
   private cdr: ChangeDetectorRef
   ) {this.contactForm = this.fb.group({
     numTel: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
@@ -54,6 +57,7 @@ export class LaboratoireDetailsComponent implements OnInit {
       const id = +params['id'];
       if (id) {
         this.getLaboratoireDetails(id);
+        this.getUtilisateur(id)
       } else {
         console.error('ID non trouvé dans les paramètres de la route.');
       }
@@ -103,6 +107,18 @@ export class LaboratoireDetailsComponent implements OnInit {
     }
   }
 
+  getUtilisateur(id: number): void {
+    this.UtilisateurService.getUtilisateurs().subscribe(
+      (utilisateurs) => {
+        // Filtrage des utilisateurs par fkIdLaboratoire
+        this.utilisateur = utilisateurs.filter(user => user.fkIdLaboratoire === id);
+        console.log("les utilisateurs sont :", utilisateurs); },
+
+      (error) => {
+        console.error('Erreur lors du chargement des utilisateurs :', error);
+      }
+    );
+  }
 
   onEditLaboratoireSubmit(id:number): void {
     if (this.editLaboratoireForm.valid) {
@@ -172,6 +188,7 @@ export class LaboratoireDetailsComponent implements OnInit {
 
         next: () => {
           this.toggleModal();
+          this.getLaboratoireDetails(labId);
           alert('Contact ajouté avec succès !');
         },
         error: (err) => {
@@ -200,6 +217,7 @@ export class LaboratoireDetailsComponent implements OnInit {
       next: (contacts) => {
         const filteredContacts = contacts.filter(contact => contact.fkIdLaboratoire === laboratoireId);
         this.contacts = filteredContacts.slice(0, 50); // Limiter à 50 contacts
+
       },
       error: (err) => {
         console.error('Erreur lors de la récupération des contacts :', err);

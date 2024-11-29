@@ -34,9 +34,9 @@ export interface AdresseLaboratoire {
   providedIn: 'root',
 })
 export class LaboratoireService {
-  private apiUrl = 'http://localhost:8088/laboratoire';
-  private contactUrl = 'http://localhost:8088/contactLaboratoire';
-  private adresseUrl = 'http://localhost:8088/adresse';
+  private apiUrl = 'http://localhost:8087/laboratoire';
+  private contactUrl = 'http://localhost:8087/contactLaboratoire';
+  private adresseUrl = 'http://localhost:8087/adresse';
 
   constructor(private http: HttpClient) {}
 
@@ -80,7 +80,7 @@ export class LaboratoireService {
 
   // Suppression d'un laboratoire par ID
   deleteLaboratory(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/delete/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   deleteContact(id: number): Observable<void> {
@@ -88,11 +88,11 @@ export class LaboratoireService {
   }
   // Ajout d'une adresse pour un laboratoire
   addAdresseLaboratoire(adresseData: AdresseLaboratoire): Observable<AdresseLaboratoire> {
-    return this.http.post<AdresseLaboratoire>(`${this.adresseUrl}/add`, adresseData);
+    return this.http.post<AdresseLaboratoire>(`${this.adresseUrl}`, adresseData);
   }
 
   // Ajout d'un contact pour un laboratoire
   addContactLaboratoire(contactData: ContactLaboratoire): Observable<ContactLaboratoire> {
-    return this.http.post<ContactLaboratoire>(`${this.contactUrl}/add`, contactData);
+    return this.http.post<ContactLaboratoire>(`${this.contactUrl}`, contactData);
   }
 }
