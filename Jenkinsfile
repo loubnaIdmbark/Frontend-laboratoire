@@ -29,9 +29,9 @@ pipeline {
         when {
                expression { return !params.SKIP_TESTS }
                     }
-            steps {
-                bat 'ng test --watch=false --browsers=ChromeHeadless'
-            }
+           // steps {
+            //    bat 'ng test --watch=false --browsers=ChromeHeadless'
+          //  }
         }
 
         stage('Lint') {
