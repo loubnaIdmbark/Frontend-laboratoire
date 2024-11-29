@@ -7,7 +7,8 @@ import { SidebarService } from './sidebar.service';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent implements OnInit {
-  menuItems = [];
+  menuItems: { label: string; link: string; icon: string }[] = [];
+
 
   constructor(private sidebarService: SidebarService) {}
 
