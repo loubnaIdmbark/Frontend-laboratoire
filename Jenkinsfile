@@ -1,8 +1,6 @@
 pipeline {
     agent any
- parameters {
-        booleanParam(name: 'SKIP_TESTS', defaultValue: false, description: 'Skip unit tests')
-    }
+
     stages {
         stage('Install Dependencies') {
             steps {
