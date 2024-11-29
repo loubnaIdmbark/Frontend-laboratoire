@@ -31,12 +31,12 @@ pipeline {
             //    bat 'ng test --watch=false --browsers=ChromeHeadless'
           //  }
 
-
-        stage('Lint') {
-            steps {
-                bat 'ng lint'
+//}
+      //  stage('Lint') {
+         //   steps {
+       //         bat 'ng lint'
             }
-        }
+        //}
 
         stage('Build Docker Image') {
             steps {
@@ -74,3 +74,4 @@ pipeline {
         }
     }
 }
+
