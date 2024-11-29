@@ -30,7 +30,7 @@ pipeline {
            // steps {
             //    bat 'ng test --watch=false --browsers=ChromeHeadless'
           //  }
-        }
+
 
         stage('Lint') {
             steps {
