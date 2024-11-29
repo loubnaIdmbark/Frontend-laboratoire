@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+ parameters {
+        booleanParam(name: 'SKIP_TESTS', defaultValue: false, description: 'Skip unit tests')
+    }
     stages {
         stage('Install Dependencies') {
             steps {
@@ -24,6 +26,9 @@ pipeline {
         }
 
         stage('Run Tests') {
+        when {
+               expression { return !params.SKIP_TESTS }
+                    }
             steps {
                 bat 'ng test --watch=false --browsers=ChromeHeadless'
             }

@@ -11,6 +11,11 @@ describe('LaboratoireComponent', () => {
       imports: [ReactiveFormsModule],
       declarations: [LaboratoireComponent]
     }).compileComponents();
+    beforeEach(async () => {
+      await TestBed.configureTestingModule({
+        imports: [LaboratoireComponent] // Ajout au lieu de `declarations`
+      }).compileComponents();
+    });
 
     fixture = TestBed.createComponent(LaboratoireComponent);
     component = fixture.componentInstance;
