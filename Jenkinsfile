@@ -52,10 +52,10 @@ pipeline {
                         expression { currentBuild.description == "CHANGED" }
                     }
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-loubnaidm', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                        withCredentials([usernamePassword(credentialsId: 'docker-loubnaidm', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                             script {
                                 // Push the versioned image to Docker Hub
-                                bat 'docker login -u %DOCKERHUB_USERNAME% -p %DOCKERHUB_PASSWORD%'
+                                bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
                                 bat "docker push loubnaidm/frontend-laboratoire:latest"
                             }
                         }
