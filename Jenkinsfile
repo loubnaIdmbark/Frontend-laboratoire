@@ -46,16 +46,32 @@ pipeline {
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-loubnaidm', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    bat """
-                        echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
-                        docker push loubnaidm/frontend-laboratoire:latest
-                    """
+
+        stage('Push Docker Image to Docker Hub') {
+                    when {
+                        expression { currentBuild.description == "CHANGED" }
+                    }
+                    steps {
+                        withCredentials([usernamePassword(credentialsId: 'docker-loubnaidm', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                            script {
+                                // Push the versioned image to Docker Hub
+                                bat 'docker login -u %DOCKERHUB_USERNAME% -p %DOCKERHUB_PASSWORD%'
+                                bat "docker push loubnaidm/frontend-laboratoire:latest"
+                            }
+                        }
+                    }
                 }
-            }
-        }
+
+       // stage('Push Docker Image') {
+         //   steps {
+               //  withCredentials([usernamePassword(credentialsId: 'docker-loubnaidm', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                //     bat """
+               //          echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+                //         docker push loubnaidm/frontend-laboratoire:latest
+               //      """
+             //    }
+         //    }
+      //   }
 
         stage('Deploy to Kubernetes') {
             steps {
