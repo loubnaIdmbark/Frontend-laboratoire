@@ -47,20 +47,7 @@ pipeline {
         }
 
 
-        stage('Push Docker Image to Docker Hub') {
-                    when {
-                        expression { currentBuild.description == "CHANGED" }
-                    }
-                    steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-artistefx', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                            script {
-                                // Push the versioned image to Docker Hub
-                                bat 'docker login -u %DOCKERHUB_USERNAME% -p %DOCKERHUB_PASSWORD%'
-                                bat "docker push artistefx/service-utilisateurs:latest"
-                            }
-                        }
-                    }
-                }
+
 
         stage('Push Docker Image') {
             steps {
