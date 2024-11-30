@@ -52,26 +52,26 @@ pipeline {
                         expression { currentBuild.description == "CHANGED" }
                     }
                     steps {
-                        withCredentials([usernamePassword(credentialsId: 'docker-loubnaidm', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
+                        withCredentials([usernamePassword(credentialsId: 'docker-artistefx', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                             script {
                                 // Push the versioned image to Docker Hub
-                                bat 'docker login -u %DOCKER_USERNAME% -p %DOCKER_PASSWORD%'
-                                bat "docker push loubnaidm/frontend-laboratoire:latest"
+                                bat 'docker login -u %DOCKERHUB_USERNAME% -p %DOCKERHUB_PASSWORD%'
+                                bat "docker push artistefx/service-utilisateurs:latest"
                             }
                         }
                     }
                 }
 
-       // stage('Push Docker Image') {
-         //   steps {
-               //  withCredentials([usernamePassword(credentialsId: 'docker-loubnaidm', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                //     bat """
-               //          echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
-                //         docker push loubnaidm/frontend-laboratoire:latest
-               //      """
-             //    }
-         //    }
-      //   }
+        stage('Push Docker Image') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker-loubnaidm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    bat """
+                        echo %PASSWORD% | docker login -u %USERNAME% --password-stdin
+                        docker push loubnaidm/frontend-laboratoire:latest
+                    """
+                }
+            }
+        }
 
         stage('Deploy to Kubernetes') {
             steps {
