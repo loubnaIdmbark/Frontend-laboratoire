@@ -50,15 +50,15 @@ pipeline {
 
 
         stage('Push Docker Image') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'docker-loubnaidm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                    bat """
-                        echo %PASSWORD% | docker login -u %USERNAME% --password-stdin
-                        docker push loubnaidm/frontend-laboratoire:latest
-                    """
-                }
+        steps {
+            withCredentials([usernamePassword(credentialsId: 'docker-loubnaidm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                bat """
+                    docker login -u %USERNAME% -p %PASSWORD%
+                    docker push loubnaidm/frontend-laboratoire:latest
+                """
             }
         }
+
 
         stage('Deploy to Kubernetes') {
             steps {
