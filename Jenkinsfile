@@ -62,7 +62,7 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                bat 'kubectl apply -f K8s/deployment.yaml'
+                bat 'kubectl apply -f K8s/deployment.yaml --validate=false'
             }
         }
     }
