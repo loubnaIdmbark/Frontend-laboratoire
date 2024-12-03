@@ -62,11 +62,12 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                bat 'kubectl apply -f K8s/deployment.yaml --validate=false'
+             withCredentials([string(credentialsId: 'kubeconf', variable: 'KUBECONFIG_PATH')]) {
+                bat 'kubectl --kubeconfig=%KUBECONFIG_PATH% apply -f K8s/deployment.yaml --validate=false'
             }
         }
     }
-
+}
     post {
         always {
             echo 'Pipeline execution finished.'
