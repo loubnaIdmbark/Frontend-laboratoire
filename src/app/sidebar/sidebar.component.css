@@ -102,3 +102,14 @@
   margin: auto;
   margin-top: 20px;
 }
+.sidebar a.active {
+  background-color: #007bff; /* Couleur de fond active */
+  color: #fff;              /* Couleur du texte actif */
+  border-radius: 4px;       /* Coins arrondis pour un look moderne */
+  font-weight: bold;        /* Texte en gras */
+}
+
+.sidebar a.active i {
+  color: #fff; /* Icônes en blanc si actif */
+}
+

@@ -11,18 +11,18 @@
   <ul>
     <li>
       <a
-        href="#"
-        [class.active]="activeMenu === 'home'"
-        (click)="activeMenu = 'home'">
-        <i class="fas fa-home"></i> <span *ngIf="!isSidebarCollapsed">Accueil</span>
+        href="laboratoire"
+        [class.active]="activeMenu === 'laboratoires'"
+        (click)="activeMenu = 'laboratoires'">
+        <i class="fas fa-flask"></i> <span *ngIf="!isSidebarCollapsed">Laboratoires</span>
       </a>
     </li>
     <li>
       <a
-        href="laboratoire"
-        [class.active]="activeMenu === 'labs'"
-        (click)="activeMenu = 'labs'">
-        <i class="fas fa-flask"></i> <span *ngIf="!isSidebarCollapsed">Laboratoires</span>
+        href="NonActifs"
+        [class.active]="activeMenu === 'archive'"
+        (click)="activeMenu = 'archive'">
+        <i class="fas fa-archive"></i><span *ngIf="!isSidebarCollapsed">Archive</span>
       </a>
     </li>
   </ul>

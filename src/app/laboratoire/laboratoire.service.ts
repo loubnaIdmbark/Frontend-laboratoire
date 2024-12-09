@@ -40,7 +40,7 @@ export class LaboratoireService {
 
   constructor(private http: HttpClient) {}
 
-  // Ajout d'un laboratoire
+
   addLaboratoire(laboratoireData: Laboratoire): Observable<Laboratoire> {
     return this.http.post<Laboratoire>(`${this.apiUrl}/add`, laboratoireData);
   }
@@ -53,6 +53,10 @@ export class LaboratoireService {
     return this.http.get<Laboratoire>(`${this.apiUrl}/${id}`);
   }
 
+  updateLaboratoireA(id: number, laboratoire: Laboratoire): Observable<Laboratoire> {
+    console.log('Données envoyées au backend:', laboratoire); // Affichez les données envoyées
+    return this.http.put<Laboratoire>(`${this.apiUrl}/${id}`, laboratoire);
+  }
 
   getAdresse(): Observable<AdresseLaboratoire[]> {
     return this.http.get<AdresseLaboratoire[]>(this.adresseUrl);
@@ -78,13 +82,17 @@ export class LaboratoireService {
     return this.http.put<Laboratoire>(`${this.apiUrl}/${id}`, lab);
   }
 
+
+
+
+
   // Suppression d'un laboratoire par ID
   deleteLaboratory(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
   deleteContact(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.contactUrl}/delete/${id}`);
+    return this.http.delete<void>(`${this.contactUrl}/${id}`);
   }
   // Ajout d'une adresse pour un laboratoire
   addAdresseLaboratoire(adresseData: AdresseLaboratoire): Observable<AdresseLaboratoire> {

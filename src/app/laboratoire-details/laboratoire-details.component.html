@@ -1,23 +1,27 @@
 <app-sidebar></app-sidebar>
-<div class="main-content ">
-  <div *ngIf="laboratoire" class="card" >
-    <div class="card-header text-center">
-      <h1 class="card-title">Détails du Laboratoire</h1>
+<div class="main-content">
+  <!-- Card Laboratoire -->
+  <div class="card shadow mb-4">
+    <div class="card-header bg-success-subtle  d-flex justify-content-between align-items-center">
+      <i class="fas fa-flask me-2"></i>
+      <h4 class="mb-0">Laboratoire : {{ laboratoire.nom }}</h4>
+
+      <button class="btn btn-light btn-sm" (click)="toggleSection('laboratoire')">
+
+        {{ showLaboratoire ? 'Masquer' : 'Afficher' }}
+      </button>
+
     </div>
-    <div class="card-body">
+    <div class="card-body" *ngIf="showLaboratoire">
       <div class="row">
-        <!-- Section de l'image -->
         <div class="col-md-4 text-center">
           <img
             [src]="laboratoire.logo"
             alt="Logo du laboratoire"
-            class="img-fluid rounded shadow-sm"
+            class="img-fluid rounded shadow-sm mb-3"
           />
         </div>
-<br>
-        <!-- Section des informations -->
         <div class="col-md-8">
-
           <p><strong>Nom :</strong> {{ laboratoire.nom }}</p>
           <p><strong>Numéro de registre de commerce :</strong> {{ laboratoire.nrc }}</p>
           <p><strong>Date d'activation :</strong> {{ laboratoire.dateActivation | date }}</p>
@@ -36,68 +40,95 @@
           </div>
         </div>
       </div>
-
-      <!-- Contacts Section -->
-      <h1>Contacts</h1>
-      <div class="mt-4">
-
-        <table class="table table-striped table-bordered">
-          <thead class="thead-dark">
-          <tr>
-            <!--   <th>Contacts</th>-->
-              <th>Email</th>
-              <th>Téléphone</th>
-              <th>Fax</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let contact of laboratoire.contacts; let i = index">
-              <!-- <td>{{ i + 1 }}</td>-->
-              <td>{{ contact.email }}</td>
-              <td>{{ contact.numTel }}</td>
-              <td>{{ contact.fax }}</td>
-            </tr>
-            </tbody>
-          </table>
-        </div>
-
-
-      </div>
-
-
-
-      <div *ngIf="utilisateur && utilisateur.length > 0" class="mt-4">
-        <h1>Utilisateurs associés</h1>
-        <table class="table table-striped table-bordered">
-          <thead class="thead-dark">
-          <tr>
-            <th>Nom</th>
-            <th>Profession</th>
-            <th>Role</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr *ngFor="let user of utilisateur">
-            <td>{{ user.nomComplet }}</td>
-            <td>{{ user.profession }}</td>
-            <td>{{ user.role }}</td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <div *ngIf="!utilisateur || utilisateur.length === 0" class="mt-4">
-        <h1>Aucun utilisateur associé.</h1>
-      </div>
-      <!-- Boutons d'action -->
-    <div class="card-footer text-center">
-      <button (click)="archiverLaboratoire(laboratoire.id)" class="archive-btn">Archiver</button>
-      <button (click)="toggleModalEdit(laboratoire)" class="modifier-btn">Modifier</button>
-      <button (click)="toggleModal()" class="ajouter-btn">Ajouter Contact</button>
+      <button (click)="toggleModalEdit(laboratoire)" class="btn btn-primary mt-3 me-3">Modifier</button>
+      <button (click)="DesActiverLaboratoire(laboratoire.id)" class="btn btn-danger mt-3">Archiver</button>
 
     </div>
   </div>
 
-  <!-- Modal Form -->
+  <!-- Card Contacts -->
+  <div class="card shadow mb-4">
+    <div class="card-header bg-success-subtle d-flex justify-content-between align-items-center">
+      <i class="fas fa-address-book me-2"></i>
+      <h5 class="mb-0">Contacts</h5>
+      <button class="btn btn-light btn-sm" (click)="toggleSection('contacts')">
+        {{ showContacts ? 'Masquer' : 'Afficher' }}
+      </button>
+    </div>
+    <div class="card-body" *ngIf="showContacts">
+      <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Fax</th>
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let contact of laboratoire.contacts">
+          <td>{{ contact.email }}</td>
+          <td>{{ contact.numTel }}</td>
+          <td>{{ contact.fax }}</td>
+          <td>
+            <button class="btn btn-danger mt-3 me-2" (click)="deleteContact( contact.id)">
+              Supprimer
+            </button>
+            <button class="btn btn-primary mt-3" (click)="getLaboratoireContacts(laboratoire.id)">
+              Modifier
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-primary mt-3" (click)="toggleModal()">Ajouter un Contact</button>
+    </div>
+  </div>
+
+  <!-- Card Utilisateurs -->
+  <div class="card shadow mb-4">
+    <div class="card-header bg-success-subtle text-dark d-flex justify-content-between align-items-center">
+      <i class="fas fa-users me-2"></i>
+      <h5 class="mb-0">Utilisateurs associés</h5>
+      <button class="btn btn-light btn-sm" (click)="toggleSection('utilisateurs')">
+        {{ showUtilisateurs ? 'Masquer' : 'Afficher' }}
+      </button>
+    </div>
+    <div class="card-body" *ngIf="showUtilisateurs">
+      <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Profession</th>
+          <th>Telephone</th>
+          <th>Rôle</th>
+
+          <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let user of utilisateur">
+          <td>{{ user.nomComplet }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.profession }}</td>
+          <td>{{ user.numTel }}</td>
+          <td>{{ user.role }}</td>
+
+          <td>
+            <button class="btn btn-danger mt-3 me-2" (click)="deleteUtilisateur(user.email, laboratoire.id)">
+              Supprimer
+            </button>
+            <button class="btn btn-primary mt-3" (click)="deleteUtilisateur(user.email, laboratoire.id)">
+              Modifier
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <button class="btn btn-primary mt-3" (click)="toggleAddUserModal()">Ajouter un utilisateur</button>
+    </div>
+  </div>
   <div
     class="modal"
     [ngClass]="{ 'show d-block': isModalVisible, 'd-none': !isModalVisible }"
@@ -134,80 +165,139 @@
       </div>
     </div>
   </div>
-    <div
-      class="modal"
-      [ngClass]="{ 'show d-block': isEditModalVisible, 'd-none': !isEditModalVisible }"
-      tabindex="-1"
-      role="dialog"
-    >
+  <!-- Modale pour ajouter un utilisateur -->
+  <div
+    class="modal"
+    [ngClass]="{ 'show d-block': isAddUserModalVisible, 'd-none': !isAddUserModalVisible }"
+    tabindex="-1"
+  >
     <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Modifier le Laboratoire</h5>
-            <button type="button" class="btn-close" aria-label="Close" (click)="isEditModalVisible = false"></button>
-          </div>
-          <form [formGroup]="editLaboratoireForm" (ngSubmit)="onEditLaboratoireSubmit(laboratoire.id)">
-            <div class="modal-body">
-              <div class="form-row">
-                <label for="nom">Nom :</label>
-                <input
-                  id="nom"
-                  formControlName="nom"
-                  type="text"
-                  class="form-control"
-                  placeholder="Nom du laboratoire"
-                />
-              </div>
-              <div class="form-row">
-                <label for="nrc">NRC :</label>
-                <input
-                  id="nrc"
-                  formControlName="nrc"
-                  type="text"
-                  class="form-control"
-                  placeholder="Numéro NRC"
-                />
-              </div>
-              <div class="form-row">
-                <label for="logo">Logo :</label>
-                <input
-                  id="logo"
-                  type="file"
-                  class="form-control"
-                  (change)="onFileChange($event)"
-                />
-              </div>
-              <div class="form-row">
-                <label for="dateActivation">Date d'activation :</label>
-                <input
-                  id="dateActivation"
-                  formControlName="dateActivation"
-                  type="date"
-                  class="form-control"
-                />
-              </div>
-              <div class="form-row">
-                <label for="active">Actif :</label>
-                <input
-                  id="active"
-                  formControlName="active"
-                  type="checkbox"
-                  class="form-check-input"
-                />
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="submit">Enregistrer</button>
-            </div>
-
-          </form>
-
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ajouter un Utilisateur</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="toggleAddUserModal()"></button>
         </div>
+        <form [formGroup]="addUtilisateurForm" (ngSubmit)="onAddUtilisateurSubmit(laboratoire.id)">
+          <div class="modal-body">
+            <div class="form-row">
+              <label for="nomComplet">Nom Complet :</label>
+              <input id="nomComplet" formControlName="nomComplet" type="text" class="form-control" placeholder="Nom complet">
+            </div>
+            <div class="form-row">
+              <label for="email">Email :</label>
+              <input id="email" formControlName="email" type="email" class="form-control" placeholder="Email">
+            </div>
+            <div class="form-row">
+              <label for="password" >Mot de passe :</label>
+              <input id="password" formControlName="password" type="password" class="form-control" placeholder="Mot de passe">
+            </div>
+            <div class="form-row">
+              <label for="profession">Profession :</label>
+              <input id="profession" formControlName="profession" type="text" class="form-control" placeholder="Profession">
+            </div>
+            <div class="form-row">
+              <label for="numTel">Téléphone :</label>
+              <input id="numTel" formControlName="numTel" type="text" class="form-control" placeholder="Téléphone">
+            </div>
+            <div class="form-row">
+              <label for="role">Rôle :</label>
+              <select id="role" formControlName="role" class="form-control" type="text">
+                <option value="" disabled selected>Sélectionnez un rôle</option>
+                <option value="docteur">Docteur</option>
+                <option value="technicien">Technicien</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="signature">Signature :</label>
+              <input id="signature" formControlName="signature" type="text" class="form-control" placeholder="Signature">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <div
+    class="modal"
+    [ngClass]="{ 'show d-block': isEditModalVisible, 'd-none': !isEditModalVisible }"
+    tabindex="-1"
+    role="dialog"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modifier le Laboratoire</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="isEditModalVisible = false"></button>
+        </div>
+        <form [formGroup]="editLaboratoireForm" (ngSubmit)="onEditLaboratoireSubmit(laboratoire.id)">
+          <div class="modal-body">
+            <div class="form-row">
+              <label for="nom">Nom :</label>
+              <input
+                id="nom"
+                formControlName="nom"
+                type="text"
+                class="form-control"
+                placeholder="Nom du laboratoire"
+              />
+            </div>
+            <div class="form-row">
+              <label for="nrc">NRC :</label>
+              <input
+                id="nrc"
+                formControlName="nrc"
+                type="text"
+                class="form-control"
+                placeholder="Numéro NRC"
+              />
+            </div>
+            <div class="form-row">
+              <label for="logo">Logo :</label>
+              <input
+                id="logo"
+                type="file"
+                class="form-control"
+                (change)="onFileChange($event)"
+              />
+            </div>
+            <div class="form-row">
+              <label for="dateActivation">Date d'activation :</label>
+              <input
+                id="dateActivation"
+                formControlName="dateActivation"
+                type="date"
+                class="form-control"
+              />
+            </div>
+            <div class="form-row">
+              <label for="active">Actif :</label>
+              <input
+                id="active"
+                formControlName="active"
+                type="checkbox"
+                class="form-check-input"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="submit">Enregistrer</button>
+          </div>
+
+        </form>
 
       </div>
 
-
-
     </div>
+
+
+
   </div>
+</div>
+
+
+
 

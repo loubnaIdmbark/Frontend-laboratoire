@@ -154,10 +154,11 @@ export class LaboratoireComponent implements OnInit {
   chargerLaboratoires(): void {
     this.laboratoireService.getLaboratoire().subscribe({
       next: (data) => {
-        this.laboratoires = data;
+        // Filtrer uniquement les laboratoires avec actif == false
+        this.laboratoires = data.filter((labo: any) => labo.active === true);
         this.filteredLaboratoires = [...this.laboratoires];
       },
-      error: (err) => console.error('Erreur lors du chargement des laboratoires :', err),
+      error: (err) => console.error('Erreur lors du chargement des laboratoires :', err)
     });
   }
 

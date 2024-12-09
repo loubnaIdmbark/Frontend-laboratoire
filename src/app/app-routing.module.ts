@@ -4,12 +4,14 @@ import { AccueilComponent } from './accueil/accueil.component';
 import { LoginComponent } from './login/login.component';
 import { LaboratoireComponent } from './laboratoire/laboratoire.component';
 import { LaboratoireDetailsComponent} from './laboratoire-details/laboratoire-details.component';
+import {LaboratoiresNonActivesComponent} from './laboratoires-non-actives/laboratoires-non-actives.component'
 import {AppComponent} from './app.component';
 
 const routes: Routes = [
   { path: 'details/:id', component: LaboratoireDetailsComponent },
   { path: 'accueil', component: AccueilComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'NonActifs', component: LaboratoiresNonActivesComponent },
 
   { path: 'laboratoire', component: LaboratoireComponent },
   { path: '', redirectTo: '/accueil', pathMatch: 'full' },

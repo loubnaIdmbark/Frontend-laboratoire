@@ -1,30 +1,7 @@
 <head>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<div class="sidebar" [class.collapsed]="isSidebarCollapsed">
-  <button class="toggle-btn" (click)="toggleSidebar()">
-    <i class="fas" [ngClass]="isSidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
-  </button>
-  <h3 *ngIf="!isSidebarCollapsed">Menu</h3>
-  <ul>
-    <li>
-      <a
-        href="#"
-        [class.active]="activeMenu === 'home'"
-        (click)="activeMenu = 'home'">
-        <i class="fas fa-home"></i> <span *ngIf="!isSidebarCollapsed">Accueil</span>
-      </a>
-    </li>
-    <li>
-      <a
-        href="#"
-        [class.active]="activeMenu === 'labs'"
-        (click)="activeMenu = 'labs'">
-        <i class="fas fa-flask"></i> <span *ngIf="!isSidebarCollapsed">Laboratoires</span>
-      </a>
-    </li>
-  </ul>
-</div>
+<app-sidebar></app-sidebar>
 
 <!-- Contenu principal -->
 <div class="main-content">

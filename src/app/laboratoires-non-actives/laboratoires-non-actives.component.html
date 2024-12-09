@@ -1,0 +1,48 @@
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<app-sidebar></app-sidebar>
+<div class="main-content">
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Rechercher un laboratoire par nom..."
+      [(ngModel)]="searchQuery"
+      (input)="filterLaboratoires()"
+    />
+  </div>
+  <div *ngIf="filteredLaboratoires.length === 0" class="no-results">
+    Aucun laboratoire trouvé pour "{{ searchQuery }}".
+  </div>
+
+  <div class="card-container">
+    <div *ngFor="let laboratoire of filteredLaboratoires"
+    class="card"
+    [ngClass]="{ 'expanded': laboratoire.id === selectedLaboratoireId }"
+    (click)="selectLaboratoire(laboratoire.id)">
+
+
+
+<img *ngIf="laboratoire.logo" [src]="laboratoire.logo" alt="Logo du laboratoire" class="logo">
+    <div class="card-content">
+      <h3>{{ laboratoire.nom }}</h3>
+    </div>
+
+
+    <!-- Détails affichés uniquement si la card est agrandie -->
+    <div *ngIf="laboratoire.id === selectedLaboratoireId" class="card-details">
+      <p><strong>NRC :</strong> {{ laboratoire.nrc }}</p>
+      <p><strong>Actif :</strong> {{ laboratoire.active ? 'Oui' : 'Non' }}</p>
+      <p><strong>Date d'Activation :</strong> {{ laboratoire.dateActivation | date: 'dd/MM/yyyy' }}</p>
+      <button
+
+        *ngIf="!laboratoire.active"
+        class="btn btn-success"
+       (click)="activerLaboratoire(laboratoire.id); $event.stopPropagation()"
+      >
+        Rendre Actif
+      </button>
+    </div>
+  </div>
+</div>
+
