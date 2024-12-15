@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterLink, withPreloading} from '@angular/router';
-import {ContactLaboratoire, Laboratoire, LaboratoireService} from '../laboratoire/laboratoire.service';
-import {utilisateur , UtilisateurService} from '../laboratoire/utilisateurs.service'
-import {analyse , AnalyseService} from '../laboratoire/analyse.service'
+import {ContactLaboratoire, Laboratoire, LaboratoireService} from '../services/laboratoire.service';
+import {utilisateur , UtilisateurService} from '../services/utilisateurs.service'
+import {analyse , AnalyseService} from '../services/analyse.service'
 import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {SidebarComponent} from '../sidebar/sidebar.component';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';

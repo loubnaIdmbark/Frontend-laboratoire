@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Laboratoire, LaboratoireService } from '../laboratoire/laboratoire.service';
+import { Laboratoire, LaboratoireService } from '../services/laboratoire.service';
 import {CommonModule} from '@angular/common';
 import {SidebarComponent} from '../sidebar/sidebar.component'
 import {FormsModule} from '@angular/forms';

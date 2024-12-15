@@ -3,8 +3,8 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { CommonModule, NgForOf } from '@angular/common';
-import { DossierService, dossier } from '../laboratoire/dossier.service';
-import { PatientService ,patient } from '../laboratoire/patient.service';
+import { DossierService, dossier } from '../services/dossier.service';
+import { PatientService ,patient } from '../services/patient.service';
 
 import { RouterOutlet } from '@angular/router';
 import { forkJoin, map } from 'rxjs';
