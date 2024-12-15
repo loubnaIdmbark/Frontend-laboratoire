@@ -25,6 +25,7 @@ import { forkJoin, map } from 'rxjs';
   styleUrl: './dossier.component.css',
 })
 export class DossierComponent implements OnInit {
+  currentStep: number = 1;
   addPatientForm: FormGroup;
   dossiersAvecPatients: any[] = [];
   filteredDossiers: any[] = [];
@@ -44,7 +45,17 @@ export class DossierComponent implements OnInit {
       visiblePour: ['', [Validators.required]]
     });
   }
+  nextStep(): void {
+    if (this.currentStep < 3) {
+      this.currentStep++;
+    }
+  }
 
+  previousStep(): void {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
 
   ngOnInit(): void {
     // Charger les dossiers au démarrage
@@ -87,18 +98,50 @@ export class DossierComponent implements OnInit {
   }
 
   onAddPatientSubmit() {
-    console.log('test')
+    // Assurer la validité du formulaire
 
-      const patientData: patient = {
-        ...this.addPatientForm.value,};
-      this.PatientService.addPatient(patientData).subscribe({
-        next: (response) => {
-          console.log('Patient ajouté avec succès', response);
-          alert('Patient ajouté avec succès');
-          this.toggleModal();
-          this.addPatientForm.reset();
-        }
-      })
+    const patientData: patient = {
+      ...this.addPatientForm.value,
+    };
 
+    this.PatientService.addPatient(patientData).subscribe({
+      next: (response) => {
+        console.log('Patient ajouté avec succès', response);
+
+        // Récupérer l'ID du patient nouvellement créé
+        const newPatientId = response.idPatient;
+
+        // Préparer les données du dossier
+        const dossierData = {
+          fkIdPatient: newPatientId,
+          fkEmailUtilisateur: '4567@gmail.com',
+          date: new Date().toISOString().split('T')[0],
+        };
+
+        // Ajouter le dossier en utilisant DossierService
+        this.DossierService.addDossier(dossierData).subscribe({
+          next: (dossierResponse) => {
+            console.log('Dossier créé avec succès', dossierResponse);
+            alert('Patient et dossier ajoutés avec succès');
+
+            // Actualiser la liste des dossiers/patients
+            this.chargerDossiersAvecPatients();
+
+            // Fermer le modal et réinitialiser le formulaire
+            this.toggleModal();
+            this.addPatientForm.reset();
+          },
+          error: (err) => {
+            console.error('Erreur lors de la création du dossier', err);
+            alert('Erreur lors de la création du dossier');
+          },
+        });
+      },
+      error: (err) => {
+        console.error('Erreur lors de la création du patient', err);
+        alert('Erreur lors de la création du patient');
+      },
+    });
   }
+
 }
