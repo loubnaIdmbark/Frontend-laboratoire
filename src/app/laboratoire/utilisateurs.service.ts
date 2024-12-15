@@ -36,4 +36,11 @@ export class UtilisateurService {
   deleteUser(email: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${email}`);
   }
+
+  updateUtilisateur(email: string ,user: FormData): Observable<utilisateur> {
+    return this.http.put<utilisateur>(`${this.apiUrl}/${email}`, user);
+  }
+  getUtilisateurByEmail(email:string):Observable<utilisateur> {
+    return this.http.get<utilisateur>(`${this.apiUrl}/${email}`);
+  }
 }

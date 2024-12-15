@@ -5,18 +5,20 @@ import { Laboratoire, LaboratoireService } from './laboratoire.service';
 import {CommonModule, DatePipe} from '@angular/common';
 import {Router, RouterOutlet} from '@angular/router';
 import {SidebarComponent} from '../sidebar/sidebar.component';
+import {NavbarComponent} from "../navbar/navbar.component";
 @Component({
   selector: 'app-laboratoire',
   templateUrl: './laboratoire.component.html',
   styleUrls: ['./laboratoire.component.css'],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    DatePipe,
-    FormsModule,
-    RouterOutlet,
-    SidebarComponent,
-  ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        DatePipe,
+        FormsModule,
+        RouterOutlet,
+        SidebarComponent,
+        NavbarComponent,
+    ],
   standalone: true
 })
 export class LaboratoireComponent implements OnInit {

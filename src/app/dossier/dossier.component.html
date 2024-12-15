@@ -1,0 +1,114 @@
+<app-navbar></app-navbar>
+<app-sidebar></app-sidebar>
+<div class="main-content ">
+  <div class="search-bar">
+    <input
+      type="text"
+      placeholder="Rechercher un laboratoire par nom..."
+      [(ngModel)]="searchQuery"
+      (input)="filterDossiers()"
+    />
+  </div>
+  <div  *ngIf="dossiersAvecPatients.length === 0" class="no-results">
+    Aucun laboratoire trouvé pour "{{ searchQuery }}".
+  </div>
+  <!-- Boucle sur les dossiers pour afficher chaque carte -->
+  <div class="container">
+    <div class="row">
+      <!-- Boucle pour afficher les cartes -->
+      <div *ngFor="let dossier of dossiersAvecPatients" class="col-md-4 mb-4 card-container">
+        <div class="card shadow-sm border-0">
+          <div class="card-body text-center">
+            <!-- Icône de dossier -->
+            <i class="fas fa-folder-open fa-3x text-warning mb-3"></i>
+
+            <!-- Nom du patient -->
+            <h5 class="card-title">
+              {{  dossier.nomPatient }}
+            </h5>
+            <!-- Description -->
+            <p class="card-text text-muted">
+              {{ dossier.fkEmailUtilisateur || 'Aucune description disponible' }}
+            </p>
+
+            <!-- Bouton d'action -->
+            <button class="btn btn-primary btn-sm" (click)="ouvrirDossier(dossier.id)">
+              Voir Dossier
+            </button>
+          </div>
+        </div>
+
+    </div>
+
+  <div class="card add-card col-md-4 mb-4 card-container" (click)="toggleModal()">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <div class="card-content">
+      Créer un dossier<br><br>
+      <i class="fas fa-plus"></i>
+    </div>
+  </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div
+  class="modal"
+  [ngClass]="{ 'show d-block': isAddPatientModalVisible, 'd-none': !isAddPatientModalVisible }"
+  tabindex="-1"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter un Patient</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="toggleModal()"></button>
+      </div>
+      <form [formGroup]="addPatientForm" (ngSubmit)="onAddPatientSubmit()">
+        <div class="modal-body">
+          <div class="form-row">
+            <label for="nomComplet">Nom Complet :</label>
+            <input id="nomComplet" formControlName="nomComplet" type="text" class="form-control" placeholder="Nom complet">
+          </div>
+          <div class="form-row">
+            <label for="dateNaissance">Date de Naissance :</label>
+            <input id="dateNaissance" formControlName="dateNaissance" type="date" class="form-control">
+          </div>
+          <div class="form-row">
+            <label for="lieuDeNaissance">Lieu de Naissance :</label>
+            <input id="lieuDeNaissance" formControlName="lieuDeNaissance" type="text" class="form-control" placeholder="Lieu de naissance">
+          </div>
+          <div class="form-row">
+            <label for="sexe">Sexe :</label>
+            <select id="sexe" formControlName="sexe" class="form-control">
+              <option value="" disabled selected>Sélectionnez le sexe</option>
+              <option value="Homme">Homme</option>
+              <option value="Femme">Femme</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="numPieceIdentite">Numéro de Pièce d'Identité :</label>
+            <input id="numPieceIdentite" formControlName="numPieceIdentite" type="text" class="form-control" placeholder="Numéro de pièce d'identité">
+          </div>
+          <div class="form-row">
+            <label for="adresse">Adresse :</label>
+            <input id="adresse" formControlName="adresse" type="text" class="form-control" placeholder="Adresse">
+          </div>
+          <div class="form-row">
+            <label for="numTel">Téléphone :</label>
+            <input id="numTel" formControlName="numTel" type="text" class="form-control" placeholder="Numéro de téléphone">
+          </div>
+          <div class="form-row">
+            <label for="email">Email :</label>
+            <input id="email" formControlName="email" type="email" class="form-control" placeholder="Email">
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<!-- Navbar -->
+
+<app-navbar></app-navbar>
+<!-- Main Layout -->
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <aside class="col-md-2 p-0 shadow-sm" style="margin-top: 56px; padding-top: 0;">
+      <app-sidebar></app-sidebar>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="col-md-10 main-content">
+      <div class="row mt-4">
+        <!-- Profile Card -->
+        <div class="col-md-4">
+          <div class="card text-center p-3">
+            <!-- Circle with the first letter of the user's name -->
+            <div class="bg-danger rounded-circle text-white d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; font-size: 36px;">
+              R
+            </div>
+            <h4>Dr. Ramesh Kumar</h4>
+            <p>
+              Spécialiste en biologie médicale avec 10 ans d'expérience dans l'analyse clinique et la gestion d'échantillons.
+            </p>
+            <button class="btn btn-primary" (click)="toggleAddUserModal()">Modifier</button>
+          </div>
+        </div>
+
+        <!-- Personal Information -->
+        <div class="col-md-8">
+          <div class="card p-4">
+            <h5>Informations Personnelles</h5>
+            <hr />
+            <p><strong>Email:</strong> user&#64;gmail.com</p>
+
+            <p><strong>Nom Complet:</strong> Ramesh Kumar</p>
+            <p><strong>Profession:</strong> docteur</p>
+            <p><strong>Numéro de Téléphone:</strong> +1234567890</p>
+            <p><strong>Signature:</strong> <em>Ramesh's Signature</em></p>
+            <p><strong>Rôle:</strong> Admin</p>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div class="modal" tabindex="-1" *ngIf="isAddUserModalVisible" style="display: block; background: rgba(0,0,0,0.5);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modifier vos données </h5>
+        <button type="button" class="btn-close" (click)="toggleAddUserModal()" aria-label="Close"></button>
+      </div>
+      <form>
+        <div class="modal-body">
+          <div class="form-row">
+            <label for="nomComplet">Nom Complet :</label>
+            <input id="nomComplet" type="text" class="form-control" placeholder="Nom complet">
+          </div>
+          <div class="form-row">
+            <label for="email">Email :</label>
+            <input id="email" type="email" class="form-control" placeholder="Email">
+          </div>
+
+
+          <div class="form-row">
+            <label for="numTel">Téléphone :</label>
+            <input id="numTel" type="text" class="form-control" placeholder="Téléphone">
+          </div>
+
+          <div class="form-row">
+            <label for="signature">Signature :</label>
+            <input id="signature" type="text" class="form-control" placeholder="Signature">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+          <button type="button" class="btn btn-secondary" (click)="toggleAddUserModal()">Fermer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+

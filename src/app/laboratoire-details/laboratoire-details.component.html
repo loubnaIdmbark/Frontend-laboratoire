@@ -1,10 +1,69 @@
-<app-sidebar></app-sidebar>
+<head>
+  <!-- FontAwesome pour les icônes -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    rel="stylesheet">
+</head>
+<app-navbar></app-navbar>
+<!-- Sidebar -->
+<div class="sidebar" [class.collapsed]="isSidebarCollapsed">
+  <button class="toggle-btn"  routerLink="/laboratoire">
+    <i class="fas" [ngClass]="isSidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+    Laboratoires
+  </button>
+
+  <!-- Logo et Nom du Laboratoire -->
+  <div class="lab-header" *ngIf="!isSidebarCollapsed">
+    <img [src]="laboratoire.logo" alt="Logo du laboratoire" class="lab-logo" />
+    <h3 class="lab-name">{{ laboratoire.nom }} </h3>
+  </div>
+
+  <!-- Menu de navigation -->
+  <ul>
+    <li>
+      <a
+        [class.active]="activeMenu === 'laboratoire'"
+        (click)="activeMenu = 'laboratoire';toggleSection('laboratoire')">
+        <i class="fas fa-info-circle"></i>
+        <span *ngIf="!isSidebarCollapsed">Informations</span>
+      </a>
+    </li>
+    <li>
+      <a
+        [class.active]="activeMenu === 'contacts'"
+        (click)="activeMenu = 'contacts';toggleSection('contacts')">
+        <i class="fas fa-address-book"></i>
+        <span *ngIf="!isSidebarCollapsed">Contacts</span>
+      </a>
+    </li>
+    <li>
+      <a
+
+        [class.active]="activeMenu === 'analyses'"
+        (click)="activeMenu = 'analyses';toggleSection('analyses')">
+        <i class="fas fa-vial"></i>
+        <span *ngIf="!isSidebarCollapsed">Analyses</span>
+      </a>
+    </li>
+    <li>
+      <a
+
+        [class.active]="activeMenu === 'utilisateurs'"
+        (click)="activeMenu = 'utilisateurs'; toggleSection('utilisateurs')">
+        <i class="fas fa-users"></i>
+        <span *ngIf="!isSidebarCollapsed">Utilisateurs</span>
+      </a>
+    </li>
+
+  </ul>
+</div>
+
 <div class="main-content">
   <!-- Card Laboratoire -->
-  <div class="card shadow mb-4">
-    <div class="card-header bg-success-subtle  d-flex justify-content-between align-items-center">
-      <i class="fas fa-flask me-2"></i>
-      <h4 class="mb-0">Laboratoire : {{ laboratoire.nom }}</h4>
+  <div class="card shadow mb-4" *ngIf="showLaboratoire">
+    <div class="card-header bg-success-subtle text-dark d-flex justify-content-between align-items-center">
+      <i class="fas fa-info-circle"></i>
+      <h5 class="mb-0">Laboratoire</h5>
 
       <button class="btn btn-light btn-sm" (click)="toggleSection('laboratoire')">
 
@@ -40,93 +99,115 @@
           </div>
         </div>
       </div>
-      <button (click)="toggleModalEdit(laboratoire)" class="btn btn-primary mt-3 me-3">Modifier</button>
-      <button (click)="DesActiverLaboratoire(laboratoire.id)" class="btn btn-danger mt-3">Archiver</button>
+      <button (click)="toggleModalEdit(laboratoire)" class="btn btn-primary mt-3 me-3">  <i class="fas fa-edit"></i></button>
+      <button (click)="DesActiverLaboratoire(laboratoire.id)" class="btn btn-danger mt-3"><i class="fas fa-archive"></i></button>
 
     </div>
   </div>
 
   <!-- Card Contacts -->
-  <div class="card shadow mb-4">
-    <div class="card-header bg-success-subtle d-flex justify-content-between align-items-center">
-      <i class="fas fa-address-book me-2"></i>
-      <h5 class="mb-0">Contacts</h5>
-      <button class="btn btn-light btn-sm" (click)="toggleSection('contacts')">
-        {{ showContacts ? 'Masquer' : 'Afficher' }}
+  <div class="card shadow mb-4" *ngIf="showContacts">
+    <div class="card-header bg-success-subtle text-dark d-flex justify-content-between align-items-center">
+      <i class="fas fa-address-book"></i>
+      <h5 class="mb-0">Contacts associés</h5>
+      <button class="btn btn-primary btn-sm" (click)="toggleModal()">
+       Ajouter Contact
       </button>
+
     </div>
     <div class="card-body" *ngIf="showContacts">
-      <table class="table table-striped table-bordered">
-        <thead>
-        <tr>
-          <th>Email</th>
-          <th>Téléphone</th>
-          <th>Fax</th>
-          <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let contact of laboratoire.contacts">
-          <td>{{ contact.email }}</td>
-          <td>{{ contact.numTel }}</td>
-          <td>{{ contact.fax }}</td>
-          <td>
-            <button class="btn btn-danger mt-3 me-2" (click)="deleteContact( contact.id)">
-              Supprimer
-            </button>
-            <button class="btn btn-primary mt-3" (click)="getLaboratoireContacts(laboratoire.id)">
-              Modifier
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <button class="btn btn-primary mt-3" (click)="toggleModal()">Ajouter un Contact</button>
-    </div>
+      <div class="container mt-4">
+
+        <div class="row">
+          <div *ngFor="let contact of laboratoire.contacts; let i = index" class="col-md-4 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title"> contact {{ i+1}}</h5>
+                <p class="card-text">
+                  <strong>Email :</strong> {{ contact.email }} <br />
+                  <strong>Telephone :</strong> {{ contact.numTel }} <br />
+                  <strong>Fax :</strong> {{ contact.fax }}
+                </p>
+              </div>
+
+              <div class="card-footer text-center">
+                <button class="btn btn-danger" (click)="deleteContact(contact.id)"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </div>
   </div>
 
+  <!-- Card Analyses -->
+  <div class="card shadow mb-4" *ngIf="showAnalyses">
+    <div class="card-header bg-success-subtle text-dark d-flex justify-content-between align-items-center">
+      <i class="fas fa-vial"></i>
+      <h5 class="mb-0">Analyses associés</h5>
+      <button class="btn btn-light btn-sm" (click)="toggleSection('analyses')">
+        {{ showAnalyses ? 'Masquer' : 'Afficher' }}
+      </button>
+    </div>
+    <div class="card-body" *ngIf="showAnalyses">
+      <div class="container mt-4">
+
+        <div class="row">
+          <div *ngFor="let analyse of analyse" class="col-md-4 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title primary">{{ analyse.nom }}</h5>
+                <p class="card-text">
+                  <strong>Description :</strong> {{ analyse.description }}
+
+                </p>
+              </div>
+
+            </div>
+  </div>
+  </div>
+  </div>
+  </div>
+  </div>
+
+
   <!-- Card Utilisateurs -->
-  <div class="card shadow mb-4">
+  <div class="card shadow mb-4" *ngIf="showUtilisateurs">
     <div class="card-header bg-success-subtle text-dark d-flex justify-content-between align-items-center">
       <i class="fas fa-users me-2"></i>
       <h5 class="mb-0">Utilisateurs associés</h5>
-      <button class="btn btn-light btn-sm" (click)="toggleSection('utilisateurs')">
-        {{ showUtilisateurs ? 'Masquer' : 'Afficher' }}
+      <button class="btn btn-primary btn-sm" (click)="toggleAddUserModal()">
+     Ajouter Utilisateur
       </button>
     </div>
-    <div class="card-body" *ngIf="showUtilisateurs">
-      <table class="table table-striped table-bordered">
-        <thead>
-        <tr>
-          <th>Nom</th>
-          <th>Email</th>
-          <th>Profession</th>
-          <th>Telephone</th>
-          <th>Rôle</th>
+    <div class="container mt-4">
 
-          <th>Action</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngFor="let user of utilisateur">
-          <td>{{ user.nomComplet }}</td>
-          <td>{{ user.email }}</td>
-          <td>{{ user.profession }}</td>
-          <td>{{ user.numTel }}</td>
-          <td>{{ user.role }}</td>
+      <div class="row">
+        <div *ngFor="let user of utilisateur" class="col-md-4 mb-3">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ user.nomComplet }}</h5>
+              <p class="card-text">
+                <strong>Email :</strong> {{ user.email }} <br />
+                <strong>Profession :</strong> {{ user.profession }} <br />
+                <strong>Telephone :</strong> {{ user.numTel }} <br />
+                <strong>Rôle :</strong> {{ user.role }}
+              </p>
+            </div>
+            <div class="card-footer text-center">
+              <button class="btn btn-primary " (click)="editUserRole(user.email)">  <i class="fas fa-edit"></i></button>
 
-          <td>
-            <button class="btn btn-danger mt-3 me-2" (click)="deleteUtilisateur(user.email, laboratoire.id)">
-              Supprimer
-            </button>
-            <button class="btn btn-primary mt-3" (click)="deleteUtilisateur(user.email, laboratoire.id)">
-              Modifier
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <button class="btn btn-primary mt-3" (click)="toggleAddUserModal()">Ajouter un utilisateur</button>
+
+              <button class="btn btn-danger" (click)="deleteUtilisateur(user.email,laboratoire.id)">
+                <i class="fas fa-trash"></i> </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     </div>
   </div>
   <div
@@ -220,6 +301,41 @@
     </div>
   </div>
 
+  <div
+    class="modal"
+    [ngClass]="{ 'show d-block': isEdiRoletModalVisible, 'd-none': !isEdiRoletModalVisible }"
+    tabindex="-1"
+    role="dialog"
+  >
+    <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modifier le rôle</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="isEdiRoletModalVisible = false"></button>
+      </div>
+
+      <div class="modal-body">
+        <form [formGroup]="editRoleForm" (ngSubmit)="onEditRoleSubmit()">
+          <div class="form-group">
+            <label for="role">Rôle :</label>
+            <select id="role" formControlName="role" class="form-control">
+
+              <option value="Utilisateur">Docteur</option>
+              <option value="Manager">Technicien</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Modifier</button>
+            <button type="button" class="btn btn-secondary" (click)="isEdiRoletModalVisible = false">Annuler</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    </div>
+  </div>
+
+
+
 
   <div
     class="modal"
@@ -296,7 +412,7 @@
 
 
   </div>
-</div>
+
 
 
 

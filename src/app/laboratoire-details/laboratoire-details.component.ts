@@ -1,10 +1,13 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router, withPreloading} from '@angular/router';
+import {ActivatedRoute, Router, RouterLink, withPreloading} from '@angular/router';
 import {ContactLaboratoire, Laboratoire, LaboratoireService} from '../laboratoire/laboratoire.service';
 import {utilisateur , UtilisateurService} from '../laboratoire/utilisateurs.service'
+import {analyse , AnalyseService} from '../laboratoire/analyse.service'
 import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {SidebarComponent} from '../sidebar/sidebar.component';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {NavbarComponent} from '../navbar/navbar.component';
+
 
 @Component({
   selector: 'app-laboratoire-details',
@@ -18,29 +21,37 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
     FormsModule,
     ReactiveFormsModule,
     NgClass,
+    RouterLink,
+    NavbarComponent,
   ],
   standalone: true
 })
 export class LaboratoireDetailsComponent implements OnInit {
   addUtilisateurForm: FormGroup;
+  editRoleForm: FormGroup;
   isAddUserModalVisible = false;
   showLaboratoire = true; // Affiché par défaut
   showContacts = false;
   showUtilisateurs = false;
+  showAnalyses = false;
   isModalVisible: boolean = false;
   contactForm: FormGroup;
   laboratoire: any;
+  analyse: any;
   utilisateur:any;
   contacts: ContactLaboratoire[] = [];
   editLaboratoireForm: FormGroup;
   isLoading: boolean = false; // Pour afficher un état de chargement
   errorMessage: string | null = null;
   isEditModalVisible: boolean = false;
+  isEdiRoletModalVisible: boolean = false;
   laboratoires: Laboratoire[] = [];
   filteredLaboratoires: Laboratoire[] = [];
+
   constructor(
     private fb: FormBuilder,
     private utilisateurService: UtilisateurService,
+    private AnalyseService: AnalyseService,
 
     private router: Router,
     private route: ActivatedRoute,
@@ -51,6 +62,10 @@ export class LaboratoireDetailsComponent implements OnInit {
     numTel: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
     fax: ['', [Validators.required]],
     email: ['', [Validators.required, Validators.email]],})
+    this.editRoleForm = this.fb.group({
+      email: ['', Validators.required], // Pour identifier l'utilisateur
+      role: ['', Validators.required], // Nouveau rôle
+    });
 
 
       this.addUtilisateurForm = this.fb.group({
@@ -63,6 +78,7 @@ export class LaboratoireDetailsComponent implements OnInit {
         fkIdLaboratoire: [null],
         password: [''],
       })
+
     this.editLaboratoireForm = this.fb.group({
       id: [{value: '', disabled: true}],
       nom: ['', [Validators.required, Validators.minLength(3)]],
@@ -103,6 +119,12 @@ export class LaboratoireDetailsComponent implements OnInit {
       alert('Veuillez remplir tous les champs requis correctement.');
     }
   }
+  isSidebarCollapsed: boolean = false;
+  activeMenu: string = '';
+
+  toggleSidebar() {
+    this.isSidebarCollapsed = !this.isSidebarCollapsed;
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -111,6 +133,7 @@ export class LaboratoireDetailsComponent implements OnInit {
       if (id) {
         this.getLaboratoireDetails(id);
         this.getUtilisateur(id)
+        this.getAnalyse(id);
       } else {
         console.error('ID non trouvé dans les paramètres de la route.');
       }
@@ -138,6 +161,16 @@ export class LaboratoireDetailsComponent implements OnInit {
         error: (err) => console.error('Erreur lors du suppression :', err),
       });
     }
+  }
+  editUserRole(user: any): void {
+
+    console.log("test" ,this.isEdiRoletModalVisible);
+    this.isEdiRoletModalVisible=true;
+    this.editRoleForm.patchValue({
+      email: user.email,
+      role: user.role,
+    });
+    this.isEdiRoletModalVisible = true; // Affiche le modal
   }
 
   toggleModalEdit(laboratoire: any): void {
@@ -173,12 +206,27 @@ export class LaboratoireDetailsComponent implements OnInit {
   getUtilisateur(id: number): void {
     this.UtilisateurService.getUtilisateurs().subscribe(
       (utilisateurs) => {
-        // Filtrage des utilisateurs par fkIdLaboratoire
+
         this.utilisateur = utilisateurs.filter(user => user.fkIdLaboratoire === id);
         console.log("les utilisateurs sont :", utilisateurs); },
 
       (error) => {
         console.error('Erreur lors du chargement des utilisateurs :', error);
+      }
+    );
+  }
+
+
+
+  getAnalyse(id: number): void {
+    this.AnalyseService.getAnalyses().subscribe(
+      (analyse) => {
+        // Filtrage des utilisateurs par fkIdLaboratoire
+        this.analyse = analyse.filter(analyse => analyse.fkIdLaboratoire === id);
+        console.log("les analyses sont :", analyse); },
+
+      (error) => {
+        console.error('Erreur lors du chargement des analyses :', error);
       }
     );
   }
@@ -293,6 +341,37 @@ export class LaboratoireDetailsComponent implements OnInit {
   }
 
 
+onEditRoleSubmit(): void {
+  if (this.editRoleForm.valid) {
+    const { email, role } = this.editRoleForm.value;
+
+    this.utilisateurService.getUtilisateurByEmail(email).subscribe({
+      next: (user: any) => {
+
+        user.role=role;
+
+
+
+
+        this.utilisateurService.updateUtilisateur(email, user).subscribe({
+          next: () => {
+            console.log('Utilisateur mis à jour avec succès',user);
+          },
+          error: (err) => {
+            console.error('Erreur lors de la mise à jour de l\'utilisateur :', err);
+          },
+        });
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des données de l\'utilisateur :', err);
+      },
+    });
+
+  } else {
+    alert('Veuillez sélectionner un rôle valide.');
+  }
+}
+
   getLaboratoireDetails(id: number): void {
     this.laboratoireService.getLaboratoireById(id).subscribe({
       next: (response) => {
@@ -317,6 +396,8 @@ export class LaboratoireDetailsComponent implements OnInit {
     });
   }
 
+
+
   deleteContact(id:number):void{
     if (confirm('Êtes-vous sûr de vouloir supprimer cecontact ?')) {
       this.laboratoireService.deleteContact(id).subscribe({
@@ -333,12 +414,28 @@ export class LaboratoireDetailsComponent implements OnInit {
     switch (section) {
       case 'laboratoire':
         this.showLaboratoire = !this.showLaboratoire;
+        this.showAnalyses = false;
+        this.showUtilisateurs=false;
+        this.showContacts=false;
         break;
       case 'contacts':
         this.showContacts = !this.showContacts;
+        this.showAnalyses = false;
+        this.showUtilisateurs=false;
+        this.showLaboratoire=false;
         break;
       case 'utilisateurs':
         this.showUtilisateurs = !this.showUtilisateurs;
+        this.showAnalyses = false;
+        this.showContacts=false;
+        this.showLaboratoire=false;
+
+        break;
+      case 'analyses':
+        this.showAnalyses = !this.showAnalyses;
+        this.showUtilisateurs=false;
+        this.showContacts=false;
+        this.showLaboratoire=false;
         break;
     }
   }

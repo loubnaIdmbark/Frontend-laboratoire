@@ -3,7 +3,8 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     rel="stylesheet">
 </head>
-<div class="sidebar" [class.collapsed]="isSidebarCollapsed">
+
+<div class="sidebar " [class.collapsed]="isSidebarCollapsed">
   <button class="toggle-btn" (click)="toggleSidebar()">
     <i class="fas" [ngClass]="isSidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
   </button>
@@ -23,6 +24,14 @@
         [class.active]="activeMenu === 'archive'"
         (click)="activeMenu = 'archive'">
         <i class="fas fa-archive"></i><span *ngIf="!isSidebarCollapsed">Archive</span>
+      </a>
+    </li>
+    <li>
+      <a
+        href="dossier"
+        [class.active]="activeMenu === 'dossier'"
+        (click)="activeMenu = 'dossier'">
+        <i class="fas fa-folder"></i><span *ngIf="!isSidebarCollapsed">Dossier</span>
       </a>
     </li>
   </ul>

@@ -3,17 +3,19 @@ import { Laboratoire, LaboratoireService } from '../laboratoire/laboratoire.serv
 import {CommonModule} from '@angular/common';
 import {SidebarComponent} from '../sidebar/sidebar.component'
 import {FormsModule} from '@angular/forms';
+import {NavbarComponent} from "../navbar/navbar.component";
 
 @Component({
   selector: 'app-laboratoires-non-actives',
   templateUrl: './laboratoires-non-actives.component.html',
   standalone: true,
   styleUrls: ['./laboratoires-non-actives.component.css'],
-  imports: [
-    CommonModule,
-    SidebarComponent,
-    FormsModule
-  ]
+    imports: [
+        CommonModule,
+        SidebarComponent,
+        FormsModule,
+        NavbarComponent
+    ]
 })
 
 export class LaboratoiresNonActivesComponent implements OnInit {

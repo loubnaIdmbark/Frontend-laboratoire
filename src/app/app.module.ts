@@ -9,7 +9,7 @@ import { LaboratoiresNonActivesComponent } from './laboratoires-non-actives/labo
 import { LaboratoireDetailsComponent} from  './laboratoire-details/laboratoire-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { ProfileComponent} from './profile/profile.component'
 
 @NgModule({
   declarations: [
@@ -26,7 +26,8 @@ import { CommonModule } from '@angular/common';
       LaboratoireDetailsComponent,
       CommonModule, // Pipe 'date'
       FormsModule, // Formulaires basés sur template
-      LaboratoiresNonActivesComponent
+      LaboratoiresNonActivesComponent,
+      ProfileComponent
     ],
   providers: [],
   bootstrap: [AppComponent]

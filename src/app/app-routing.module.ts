@@ -6,12 +6,13 @@ import { LaboratoireComponent } from './laboratoire/laboratoire.component';
 import { LaboratoireDetailsComponent} from './laboratoire-details/laboratoire-details.component';
 import {LaboratoiresNonActivesComponent} from './laboratoires-non-actives/laboratoires-non-actives.component'
 import {AppComponent} from './app.component';
-
+import { ProfileComponent} from './profile/profile.component'
 const routes: Routes = [
   { path: 'details/:id', component: LaboratoireDetailsComponent },
   { path: 'accueil', component: AccueilComponent },
   { path: 'login', component: LoginComponent },
   { path: 'NonActifs', component: LaboratoiresNonActivesComponent },
+  { path: 'profile', component: ProfileComponent },
 
   { path: 'laboratoire', component: LaboratoireComponent },
   { path: '', redirectTo: '/accueil', pathMatch: 'full' },

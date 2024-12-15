@@ -4,10 +4,13 @@ import {AccueilComponent} from './accueil/accueil.component';
 import { LoginComponent } from './login/login.component';
 import { LaboratoireDetailsComponent } from './laboratoire-details/laboratoire-details.component';
 import {LaboratoiresNonActivesComponent} from './laboratoires-non-actives/laboratoires-non-actives.component'
+import {DossierComponent} from './dossier/dossier.component';
+import { ProfileComponent} from './profile/profile.component'
 export const appRoutes: Routes = [
   { path: 'laboratoire', component: LaboratoireComponent },
   { path: 'NonActifs', component: LaboratoiresNonActivesComponent },
-
+  { path: 'profile', component: ProfileComponent },
+  {path:'dossier',component:DossierComponent},
   { path: 'details/:id', component: LaboratoireDetailsComponent },
   { path: 'accueil', component: AccueilComponent },
   { path: 'login', component: LoginComponent },
