@@ -53,10 +53,7 @@ export class LaboratoireService {
     return this.http.get<Laboratoire>(`${this.apiUrl}/${id}`);
   }
 
-  updateLaboratoireA(id: number, laboratoire: Laboratoire): Observable<Laboratoire> {
-    console.log('Données envoyées au backend:', laboratoire); // Affichez les données envoyées
-    return this.http.put<Laboratoire>(`${this.apiUrl}/${id}`, laboratoire);
-  }
+
 
   getAdresse(): Observable<AdresseLaboratoire[]> {
     return this.http.get<AdresseLaboratoire[]>(this.adresseUrl);

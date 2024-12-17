@@ -7,6 +7,9 @@ import {DatePipe, NgClass, NgForOf, NgIf} from '@angular/common';
 import {SidebarComponent} from '../sidebar/sidebar.component';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NavbarComponent} from '../navbar/navbar.component';
+import {NgChartsModule} from 'ng2-charts';
+import { ChartData, ChartType } from 'chart.js';
+
 
 
 @Component({
@@ -23,6 +26,8 @@ import {NavbarComponent} from '../navbar/navbar.component';
     NgClass,
     RouterLink,
     NavbarComponent,
+    NgChartsModule,
+
   ],
   standalone: true
 })
@@ -34,6 +39,7 @@ export class LaboratoireDetailsComponent implements OnInit {
   showContacts = false;
   showUtilisateurs = false;
   showAnalyses = false;
+  showPatient :boolean=false;
   isModalVisible: boolean = false;
   contactForm: FormGroup;
   laboratoire: any;
@@ -47,7 +53,34 @@ export class LaboratoireDetailsComponent implements OnInit {
   isEdiRoletModalVisible: boolean = false;
   laboratoires: Laboratoire[] = [];
   filteredLaboratoires: Laboratoire[] = [];
+  public utilisateurChartData = {
+    labels: ['techniciens', 'docteurs', 'patients'], // Ajoutez vos étiquettes ici
+    datasets: [
+      {
+        label: 'Nom du dataset',
+        data: [20, 10, 30], // Les données numériques
+        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Facultatif
+        borderColor: 'rgba(75, 192, 192, 1)',       // Facultatif
+        borderWidth: 1                             // Facultatif
+      }
+    ]
+  };
+  public utilisateurChartType: ChartType = 'bar';
+  public analyseChartData: ChartData<'bar'> = {
+    labels: ['Jan', 'Fév', 'Mar', 'Avr'], // Labels pour les axes
+    datasets: [
+      {
+        data: [10, 20, 30, 40], // Les valeurs des barres
+        label: 'Analyses'   ,    // Légende pour ce dataset
+        borderColor:'rgb(84,111,239)',
+        backgroundColor: 'rgba(84,111,239,0.38)',
+      }
+    ]
+  };
 
+  // Définir le type de graphique
+  public analyseChartType: ChartType = 'bar';
+/////////////
   constructor(
     private fb: FormBuilder,
     private utilisateurService: UtilisateurService,
@@ -66,6 +99,7 @@ export class LaboratoireDetailsComponent implements OnInit {
       email: ['', Validators.required], // Pour identifier l'utilisateur
       role: ['', Validators.required], // Nouveau rôle
     });
+
 
 
       this.addUtilisateurForm = this.fb.group({
@@ -134,23 +168,14 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.getLaboratoireDetails(id);
         this.getUtilisateur(id)
         this.getAnalyse(id);
+
       } else {
         console.error('ID non trouvé dans les paramètres de la route.');
       }
     });
     this.loadContacts();
   }
- deleteLaboratoire(id: number): void {
-    if (confirm('Êtes-vous sûr de vouloir archiver ce laboratoire ?')) {
-      this.laboratoireService.deleteLaboratory(id).subscribe({
-        next: () => {
-          alert('Laboratoire archivé avec succès.');
-          this.router.navigate(['/laboratoire',]).then(r => ' ');
-        },
-        error: (err) => console.error('Erreur lors de l’archivage :', err),
-      });
-    }
-  }
+
   deleteUtilisateur(email:string , id :number):void{
     if (confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?')) {
       this.utilisateurService.deleteUser(email).subscribe({
@@ -413,30 +438,39 @@ onEditRoleSubmit(): void {
   toggleSection(section: string) {
     switch (section) {
       case 'laboratoire':
-        this.showLaboratoire = !this.showLaboratoire;
+        this.showLaboratoire = true;
         this.showAnalyses = false;
         this.showUtilisateurs=false;
         this.showContacts=false;
+        this.showPatient=false;
         break;
       case 'contacts':
-        this.showContacts = !this.showContacts;
+        this.showContacts = true;
         this.showAnalyses = false;
         this.showUtilisateurs=false;
         this.showLaboratoire=false;
+        this.showPatient=false;
         break;
       case 'utilisateurs':
-        this.showUtilisateurs = !this.showUtilisateurs;
+        this.showUtilisateurs = true;
         this.showAnalyses = false;
         this.showContacts=false;
         this.showLaboratoire=false;
-
+        this.showPatient=false;
         break;
       case 'analyses':
-        this.showAnalyses = !this.showAnalyses;
+        this.showAnalyses = true;
         this.showUtilisateurs=false;
         this.showContacts=false;
         this.showLaboratoire=false;
+        this.showPatient=false;
         break;
+      case 'patients':
+        this.showPatient=true;
+        this.showAnalyses = false;
+        this.showUtilisateurs=false;
+        this.showContacts=false;
+        this.showLaboratoire=false;
     }
   }
 }

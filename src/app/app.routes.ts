@@ -6,8 +6,12 @@ import { LaboratoireDetailsComponent } from './laboratoire-details/laboratoire-d
 import {LaboratoiresNonActivesComponent} from './laboratoires-non-actives/laboratoires-non-actives.component'
 import {DossierComponent} from './dossier/dossier.component';
 import { ProfileComponent} from './profile/profile.component'
+import { PatientComponent} from './patient/patient.component'
+
+
 export const appRoutes: Routes = [
   { path: 'laboratoire', component: LaboratoireComponent },
+  { path: 'patient/:fkIdPatient', component: PatientComponent },
   { path: 'NonActifs', component: LaboratoiresNonActivesComponent },
   { path: 'profile', component: ProfileComponent },
   {path:'dossier',component:DossierComponent},

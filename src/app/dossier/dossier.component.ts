@@ -6,7 +6,7 @@ import { CommonModule, NgForOf } from '@angular/common';
 import { DossierService, dossier } from '../services/dossier.service';
 import { PatientService ,patient } from '../services/patient.service';
 
-import { RouterOutlet } from '@angular/router';
+import {Router, RouterOutlet} from '@angular/router';
 import { forkJoin, map } from 'rxjs';
 
 @Component({
@@ -32,7 +32,7 @@ export class DossierComponent implements OnInit {
   searchQuery: string = '';
   isAddPatientModalVisible: boolean = false;
 
-  constructor(private DossierService: DossierService, private PatientService: PatientService, private fb: FormBuilder) {
+  constructor(private DossierService: DossierService, private PatientService: PatientService, private fb: FormBuilder , private router: Router) {
     this.addPatientForm = this.fb.group({
       nomComplet: ['', [Validators.required]],
       dateNaissance: ['', [Validators.required]],
@@ -81,6 +81,9 @@ export class DossierComponent implements OnInit {
     });
   }
 
+  navigateToDetails(fkIdPatient: number): void {
+    this.router.navigate(['/patient', fkIdPatient]).then(r => ' ');
+  }
 
   filterDossiers(): void {
     const query = this.searchQuery.toLowerCase().trim();

@@ -10,7 +10,7 @@ import { LaboratoireDetailsComponent} from  './laboratoire-details/laboratoire-d
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProfileComponent} from './profile/profile.component'
-
+import { NgChartsModule } from 'ng2-charts';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,6 +20,7 @@ import { ProfileComponent} from './profile/profile.component'
     LaboratoiresNonActivesComponent
   ],
     imports: [
+      NgChartsModule,
         BrowserModule,
       ReactiveFormsModule,
         AppRoutingModule,

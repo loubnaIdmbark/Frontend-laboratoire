@@ -48,6 +48,7 @@ export class LaboratoiresNonActivesComponent implements OnInit {
         if (laboratoire) {
           // Étape 1 : Modifier l'attribut 'active'
           laboratoire.active = true;
+          laboratoire.dateActivation=new Date().toISOString().split('T')[0];
 
           // Étape 2 : Transformer l'objet en FormData
           const formData = new FormData();

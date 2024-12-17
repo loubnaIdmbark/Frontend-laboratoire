@@ -1,0 +1,150 @@
+<app-navbar></app-navbar>
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+  <div class="card-patient">
+    <div class="patient-header">
+      <i
+        [ngClass]="patient.sexe === 'Femme' ? 'fas fa-female' : 'fas fa-male'"
+        class="patient-icon">
+      </i>
+      <h2>{{ patient.nomComplet }}</h2>
+    </div>
+
+    <div class="patient-details">
+      <div class="detail-column">
+        <p><strong>Date de Naissance :</strong> {{ patient.dateNaissance }}</p>
+        <p><strong>Lieu de Naissance :</strong> {{ patient.lieuDeNaissance }}</p>
+        <p><strong>Sexe :</strong> {{ patient.sexe }}</p>
+        <p><strong>Numéro d'Identité :</strong> {{ patient.numPieceIdentite }}</p>
+      </div>
+      <div class="detail-column">
+        <p><strong>Adresse :</strong> {{ patient.adresse }}</p>
+        <p><strong>Téléphone :</strong> {{ patient.numTel }}</p>
+        <p><strong>Email :</strong> {{ patient.email }}</p>
+      </div>
+    </div>
+
+    <div class="action-button">
+      <button class="btn-modifier" (click)="onEditPatientSubmit(patient.idPatient)">
+        <i class="fas fa-edit"></i> Modifier
+      </button>
+    </div>
+  </div>
+  <div
+    class="modal"
+    [ngClass]="{ 'show d-block': isEditModalVisible, 'd-none': !isEditModalVisible }"
+    tabindex="-1"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <!-- En-tête -->
+        <div class="modal-header">
+          <h5 class="modal-title">Modifier les Informations du Patient</h5>
+          <button
+            type="button"
+            class="btn-close"
+            aria-label="Close"
+            (click)="isEditModalVisible = false"
+          ></button>
+        </div>
+
+        <!-- Formulaire -->
+        <form [formGroup]="editPatientForm" (ngSubmit)="onEditPatientSubmit(patient.idPatient)">
+          <div class="modal-body">
+            <!-- Nom complet -->
+            <div class="form-row mb-3">
+              <label for="nomComplet">Nom Complet :</label>
+              <input
+                id="nomComplet"
+                formControlName="nomComplet"
+                type="text"
+                class="form-control"
+                placeholder="Entrez le nom complet"
+              />
+            </div>
+
+            <!-- Date de naissance -->
+            <div class="form-row mb-3">
+              <label for="dateNaissance">Date de Naissance :</label>
+              <input
+                id="dateNaissance"
+                formControlName="dateNaissance"
+                type="date"
+                class="form-control"
+              />
+            </div>
+
+            <!-- Adresse -->
+            <div class="form-row mb-3">
+              <label for="adresse">Adresse :</label>
+              <input
+                id="adresse"
+                formControlName="adresse"
+                type="text"
+                class="form-control"
+                placeholder="Entrez l'adresse"
+              />
+            </div>
+
+            <!-- Sexe -->
+            <div class="form-row mb-3">
+              <label for="sexe">Sexe :</label>
+              <select
+                id="sexe"
+                formControlName="sexe"
+                class="form-select"
+              >
+                <option value="Homme">Homme</option>
+                <option value="Femme">Femme</option>
+              </select>
+            </div>
+
+            <!-- Téléphone -->
+            <div class="form-row mb-3">
+              <label for="numTel">Téléphone :</label>
+              <input
+                id="numTel"
+                formControlName="numTel"
+                type="number"
+                class="form-control"
+                placeholder="Entrez le numéro de téléphone"
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="form-row mb-3">
+              <label for="email">Email :</label>
+              <input
+                id="email"
+                formControlName="email"
+                type="email"
+                class="form-control"
+                placeholder="Entrez l'email"
+              />
+            </div>
+          </div>
+
+          <!-- Pied de page -->
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              (click)="isEditModalVisible = false"
+            >
+              Annuler
+            </button>
+            <button
+              type="submit"
+              class="btn btn-primary"
+            >
+              Enregistrer
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

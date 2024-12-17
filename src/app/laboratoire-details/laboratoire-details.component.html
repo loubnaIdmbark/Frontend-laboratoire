@@ -25,7 +25,7 @@
         [class.active]="activeMenu === 'laboratoire'"
         (click)="activeMenu = 'laboratoire';toggleSection('laboratoire')">
         <i class="fas fa-info-circle"></i>
-        <span *ngIf="!isSidebarCollapsed">Informations</span>
+        <span *ngIf="!isSidebarCollapsed">Dashboard</span>
       </a>
     </li>
     <li>
@@ -54,60 +54,114 @@
         <span *ngIf="!isSidebarCollapsed">Utilisateurs</span>
       </a>
     </li>
+    <li>
+      <a
+        [class.active]="activeMenu === 'patients'"
+        (click)="activeMenu = 'patients'; toggleSection('patients')">
+        <i class="fas fa-procedures"></i>
+        <span *ngIf="!isSidebarCollapsed">Patients</span>
+      </a>
+    </li>
 
   </ul>
 </div>
 
 <div class="main-content">
   <!-- Card Laboratoire -->
-  <div class="card shadow mb-4" *ngIf="showLaboratoire">
-    <div class="card-header bg-primary-subtle text-dark d-flex justify-content-between align-items-center">
+  <div  *ngIf="showLaboratoire">
+    <div class="card-header  text-dark d-flex justify-content-between align-items-center">
       <i class="fas fa-info-circle"></i>
-      <h5 class="mb-0">Laboratoire</h5>
+      <h5 class="mb-0">Dashboard</h5>
+      <button class="btn " >
 
-      <button class="btn btn-light btn-sm" (click)="toggleSection('laboratoire')">
-
-        {{ showLaboratoire ? 'Masquer' : 'Afficher' }}
       </button>
-
-    </div>
-    <div class="card-body" *ngIf="showLaboratoire">
-      <div class="row">
-        <div class="col-md-4 text-center">
-          <img
-            [src]="laboratoire.logo"
-            alt="Logo du laboratoire"
-            class="img-fluid rounded shadow-sm mb-3"
-          />
-        </div>
-        <div class="col-md-8">
-          <p><strong>Nom :</strong> {{ laboratoire.nom }}</p>
-          <p><strong>Numéro de registre de commerce :</strong> {{ laboratoire.nrc }}</p>
-          <p><strong>Date d'activation :</strong> {{ laboratoire.dateActivation | date }}</p>
-
-          <p><strong>Actif :</strong>
-            <span [class.text-success]="laboratoire.active" [class.text-danger]="!laboratoire.active">
+      </div>
+    <div class="card-body container-fluid">
+      <div class="row d-flex align-items-stretch">
+        <!-- Colonne Informations -->
+        <div class="col-md-4 ">
+          <div class="card  ">
+            <div class="card-body text-center d-flex flex-column">
+              <img
+                [src]="laboratoire.logo"
+                alt="Logo du laboratoire"
+                class="img-fluid rounded-circle mb-3"
+                style="width: 120px; height: 120px; object-fit: cover;"
+              />
+              <h5 class="card-title">{{ laboratoire.nom }}</h5>
+              <p><strong>NRC:</strong> {{ laboratoire.nrc }}</p>
+              <p><strong>Activation:</strong> {{ laboratoire.dateActivation | date }}</p>
+              <p>
+                <strong>Actif:</strong>
+                <span [class.text-success]="laboratoire.active" [class.text-danger]="!laboratoire.active">
               {{ laboratoire.active ? 'Oui' : 'Non' }}
             </span>
-          </p>
-          <div class="mt-4" *ngIf="laboratoire.contacts && laboratoire.contacts.length > 0">
-            <p><strong>Adresse : </strong>
-              {{ laboratoire.contacts[0].adresse.numVoie }} {{ laboratoire.contacts[0].adresse.nomVoie }},
-              {{ laboratoire.contacts[0].adresse.codePostal }} {{ laboratoire.contacts[0].adresse.ville }},
-              {{ laboratoire.contacts[0].adresse.commune }}
-            </p>
+              </p>
+              <div  *ngIf="laboratoire.contacts && laboratoire.contacts.length > 0">
+                <p>
+                  <strong>Adresse :</strong>
+                  {{ laboratoire.contacts[0].adresse.numVoie }} {{ laboratoire.contacts[0].adresse.nomVoie }},
+                  {{ laboratoire.contacts[0].adresse.codePostal }} {{ laboratoire.contacts[0].adresse.ville }},
+                  {{ laboratoire.contacts[0].adresse.commune }}
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-      <button (click)="toggleModalEdit(laboratoire)" class="btn btn-primary mt-3 me-3">  <i class="fas fa-edit"></i></button>
-      <button (click)="DesActiverLaboratoire(laboratoire.id)" class="btn btn-danger mt-3"><i class="fas fa-archive"></i></button>
+
+        <!-- Colonne Graphiques -->
+        <div class="col-md-8">
+          <div class="row d-flex align-items-stretch">
+            <!-- Graphique Utilisateurs -->
+            <div class="col-md-6 mb-4">
+              <div class="card shadow-sm h-100">
+                <div class="card-header text-center font-weight-bold">Utilisateurs par rôle</div>
+                <div class="card-body">
+                  <canvas
+                    baseChart
+                    [data]="utilisateurChartData"
+                    [type]="utilisateurChartType"
+                    style="width: 100%; height: 300px;">
+                  </canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Graphique Nombre d'analyses -->
+            <div class="col-md-6 mb-4">
+              <div class="card shadow-sm h-100">
+                <div class="card-header text-center font-weight-bold">Nombre d'analyses</div>
+                <div class="card-body">
+                  <canvas
+                    baseChart
+                    [data]="analyseChartData"
+                    [type]="analyseChartType"
+                    style="width: 100%; height: 300px;">
+                  </canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+          <!-- Actions -->
+          <div class="d-flex justify-content-center mt-3">
+            <button (click)="toggleModalEdit(laboratoire)" class="btn btn-primary me-3">
+              <i class="fas fa-edit"></i> Modifier
+            </button>
+            <button (click)="DesActiverLaboratoire(laboratoire.id)" class="btn btn-danger">
+              <i class="fas fa-archive"></i> Archiver
+            </button>
+          </div>
+        </div>
 
     </div>
+
+
   </div>
 
   <!-- Card Contacts -->
-  <div class="card shadow mb-4" *ngIf="showContacts">
-    <div class="card-header bg-primary-subtle text-dark d-flex justify-content-between align-items-center">
+  <div  *ngIf="showContacts">
+    <div class="card-header  text-dark d-flex justify-content-between align-items-center">
       <i class="fas fa-address-book"></i>
       <h5 class="mb-0">Contacts associés</h5>
       <button class="btn btn-primary btn-sm" (click)="toggleModal()">
@@ -142,12 +196,12 @@
   </div>
 
   <!-- Card Analyses -->
-  <div class="card shadow mb-4" *ngIf="showAnalyses">
-    <div class="card-header bg-primary-subtle text-dark d-flex justify-content-between align-items-center">
+  <div  *ngIf="showAnalyses">
+    <div class="card-header  text-dark d-flex justify-content-between align-items-center">
       <i class="fas fa-vial"></i>
       <h5 class="mb-0">Analyses associés</h5>
-      <button class="btn btn-light btn-sm" (click)="toggleSection('analyses')">
-        {{ showAnalyses ? 'Masquer' : 'Afficher' }}
+      <button class="btn ">
+
       </button>
     </div>
     <div class="card-body" *ngIf="showAnalyses">
@@ -170,11 +224,46 @@
   </div>
   </div>
   </div>
+<!-- Card patient -->
+  <div  *ngIf="showPatient">
+    <div class="card-header  text-dark d-flex justify-content-between align-items-center">
+      <i class="fas fa-procedures"></i>
+      <h5 class="mb-0">Patients associés</h5>
+      <button class="btn " >
+
+      </button>
+
+    </div>
+    <div class="card-body" *ngIf="showContacts">
+      <div class="container mt-4">
+
+        <div class="row">
+          <div *ngFor="let contact of laboratoire.contacts; let i = index" class="col-md-4 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title"> contact {{ i+1}}</h5>
+                <p class="card-text">
+                  <strong>Email :</strong> {{ contact.email }} <br />
+                  <strong>Telephone :</strong> {{ contact.numTel }} <br />
+                  <strong>Fax :</strong> {{ contact.fax }}
+                </p>
+              </div>
+
+              <div class="card-footer text-center">
+                <button class="btn btn-danger" (click)="deleteContact(contact.id)"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
 
   <!-- Card Utilisateurs -->
-  <div class="card shadow mb-4" *ngIf="showUtilisateurs">
-    <div class="card-header bg-primary-subtle text-dark d-flex justify-content-between align-items-center">
+  <div  *ngIf="showUtilisateurs">
+    <div class="card-header  text-dark d-flex justify-content-between align-items-center">
       <i class="fas fa-users me-2"></i>
       <h5 class="mb-0">Utilisateurs associés</h5>
       <button class="btn btn-primary btn-sm" (click)="toggleAddUserModal()">
