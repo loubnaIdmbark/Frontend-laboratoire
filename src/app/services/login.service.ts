@@ -29,16 +29,16 @@ export class AuthService {
 
     this.isRefreshingToken = true;
     const refreshToken = this.getRefreshToken();
-
-    if (!refreshToken) {
+    console.log("refresh token : ", refreshToken)
+    /* if (!refreshToken) {
       this.logout();
       return of(null);
-    }
+    } */
 
     return this.http.post(`${this.apiUrl}/refresh`, { refreshToken }).pipe(
       tap((tokens: any) => this.storeTokens(tokens)),
       catchError(err => {
-        this.logout(); // If refresh fails, log out the user
+        /* this.logout(); // If refresh fails, log out the user */
         return of(null);
       }),
       tap(() => (this.isRefreshingToken = false))

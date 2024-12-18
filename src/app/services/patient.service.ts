@@ -34,7 +34,7 @@ export class PatientService {
   addPatient(PatientData:patient):Observable<patient> {
     return this.http.post<patient>(`${this.apiUrlPatient}`, PatientData);
   }
-updatePatient(idPatient:number,patientData:FormData): Observable<patient> {
-    return this.http.put<patient>(`${this.apiUrlPatient}/${idPatient}`, patientData);
-  }
+  updatePatient(idPatient:number,patientData:FormData): Observable<patient> {
+      return this.http.put<patient>(`${this.apiUrlPatient}/${idPatient}`, patientData);
+    }
 }

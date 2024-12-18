@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
             // Navigate to a secure page after successful login
             this.router.navigate(['/dashboard']);
             console.log('Login successful :' , this.authService.getAccessToken());
+            console.log("refresh token :", this.authService.getRefreshToken())
           }
         },
         error: (err) => {
