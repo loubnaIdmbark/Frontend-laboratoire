@@ -42,7 +42,7 @@ export class LaboratoireService {
 
 
   addLaboratoire(laboratoireData: Laboratoire): Observable<Laboratoire> {
-    return this.http.post<Laboratoire>(`${this.apiUrl}/add`, laboratoireData);
+    return this.http.post<Laboratoire>(`${this.apiUrl}`, laboratoireData);
   }
 
   // Récupération de tous les laboratoires
