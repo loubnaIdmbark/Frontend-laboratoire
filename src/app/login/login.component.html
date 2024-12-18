@@ -21,16 +21,6 @@
         <button type="submit">Se connecter</button>
         <a (click)="toggleAuthMode()">Créer un compte</a>
       </form>
-
-      <!-- Formulaire d'inscription -->
-      <form *ngIf="!isLogin" [formGroup]="signupForm" (ngSubmit)="onSignup()">
-        <input type="text" formControlName="name" placeholder="Nom complet" required />
-        <input type="email" formControlName="email" placeholder="Email" required />
-        <input type="password" formControlName="password" placeholder="Mot de passe" required />
-        <input type="password" formControlName="confirmPassword" placeholder="Confirmer le mot de passe" required />
-        <button type="submit">S'inscrire</button>
-        <a (click)="toggleAuthMode()">Déjà un compte ? Se connecter</a>
-      </form>
     </div>
   </div>
 

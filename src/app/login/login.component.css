@@ -74,11 +74,6 @@ footer p {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.auth-card:hover {
-  transform: translateY(-5px); /* Effet de survol */
-  box-shadow: 0 12px 24px rgb(28, 26, 26);
-}
-
 .auth-card h2 {
   font-size: 28px;
   font-weight: 600;
