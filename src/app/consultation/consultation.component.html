@@ -1,0 +1,63 @@
+<div class="page-container">
+  <!-- Formulaire de connexion -->
+  <div class="auth-container">
+      <div class="auth-card">
+          <h2>Consulter votre dossier</h2>
+
+          <!-- Formulaire de code Dossier -->
+          <form [formGroup]="consultationForm" (ngSubmit)="onSubmitCodeDossier()">
+              <input
+                  type="text"
+                  formControlName="codeDossier"
+                  placeholder="Code Dossier"
+                  required
+              />
+              <button type="submit" [disabled]="consultationForm.invalid">
+                  Consulter
+              </button>
+
+              <a (click)="onForgotCode()">Code oublié ?</a>
+          </form>
+      </div>
+  </div>
+
+  <!-- Modal pour saisir le code de vérification -->
+  <div *ngIf="showVerificationModal" class="verification-modal">
+      <div class="modal-content">
+          <h3>Entrez votre code de vérification</h3>
+          <form [formGroup]="verificationForm" (ngSubmit)="onSubmitVerificationCode()">
+              <input
+                  type="text"
+                  formControlName="codeVerification"
+                  placeholder="Code de Vérification"
+                  required
+              />
+              <button type="submit" [disabled]="verificationForm.invalid">
+                  Vérifier
+              </button>
+              <button type="button" (click)="closeModal()">Fermer</button>
+          </form>
+          <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+      </div>
+  </div>
+
+  <!-- Modal pour saisir l'email -->
+  <div *ngIf="showEmailModal" class="email-modal">
+      <div class="modal-content">
+          <h3>Récupérer votre code</h3>
+          <form [formGroup]="emailForm" (ngSubmit)="onSubmitEmail()">
+              <input
+                  type="email"
+                  formControlName="email"
+                  placeholder="Entrez votre email"
+                  required
+              />
+              <button type="submit" [disabled]="emailForm.invalid">
+                  Envoyer
+              </button>
+              <button type="button" (click)="closeEmailModal()">Fermer</button>
+          </form>
+          <div *ngIf="emailErrorMessage" class="error-message">{{ emailErrorMessage }}</div>
+      </div>
+  </div>
+</div>

@@ -7,72 +7,78 @@ import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    CommonModule
-  ],
-  styleUrls: ['./login.component.css']
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    imports: [
+        ReactiveFormsModule,
+        CommonModule,
+    ],
+    styleUrls: ['./login.component.css'],
+    standalone: true
 })
 export class LoginComponent implements OnInit {
-  isLogin: boolean = true;
+  isLogin = true; // Tracks whether we're in login or signup mode
   loginForm: FormGroup;
   signupForm: FormGroup;
-  errorMessage: string = '';
+  errorMessage = '';
 
   constructor(
     private fb: FormBuilder,
-    private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService // Inject the AuthService
+    private authService: AuthService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
     });
 
     this.signupForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]]
+      confirmPassword: ['', [Validators.required]],
     });
-  }
-
-  toggleAuthMode() {
-    this.isLogin = !this.isLogin;
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const mode = params['mode'];
-      this.isLogin = mode !== 'signup'; // If mode = 'signup', switch to signup mode
-    });
+    // Check token validity and refresh token if needed
+    if (this.authService.hasValidToken()) {
+      this.authService.refreshToken().subscribe(
+        () => {
+          this.router.navigate(['/laboratoire']); // Redirect to app on valid token
+        },
+        (err) => {
+          console.log('Token refresh failed:', err);
+        }
+      );
+    }
   }
 
-  onLogin() {
+  // Toggle between login and signup modes
+  toggleAuthMode(): void {
+    this.isLogin = !this.isLogin;
+    this.errorMessage = ''; // Clear any errors when switching modes
+  }
+
+  // Handle login
+  onLogin(): void {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      this.authService.login(email, password).pipe(
-        catchError(err => {
-          this.errorMessage = 'Login failed. Please check your credentials.';
-          return of(null);
-        })
-      ).subscribe({
-        next: (response) => {
+
+      this.authService
+        .login(email, password)
+        .pipe(
+          catchError((err) => {
+            this.errorMessage = 'Login failed. Please check your credentials.';
+            return of(null);
+          })
+        )
+        .subscribe((response) => {
           if (response) {
-            // Navigate to a secure page after successful login
-            this.router.navigate(['/dashboard']);
-            console.log('Login successful :' , this.authService.getAccessToken());
-            console.log("refresh token :", this.authService.getRefreshToken())
+            console.log('Login successful', response);
+            this.router.navigate(['/laboratoire']); // Navigate to dashboard on success
           }
-        },
-        error: (err) => {
-          this.errorMessage = 'An unexpected error occurred.';
-        }
-      });
+        });
     }
   }
 }

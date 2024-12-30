@@ -6,31 +6,32 @@ import { LoginComponent } from './login/login.component';
 import { AccueilComponent } from './accueil/accueil.component';
 import { LaboratoireComponent } from './laboratoire/laboratoire.component';
 import { LaboratoiresNonActivesComponent } from './laboratoires-non-actives/laboratoires-non-actives.component';
-import { LaboratoireDetailsComponent} from  './laboratoire-details/laboratoire-details.component';
+import { LaboratoireDetailsComponent } from './laboratoire-details/laboratoire-details.component';
+import { ProfileComponent } from './profile/profile.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { ProfileComponent} from './profile/profile.component'
-import { NgChartsModule } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts'; // Ensure compatibility with Angular version
+import { AuthService } from './services/login.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    AccueilComponent,LaboratoireComponent,
+    AccueilComponent,
+    LaboratoireComponent,
     LaboratoireDetailsComponent,
-    LaboratoiresNonActivesComponent
+    LaboratoiresNonActivesComponent,
+    ProfileComponent, // Ensure this is correctly imported
   ],
-    imports: [
-      NgChartsModule,
-        BrowserModule,
-      ReactiveFormsModule,
-        AppRoutingModule,
-      LaboratoireDetailsComponent,
-      CommonModule, // Pipe 'date'
-      FormsModule, // Formulaires basés sur template
-      LaboratoiresNonActivesComponent,
-      ProfileComponent
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgChartsModule, // For charts if required globally
+    HttpClientModule, // For HTTP requests
+  ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

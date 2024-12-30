@@ -4,7 +4,7 @@
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     rel="stylesheet">
 </head>
-<app-navbar></app-navbar>
+
 <!-- Sidebar -->
 <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
   <button class="toggle-btn"  routerLink="/laboratoire">
@@ -64,6 +64,24 @@
     </li>
 
   </ul>
+  <div class="sidebar-footer">
+    <ul>
+      <li>
+        <a
+          href="profile"
+          [class.active]="activeMenu === 'profile'"
+          (click)="activeMenu = 'profile'"
+        >
+          <i class="fas fa-user"></i
+          ><span *ngIf="!isSidebarCollapsed">Profile</span>
+        </a>
+      </li>
+    </ul>
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+      <span *ngIf="!isSidebarCollapsed">Deconnexion</span>
+    </button>
+  </div>
 </div>
 
 <div class="main-content">
@@ -408,9 +426,8 @@
           <div class="form-group">
             <label for="role">Rôle :</label>
             <select id="role" formControlName="role" class="form-control">
-
-              <option value="Utilisateur">Docteur</option>
-              <option value="Manager">Technicien</option>
+              <option value="Docteur">Docteur</option>
+              <option value="Technicien">Technicien</option>
             </select>
           </div>
           <div class="modal-footer">

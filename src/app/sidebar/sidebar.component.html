@@ -1,12 +1,9 @@
-<head>
-  <link
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-    rel="stylesheet">
-</head>
-
-<div class="sidebar " [class.collapsed]="isSidebarCollapsed">
+<div class="sidebar" [class.collapsed]="isSidebarCollapsed">
   <button class="toggle-btn" (click)="toggleSidebar()">
-    <i class="fas" [ngClass]="isSidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"></i>
+    <i
+      class="fas"
+      [ngClass]="isSidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"
+    ></i>
   </button>
   <h3 *ngIf="!isSidebarCollapsed">Menu</h3>
   <ul>
@@ -14,25 +11,50 @@
       <a
         href="laboratoire"
         [class.active]="activeMenu === 'laboratoires'"
-        (click)="activeMenu = 'laboratoires'">
-        <i class="fas fa-flask"></i> <span *ngIf="!isSidebarCollapsed">Laboratoires</span>
+        (click)="activeMenu = 'laboratoires'"
+      >
+        <i class="fas fa-flask"></i>
+        <span *ngIf="!isSidebarCollapsed">Laboratoires</span>
       </a>
     </li>
     <li>
       <a
         href="NonActifs"
         [class.active]="activeMenu === 'archive'"
-        (click)="activeMenu = 'archive'">
-        <i class="fas fa-archive"></i><span *ngIf="!isSidebarCollapsed">Archive</span>
+        (click)="activeMenu = 'archive'"
+      >
+        <i class="fas fa-archive"></i
+        ><span *ngIf="!isSidebarCollapsed">Archive</span>
       </a>
     </li>
     <li>
       <a
         href="dossier"
         [class.active]="activeMenu === 'dossier'"
-        (click)="activeMenu = 'dossier'">
-        <i class="fas fa-folder"></i><span *ngIf="!isSidebarCollapsed">Dossiers</span>
+        (click)="activeMenu = 'dossier'"
+      >
+        <i class="fas fa-folder"></i
+        ><span *ngIf="!isSidebarCollapsed">Dossiers</span>
       </a>
     </li>
   </ul>
+
+  <div class="sidebar-footer">
+    <ul>
+      <li>
+        <a
+          href="profile"
+          [class.active]="activeMenu === 'profile'"
+          (click)="activeMenu = 'profile'"
+        >
+          <i class="fas fa-user"></i
+          ><span *ngIf="!isSidebarCollapsed">Profile</span>
+        </a>
+      </li>
+    </ul>
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+      <span *ngIf="!isSidebarCollapsed">Deconnexion</span>
+    </button>
+  </div>
 </div>

@@ -1,0 +1,41 @@
+<div class="consultation-info-container">
+  <!-- Sidebar -->
+  <app-sidebar (tabSelected)="onTabSelected($event)"></app-sidebar>
+
+  <!-- Content -->
+  <div class="content">
+    <!-- Tab Content -->
+    <div *ngIf="activeTab === 'laboratoire'">
+      <h2>Informations Générales</h2>
+      <p><strong>Numéro de Dossier:</strong> {{ dossier?.numDossier }}</p>
+      <p><strong>Utilisateur:</strong> {{ dossier?.fkEmailUtilisateur }}</p>
+      <p><strong>ID Patient:</strong> {{ dossier?.fkIdPatient }}</p>
+      <p><strong>Date:</strong> {{ dossier?.date }}</p>
+      <p><strong>ID Unique:</strong> {{ dossier?.uniqueId }}</p>
+    </div>
+
+    <div *ngIf="activeTab === 'analyses'">
+      <h2>Examinations</h2>
+      <table class="examinations-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Unique ID</th>
+            <th>Épreuve</th>
+            <th>Analyse</th>
+            <th>Résultat</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let exam of dossier?.examins">
+            <td>{{ exam.id }}</td>
+            <td>{{ exam.uniqueId }}</td>
+            <td>{{ exam.fkIdEpreuve }}</td>
+            <td>{{ exam.fkIdTestAnalyse }}</td>
+            <td>{{ exam.resultat }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

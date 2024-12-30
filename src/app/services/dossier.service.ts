@@ -16,16 +16,30 @@ export interface dossier{
   providedIn: 'root',
 })
 export class DossierService {
-  private apiUrl = 'http://localhost:8086/dossiers';
+  private dossierApiUrl = 'http://localhost:8086/dossiers';
+  private epreuveApiUrl = 'http://localhost:8085/epreuve';
+  private testAnalyseApiUrl = 'http://localhost:8085/testAnalyse';
 
   constructor(private http: HttpClient) {
   }
   getDossiers(): Observable<dossier[]> {
-    return this.http.get<dossier[]>(this.apiUrl);
+    return this.http.get<dossier[]>(this.dossierApiUrl);
   }
 
   addDossier(DossierData: { date: string; fkIdPatient: any; fkEmailUtilisateur: string }):Observable<dossier> {
-    return this.http.post<dossier>(`${this.apiUrl}`, DossierData);
+    return this.http.post<dossier>(`${this.dossierApiUrl}`, DossierData);
+  }
+
+  getDossierByCode(id: string): Observable<dossier> {
+    return this.http.get<dossier>(`${this.dossierApiUrl}/public/byUniqueId/${id}`);
+  }
+
+  getEpreuvesByDossier(id: string): Observable<any> {
+    return this.http.get<any>(`${this.epreuveApiUrl}/public/${id}`);
+  }
+
+  getTestAnalyseByEpreuve(id: string): Observable<any> {
+    return this.http.get<any>(`${this.testAnalyseApiUrl}/public/${id}`);
   }
 
 

@@ -28,7 +28,7 @@ export class PatientService {
 
 
   getPatient(fkIdPatient: number): Observable<patient> {
-    return this.http.get<patient>(`${this.apiUrlPatient}/${fkIdPatient}`);
+    return this.http.get<patient>(`${this.apiUrlPatient}/public/${fkIdPatient}`);
   }
 
   addPatient(PatientData:patient):Observable<patient> {
