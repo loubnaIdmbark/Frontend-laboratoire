@@ -41,6 +41,6 @@ export class UtilisateurService {
     return this.http.put<utilisateur>(`${this.apiUrl}/${email}`, user);
   }
   getUtilisateurByEmail(email:string):Observable<utilisateur> {
-    return this.http.get<utilisateur>(`${this.apiUrl}/${email}`);
+    return this.http.get<utilisateur>(`${this.apiUrl}/public/${email}`);
   }
 }

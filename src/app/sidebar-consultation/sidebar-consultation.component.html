@@ -1,0 +1,57 @@
+<head>
+  <!-- FontAwesome pour les icônes -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    rel="stylesheet"
+  />
+</head>
+
+<!-- Sidebar -->
+<div class="sidebar" [class.collapsed]="isSidebarCollapsed">
+  <!-- Logo et Nom du Laboratoire -->
+  <div class="lab-header" *ngIf="!isSidebarCollapsed">
+    <img [src]="" alt="Logo du laboratoire" class="lab-logo" />
+    <h3 class="lab-name"></h3>
+  </div>
+
+  <div class="sidebar-content">
+    <ul>
+      <li>
+        <a
+          [class.active]="activeMenu === 'laboratoire'"
+          (click)="activeMenu = 'laboratoire'; toggleSection('laboratoire')"
+        >
+          <i class="fas fa-info-circle"></i>
+          <span *ngIf="!isSidebarCollapsed">Mes Informations</span>
+        </a>
+      </li>
+      <li>
+        <a
+          [class.active]="activeMenu === 'analyses'"
+          (click)="activeMenu = 'analyses'; toggleSection('analyses')"
+        >
+          <i class="fas fa-vial"></i>
+          <span *ngIf="!isSidebarCollapsed">Mes Examinations</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="sidebar-footer">
+    <ul>
+      <li>
+        <a
+          href="profile"
+          [class.active]="activeMenu === 'profile'"
+          (click)="activeMenu = 'profile'"
+        >
+          <i class="fas fa-user"></i
+          ><span *ngIf="!isSidebarCollapsed">Profile</span>
+        </a>
+      </li>
+    </ul>
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+      <span *ngIf="!isSidebarCollapsed">Deconnexion</span>
+    </button>
+  </div>
+</div>
