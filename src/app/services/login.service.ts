@@ -111,7 +111,7 @@ export class AuthService {
     sessionStorage.removeItem(this.usernameKey);
     console.log('Username removed from session');
   }
-
+  
   getUserRoles(): string[] {
     const token = this.getAccessToken();
     return token ? getRolesFromToken(token) : [];

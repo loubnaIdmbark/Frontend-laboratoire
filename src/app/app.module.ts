@@ -12,6 +12,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgChartsModule } from 'ng2-charts'; // Ensure compatibility with Angular version
 import { AuthService } from './services/login.service';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {SidebarComponent} from './sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     AccueilComponent,
     LaboratoireComponent,
     LaboratoireDetailsComponent,
+    ProfileComponent,
     LaboratoiresNonActivesComponent,
     ProfileComponent, // Ensure this is correctly imported
   ],
@@ -28,8 +30,11 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    ReactiveFormsModule,
     NgChartsModule, // For charts if required globally
-    HttpClientModule, // For HTTP requests
+    HttpClientModule,
+    SidebarComponent,
+    // For HTTP requests
   ],
   providers: [],
   bootstrap: [AppComponent],

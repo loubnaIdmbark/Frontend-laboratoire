@@ -28,7 +28,8 @@ import { NavbarComponent } from '../navbar/navbar.component';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartData, ChartType } from 'chart.js';
 import { AuthService } from '../services/login.service';
-
+import { testAnalyse } from '../services/testAnalyse.sevice';
+import {epreuve, epreuveService} from '../services/epreuve.service';
 @Component({
   selector: 'app-laboratoire-details',
   templateUrl: './laboratoire-details.component.html',
@@ -49,12 +50,22 @@ import { AuthService } from '../services/login.service';
 })
 export class LaboratoireDetailsComponent implements OnInit {
   addUtilisateurForm: FormGroup;
+  showModal = false;
+  analyseId: number | null = null;
+  epreuveForm: FormGroup;
+  analyseForm: FormGroup;
+  currentStep = 1;
+  testAnalyseForm: FormGroup;
+  epreuves: epreuve[] = [];
   editRoleForm: FormGroup;
   isAddUserModalVisible = false;
   showLaboratoire = true; // Affiché par défaut
   showContacts = false;
   showUtilisateurs = false;
   showAnalyses = false;
+  showEpreuves = false;
+
+  analyses: any[] = [];
   showPatient: boolean = false;
   isModalVisible: boolean = false;
   contactForm: FormGroup;
@@ -81,6 +92,7 @@ export class LaboratoireDetailsComponent implements OnInit {
       },
     ],
   };
+  public anaid: number=0;
   public utilisateurChartType: ChartType = 'bar';
   public analyseChartData: ChartData<'bar'> = {
     labels: ['Jan', 'Fév', 'Mar', 'Avr'], // Labels pour les axes
@@ -94,12 +106,31 @@ export class LaboratoireDetailsComponent implements OnInit {
     ],
   };
 
+  toggleModal2() {
+    this.showModal = !this.showModal;
+    this.currentStep = 1;
+  }
+  closeModal() {
+    this.showModal = false;
+    this.analyseId = null;
+    this.currentStep = 1; // Réinitialiser l'étape
+  }
+  previousStep() {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
+
+
   // Définir le type de graphique
   public analyseChartType: ChartType = 'bar';
   /////////////
 
   constructor(
     private fb: FormBuilder,
+    private testAnalyse: testAnalyse,
+
+    protected epreuveService:epreuveService,
     private utilisateurService: UtilisateurService,
     private AnalyseService: AnalyseService,
     private authService: AuthService,
@@ -128,8 +159,21 @@ export class LaboratoireDetailsComponent implements OnInit {
       role: ['', Validators.required],
       fkIdLaboratoire: [null],
       password: [''],
+    });this.analyseForm = this.fb.group({
+      nom: [''],
+      description: [''],
     });
+    this.testAnalyseForm = this.fb.group({
+      nomTest: [''],
+      sousEpreuve: [''],
+      epreuveId:[null],
+      intervalMinDeReference: [null],
+      intervalMaxDeReference: [null],
+      uniteDeReference: [''],
+    });this.epreuveForm = this.fb.group({
+      nom: [''],
 
+    });
     this.editLaboratoireForm = this.fb.group({
       id: [{ value: '', disabled: true }],
       nom: ['', [Validators.required, Validators.minLength(3)]],
@@ -441,7 +485,7 @@ export class LaboratoireDetailsComponent implements OnInit {
     console.log('Formulaire soumis :', this.editRoleForm.value);
     if (this.editRoleForm.valid) {
       const { email, role } = this.editRoleForm.value;
-      
+
       if (!email || !role) {
         alert('Veuillez fournir un email et sélectionner un rôle.');
         return;
@@ -521,6 +565,104 @@ export class LaboratoireDetailsComponent implements OnInit {
       });
     }
   }
+
+
+  submitAnalyse(laboratoireId: number) {
+    const analyseData = this.analyseForm.value;
+    analyseData.fkIdLaboratoire = laboratoireId;
+
+    this.AnalyseService.addanalyse(analyseData).subscribe((response) => {
+      console.log('Analyse ajoutée :', response);
+
+      this.anaid = response.id;
+      this.currentStep = 2;
+
+    });
+  }
+
+  submitEpreuveEtTestAnalyse(): void {
+    // Préparer les données pour l'épreuve
+    const epreuveData = {
+      ...this.epreuveForm.value,
+      analyse: {
+        id: this.anaid,
+      },
+    };
+
+    // Ajouter l'épreuve et attendre la réponse avant de procéder
+    this.epreuveService.addepreuve(epreuveData).subscribe(
+      (epreuveResponse) => {
+        console.log('Épreuve ajoutée :', epreuveResponse);
+
+        // Récupérer l'ID de l'épreuve ajoutée
+        const epreuveId = epreuveResponse.id;
+
+        // Préparer les données pour le testAnalyse avec l'ID de l'épreuve
+        const testAnalyseData = {
+          ...this.testAnalyseForm.value,
+          epreuve: {
+            id: epreuveId, // Associer l'ID de l'épreuve au testAnalyse
+          },
+        };
+
+        // Ajouter le testAnalyse
+        this.testAnalyse.addtestdanalyse(testAnalyseData).subscribe(
+          (testAnalyseResponse) => {
+            console.log('Test Analyse ajouté :', testAnalyseResponse);
+            this.closeModal(); // Fermer la modal une fois les deux opérations terminées
+          },
+          (testAnalyseError) => {
+            console.error('Erreur lors de l\'ajout du Test Analyse :', testAnalyseError);
+          }
+        );
+      },
+      (epreuveError) => {
+        console.error('Erreur lors de l\'ajout de l\'épreuve :', epreuveError);
+      }
+    );
+  }
+
+
+  nextStep(): void {
+    if (this.currentStep < 3) {
+      this.currentStep++;
+    }
+  }
+
+  navigateToEpreuveDetails(id: number): void {
+    console.log('Naviguer vers les détails de l\'épreuve:', id);
+    this.showAnalyses = false;
+    this.showEpreuves=true;
+    this.epreuveService.getAllEpreuvesByIdAnalyse(id).subscribe(
+      (data) => {
+        console.log('Toutes les épreuves reçues du backend :', data);
+        this.epreuves = data.filter((epreuve: any) => epreuve.analyse?.id === id);
+        console.log('Épreuves filtrées associées à l\'analyse :', this.epreuves);
+
+        if (this.epreuves.length === 0) {
+          console.warn('Aucune épreuve trouvée pour l\'analyse avec ID :', id);
+        }
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des épreuves :', error);
+      }
+    );
+  }
+
+  deleteAnalyse(id:number):void{
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet analyse ?')) {
+      this.AnalyseService.deteleanalyse(id).subscribe({
+        next: () => {
+          alert('analyse supprimé avec succès.');
+
+     this.showAnalyses=true;
+        },
+        error: (err) => console.error('Erreur lors du suppression :', err),
+      });
+    }
+
+  }
+
   toggleSection(section: string) {
     switch (section) {
       case 'laboratoire':
@@ -529,6 +671,7 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.showUtilisateurs = false;
         this.showContacts = false;
         this.showPatient = false;
+        this.showEpreuves = false;
         break;
       case 'contacts':
         this.showContacts = true;
@@ -536,6 +679,7 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.showUtilisateurs = false;
         this.showLaboratoire = false;
         this.showPatient = false;
+        this.showEpreuves = false;
         break;
       case 'utilisateurs':
         this.showUtilisateurs = true;
@@ -543,6 +687,7 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.showContacts = false;
         this.showLaboratoire = false;
         this.showPatient = false;
+        this.showEpreuves = false;
         break;
       case 'analyses':
         this.showAnalyses = true;
@@ -550,6 +695,7 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.showContacts = false;
         this.showLaboratoire = false;
         this.showPatient = false;
+        this.showEpreuves = false;
         break;
       case 'patients':
         this.showPatient = true;
@@ -557,6 +703,7 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.showUtilisateurs = false;
         this.showContacts = false;
         this.showLaboratoire = false;
+        this.showEpreuves = false;
     }
   }
 }

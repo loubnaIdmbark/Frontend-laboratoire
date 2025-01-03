@@ -1,76 +1,68 @@
-
 import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgIf} from '@angular/common';
-import {SidebarComponent} from '../sidebar/sidebar.component';
-import {NavbarComponent} from '../navbar/navbar.component';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../services/login.service';
+import { SidebarComponent } from '../sidebar/sidebar.component';
+import { CommonModule } from '@angular/common';
+import { NavbarComponent } from '../navbar/navbar.component';
+import { HttpClient } from '@angular/common/http';
+
 @Component({
   selector: 'app-profile',
-  standalone: true,
-    imports: [
-        FormsModule,
-        NgIf,
-        SidebarComponent,
-        NavbarComponent,
-        ReactiveFormsModule
-    ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrls: ['./profile.component.css'],
+  imports: [CommonModule, SidebarComponent, FormsModule, NavbarComponent, ReactiveFormsModule],
+  standalone: true
 })
 export class ProfileComponent implements OnInit {
-  utilisateur: any;
-  isViewMode: boolean = true; // Affichage par défaut en mode lecture
-   isAddUserModalVisible:boolean= false;
+  public username: string | null = null;
+  user: any = null;
 
+  profileForm!: FormGroup;
+  editMode = false;
+  isAddUserModalVisible: any;
 
+  constructor(private fb: FormBuilder, private authService: AuthService, private http: HttpClient) {}
 
-  fb: any;
-  private  addUtilisateurForm: any;
-  constructor() {
-}
   ngOnInit(): void {
-    this.utilisateur = {
-      email: 'user@example.com',
-      nomComplet: 'Jean Dupont',
-      profession: 'Ingénieur',
-      numTel: '0123456789',
-      fkIdLaboratoire: '1234',
-      signature: 'Signature',
-      role: 'Admin'
-    };
+    // Récupérer le nom d'utilisateur
+    this.username = this.authService.getUsername();
+    console.log('Username in ProfileComponent:', this.username);
+
+    if (this.username) {
+      // Récupérer les données utilisateur en fonction du username
+      this.getUserData(this.username);
+    }
   }
 
-  editMode() {
-    this.isViewMode = false; // Passer en mode édition
+  // Fonction pour récupérer les données utilisateur
+  getUserData(username: string): void {
+    this.http.get<any>(`http://localhost:8088/utilisateurs/${username}`).subscribe(
+      (userData) => {
+        this.user = userData;
+        console.log('User data retrieved:', this.user);
 
+        // Initialiser le formulaire avec les données utilisateur
+        this.profileForm = this.fb.group({
+          nomComplet: [this.user.nomComplet],
+          email: [this.user.email],
+          telephone: [this.user.telephone],
+          profession: [this.user.profession],
+          role: [this.user.role]
+        });
+      },
+      (error) => {
+        console.error('Erreur lors de la récupération des données utilisateur :', error);
+      }
+    );
   }
 
-  saveProfile() {
-    console.log('Profil sauvegardé', this.utilisateur);
-    this.isViewMode = true; // Retour en mode affichage
+  saveProfile(): void {
+    this.user = { ...this.user, ...this.profileForm.value };
+    this.editMode = false;
+    console.log('Profil mis à jour :', this.user);
   }
 
-  cancel() {
-    console.log('Annuler');
-    this.isViewMode = true; // Retour en mode affichage sans sauvegarde
-  }
   toggleAddUserModal(): void {
     this.isAddUserModalVisible = !this.isAddUserModalVisible;
-
-    console.log(this.isAddUserModalVisible)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

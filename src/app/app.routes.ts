@@ -10,10 +10,12 @@ import { PatientComponent } from './patient/patient.component';
 import { ConsultationComponent } from './consultation/consultation.component';
 import { ConsultationInfoComponent } from './consultation-info/consultation-info.component';
 
+
 export const appRoutes: Routes = [
   { path : 'consultation-info/:codeDossier', component: ConsultationInfoComponent },
   { path: 'consultation', component: ConsultationComponent },
   { path: 'laboratoire', component: LaboratoireComponent },
+
   { path: 'patient/:fkIdPatient', component: PatientComponent },
   { path: 'NonActifs', component: LaboratoiresNonActivesComponent },
   { path: 'profile', component: ProfileComponent },
