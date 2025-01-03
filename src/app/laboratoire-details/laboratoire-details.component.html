@@ -180,7 +180,7 @@
   <!-- Card Contacts -->
   <div  *ngIf="showContacts">
     <div class="card-header  text-dark d-flex justify-content-between align-items-center">
-      <i class="fas fa-address-book"></i>
+      <i class="fas fa-address-book text-primary"></i>
       <h5 class="mb-0">Contacts associés</h5>
       <button class="btn btn-primary btn-sm" (click)="toggleModal()">
        Ajouter Contact
@@ -213,39 +213,86 @@
   </div>
   </div>
 
-  <!-- Card Analyses -->
-  <div  *ngIf="showAnalyses">
-    <div class="card-header  text-dark d-flex justify-content-between align-items-center">
-      <i class="fas fa-vial"></i>
-      <h5 class="mb-0">Analyses associés</h5>
-      <button class="btn ">
 
+
+  <!-- Card Analyses -->
+  <div *ngIf="showAnalyses" >
+    <div class="card-header  text-dark d-flex justify-content-between align-items-center">
+        <i class="fas fa-vial text-primary me-2"></i>
+        <h5 class="mb-0">Analyses associées</h5>
+
+    <button class="btn btn-primary" (click)="toggleModal2()">
+       Ajouter Analyse
       </button>
     </div>
-    <div class="card-body" *ngIf="showAnalyses">
-      <div class="container mt-4">
 
+    <div class="card-body">
+      <div class="container mt-3">
         <div class="row">
-          <div *ngFor="let analyse of analyse" class="col-md-4 mb-3">
-            <div class="card h-100">
+          <div *ngFor="let analyse of analyse" class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100"  style="cursor: pointer;">
               <div class="card-body">
-                <h5 class="card-title primary">{{ analyse.nom }}</h5>
-                <p class="card-text">
-                  <strong>Description :</strong> {{ analyse.description }}
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <!-- Contenu aligné à gauche -->
+                  <div class="d-flex align-items-center flex-grow-1">
+                    <i class="fas fa-flask text-info me-3 fa-2x"></i>
+                    <h5 class="card-title  mb-0">{{ analyse.nom }}</h5>
+                  </div>
 
+                  <!-- Icône de suppression alignée à droite -->
+                  <button class="btn btn-danger fa-2x" (click)="deleteAnalyse(analyse.id)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+
+                <p class="card-text text-muted">
+                  <strong>Description :</strong> {{ analyse.description }}
                 </p>
               </div>
-
+              <div class="card-footer text-end bg-light">
+                <button class="btn btn-outline-primary btn-sm"(click)="navigateToEpreuveDetails(analyse.id)">
+                  Voir les epreuves <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  </div>
-  </div>
-  </div>
-  </div>
-<!-- Card patient -->
+
+    <!-- Section des épreuves -->
+    <div *ngIf="showEpreuves">
+      <div class="card-header text-dark d-flex justify-content-between align-items-center">
+        <i class="fas fa-vials text-primary"></i>
+        <h5 class="mb-0">Épreuves associées</h5>
+        <button class="btn btn-primary btn-sm" (click)="toggleModal()">Ajouter Épreuve</button>
+      </div>
+      <div class="card-body">
+
+
+        <div *ngIf="epreuves && epreuves.length > 0; else noEpreuves">
+          <div class="row mt-4">
+            <div *ngFor="let epreuve of epreuves" class="col-md-4 mb-3">
+              <div class="card h-100" (click)="navigateToEpreuveDetails(epreuve.id)">
+                <div class="card-body">
+                  <h5 class="card-title primary">{{ epreuve.nom }}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noEpreuves>
+          <p class="text-muted mt-3">Aucune épreuve trouvée pour cette analyse.</p>
+        </ng-template>
+      </div>
+    </div>
+
+
+  <!-- Card patient -->
   <div  *ngIf="showPatient">
     <div class="card-header  text-dark d-flex justify-content-between align-items-center">
-      <i class="fas fa-procedures"></i>
+      <i class="fas fa-procedures text-primary"></i>
       <h5 class="mb-0">Patients associés</h5>
       <button class="btn " >
 
@@ -282,7 +329,7 @@
   <!-- Card Utilisateurs -->
   <div  *ngIf="showUtilisateurs">
     <div class="card-header  text-dark d-flex justify-content-between align-items-center">
-      <i class="fas fa-users me-2"></i>
+      <i class="fas fa-users text-primary me-2"></i>
       <h5 class="mb-0">Utilisateurs associés</h5>
       <button class="btn btn-primary btn-sm" (click)="toggleAddUserModal()">
      Ajouter Utilisateur
@@ -407,6 +454,142 @@
       </div>
     </div>
   </div>
+
+
+
+
+
+<div
+  class="modal"
+  [ngClass]="{ 'show d-block': showModal, 'd-none': !showModal }"
+  tabindex="-1"
+  role="dialog"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          {{ currentStep === 1
+          ? 'Ajouter Analyse'
+          : currentStep === 2
+            ? 'Ajouter Épreuve'
+            : 'Ajouter Test Analyse' }}
+        </h5>
+        <button type="button" class="btn-close" (click)="closeModal()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Étape 1: Ajouter Analyse -->
+        <form *ngIf="currentStep === 1" [formGroup]="analyseForm" (ngSubmit)="submitAnalyse(laboratoire.id)">
+          <div class="form-row">
+            <label for="nom">Nom :</label>
+            <input
+              id="nom"
+              formControlName="nom"
+              type="text"
+              class="form-control"
+              placeholder="Nom de l'analyse"
+              required
+            />
+          </div>
+          <div class="form-row">
+            <label for="description">Description :</label>
+            <input
+              id="description"
+              formControlName="description"
+              type="text"
+              class="form-control"
+              placeholder="Description"
+              required
+            />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Fermer</button>
+            <button type="submit" class="btn btn-primary">Suivant</button>
+          </div>
+        </form>
+
+        <!-- Étape 2: Ajouter Épreuve -->
+        <form *ngIf="currentStep === 2" [formGroup]="epreuveForm" (ngSubmit)="nextStep()">
+          <div class="form-row">
+            <label for="nom">Nom de l'Épreuve :</label>
+            <input
+              id="nom"
+              formControlName="nom"
+              type="text"
+              class="form-control"
+              placeholder="Nom de l'épreuve"
+              required
+            />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="previousStep()">Précédent</button>
+            <button type="submit" class="btn btn-primary">Suivant</button>
+          </div>
+        </form>
+
+        <!-- Étape 3: Ajouter Test Analyse -->
+        <form *ngIf="currentStep === 3" [formGroup]="testAnalyseForm" (ngSubmit)="submitEpreuveEtTestAnalyse()">
+          <div class="form-row">
+            <label for="nomTest">Nom du Test :</label>
+            <input
+              id="nomTest"
+              formControlName="nomTest"
+              type="text"
+              class="form-control"
+              placeholder="Nom du test"
+              required
+            />
+          </div>
+          <div class="form-row">
+            <label for="sousEpreuve">Sous Epreuve :</label>
+            <input
+              id="sousEpreuve"
+              formControlName="sousEpreuve"
+              type="text"
+              class="form-control"
+              placeholder="Sous épreuve"
+              required
+            />
+          </div>
+          <div class="form-row">
+            <label for="intervalMin">Interval Min :</label>
+            <input
+              id="intervalMin"
+              formControlName="intervalMinDeReference"
+              type="number"
+              class="form-control"
+            />
+          </div>
+          <div class="form-row">
+            <label for="intervalMax">Interval Max :</label>
+            <input
+              id="intervalMax"
+              formControlName="intervalMaxDeReference"
+              type="number"
+              class="form-control"
+            />
+          </div>
+          <div class="form-row">
+            <label for="unite">Unité :</label>
+            <input
+              id="unite"
+              formControlName="uniteDeReference"
+              type="text"
+              class="form-control"
+              placeholder="Unité de mesure"
+            />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="previousStep()">Précédent</button>
+            <button type="submit" class="btn btn-success">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
   <div
     class="modal"

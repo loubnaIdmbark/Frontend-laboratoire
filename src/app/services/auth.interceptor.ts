@@ -6,12 +6,14 @@ import { throwError } from 'rxjs';
 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService); // Inject AuthService
-  
+
 
   // Exclude the refresh endpoint from adding Authorization headers
   const isRefreshEndpoint = req.url.includes('/refresh'); // Adjust the path as per your refresh endpoint
   const isLoginEndpoint = req.url.includes('/login'); // Adjust the path as per your login endpoint
   const isConsultationEndpoint = req.url.includes('/public'); // Adjust the path as per your consultation endpoint
+
+
 
 
   if (!isRefreshEndpoint && !isConsultationEndpoint && !isLoginEndpoint) {
@@ -21,6 +23,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
       setHeaders: { Authorization: `Bearer ${accessToken}` }
     });
   }
+
 
   return next(req).pipe(
     catchError(error => {

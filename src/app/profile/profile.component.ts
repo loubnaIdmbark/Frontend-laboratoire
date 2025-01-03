@@ -1,76 +1,56 @@
-
 import { Component, OnInit } from '@angular/core';
-import {FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgIf} from '@angular/common';
-import {SidebarComponent} from '../sidebar/sidebar.component';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+
+import { SidebarComponent } from '../sidebar/sidebar.component';
+import {CommonModule} from '@angular/common';
 import {NavbarComponent} from '../navbar/navbar.component';
+import {AuthService} from '../services/login.service';
 @Component({
+
   selector: 'app-profile',
-  standalone: true,
-    imports: [
-        FormsModule,
-        NgIf,
-        SidebarComponent,
-        NavbarComponent,
-        ReactiveFormsModule
-    ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrls: ['./profile.component.css'],
+  imports: [CommonModule, SidebarComponent, FormsModule, NavbarComponent, ReactiveFormsModule],
+  standalone: true
 })
 export class ProfileComponent implements OnInit {
-  utilisateur: any;
-  isViewMode: boolean = true; // Affichage par défaut en mode lecture
-   isAddUserModalVisible:boolean= false;
+  public username: string | null = 'null';
+  user = {
+    nomComplet: 'loubna',
+    email: 'jean.dupont@example.com',
+    telephone: '06 12 34 56 78',
+    profession: 'Docteur',
+    role: 'docteur',
+    avatar: null
+  };
+
+  profileForm!: FormGroup;
+  editMode = false;
+  isAddUserModalVisible: any;
 
 
 
-  fb: any;
-  private  addUtilisateurForm: any;
-  constructor() {
-}
+  constructor(private fb: FormBuilder,private AuthService:AuthService) {}
+
   ngOnInit(): void {
-    this.utilisateur = {
-      email: 'user@example.com',
-      nomComplet: 'Jean Dupont',
-      profession: 'Ingénieur',
-      numTel: '0123456789',
-      fkIdLaboratoire: '1234',
-      signature: 'Signature',
-      role: 'Admin'
-    };
+    this.profileForm = this.fb.group({
+      nomComplet: [this.user.nomComplet],
+      email: [this.user.email],
+      telephone: [this.user.telephone],
+      profession: [this.user.profession],
+      role: [this.user.role]
+    });
+
+  
   }
 
-  editMode() {
-    this.isViewMode = false; // Passer en mode édition
-
+  saveProfile(): void {
+    this.user = { ...this.user, ...this.profileForm.value };
+    this.editMode = false;
+    console.log('Profil mis à jour :', this.user);
   }
 
-  saveProfile() {
-    console.log('Profil sauvegardé', this.utilisateur);
-    this.isViewMode = true; // Retour en mode affichage
-  }
+  toggleAddUserModal() {
 
-  cancel() {
-    console.log('Annuler');
-    this.isViewMode = true; // Retour en mode affichage sans sauvegarde
-  }
-  toggleAddUserModal(): void {
-    this.isAddUserModalVisible = !this.isAddUserModalVisible;
-
-    console.log(this.isAddUserModalVisible)
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-

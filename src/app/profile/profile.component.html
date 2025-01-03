@@ -1,49 +1,142 @@
-<!-- Navbar -->
 
-
-<!-- Main Layout -->
-<div class="container-fluid">
-  <div class="row">
-    <!-- Sidebar -->
-      <app-sidebar></app-sidebar>
+<app-sidebar></app-sidebar>
 
     <!-- Main Content -->
-    <main class="col-md-10 main-content">
-      <div class="row mt-4">
-        <!-- Profile Card -->
-        <div class="col-md-4">
-          <div class="card text-center p-3">
-            <!-- Circle with the first letter of the user's name -->
-            <div class="bg-danger rounded-circle text-white d-flex justify-content-center align-items-center" style="width: 100px; height: 100px; font-size: 36px;">
-              R
-            </div>
-            <h4>Dr. Ramesh Kumar</h4>
-            <p>
-              Spécialiste en biologie médicale avec 10 ans d'expérience dans l'analyse clinique et la gestion d'échantillons.
-            </p>
-            <button class="btn btn-primary" (click)="toggleAddUserModal()">Modifier</button>
-          </div>
-        </div>
+<div class="main-content">
+  <div class="container mt-5">
+    <!-- Carte Profil -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-light d-flex justify-content-between">
 
-        <!-- Personal Information -->
-        <div class="col-md-8">
-          <div class="card p-4">
-            <h5>Informations Personnelles</h5>
-            <hr />
-            <p><strong>Email:</strong> user&#64;gmail.com</p>
-
-            <p><strong>Nom Complet:</strong> Ramesh Kumar</p>
-            <p><strong>Profession:</strong> docteur</p>
-            <p><strong>Numéro de Téléphone:</strong> +1234567890</p>
-            <p><strong>Signature:</strong> <em>Ramesh's Signature</em></p>
-            <p><strong>Rôle:</strong> Admin</p>
-          </div>
-        </div>
+        <button class="btn btn-primary btn-sm" (click)="editMode = !editMode">
+          <i class="fas fa-edit"></i> {{ editMode ? 'Annuler' : 'Modifier' }}
+        </button>
       </div>
 
-    </main>
+      <div class="card-body text-center">
+        <!-- Section Avatar -->
+        <div class="d-flex flex-column align-items-center mb-4">
+          <div class="avatar" [ngClass]="user.role"></div>
+          <div class="mt-3">
+            <h4 class="mb-0">{{ user.nomComplet }}</h4>
+            <p class="text-muted">{{ user.email }}</p>
+          </div>
+        </div>
+
+        <hr />
+
+        <!-- Formulaire d'informations utilisateur -->
+        <form [formGroup]="profileForm" *ngIf="editMode; else viewMode" (ngSubmit)="saveProfile()">
+          <div class="row">
+            <!-- Nom complet -->
+            <div class="col-md-6 mb-3">
+              <label for="nomComplet" class="form-label">Nom Complet</label>
+              <input
+                id="nomComplet"
+                formControlName="nomComplet"
+                type="text"
+                class="form-control"
+                [readonly]="!editMode"
+              />
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6 mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                id="email"
+                formControlName="email"
+                type="email"
+                class="form-control"
+                [readonly]="!editMode"
+              />
+            </div>
+
+            <!-- Téléphone -->
+            <div class="col-md-6 mb-3">
+              <label for="telephone" class="form-label">Téléphone</label>
+              <input
+                id="telephone"
+                formControlName="telephone"
+                type="text"
+                class="form-control"
+                [readonly]="!editMode"
+              />
+            </div>
+
+            <!-- Profession -->
+            <div class="col-md-6 mb-3">
+              <label for="profession" class="form-label">Profession</label>
+              <input
+                id="profession"
+                formControlName="profession"
+                type="text"
+                class="form-control"
+                [readonly]="!editMode"
+              />
+            </div>
+
+            <!-- Rôle -->
+            <div class="col-md-6 mb-3">
+              <label for="role" class="form-label">Rôle</label>
+              <select
+                id="role"
+                formControlName="role"
+                class="form-control"
+                [disabled]="!editMode">
+                <option value="docteur">Docteur</option>
+                <option value="technicien">Technicien</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </div>
+
+          <hr />
+
+          <!-- Boutons d'action -->
+          <div class="d-flex justify-content-end">
+            <button
+              type="button"
+              class="btn btn-secondary me-2"
+              *ngIf="editMode"
+              (click)="editMode = false">
+              Annuler
+            </button>
+            <button
+              type="submit"
+              class="btn btn-success"
+              *ngIf="editMode">
+              Enregistrer
+            </button>
+          </div>
+        </form>
+
+        <!-- Mode Consultation -->
+        <ng-template #viewMode>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <strong>Nom Complet :</strong> {{ user.nomComplet }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Email :</strong> {{ user.email }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Téléphone :</strong> {{ user.telephone }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Profession :</strong> {{ user.profession }}
+            </div>
+            <div class="col-md-6 mb-3">
+              <strong>Rôle :</strong> {{ user.role }}
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
   </div>
 </div>
+
+
 
 <div class="modal" tabindex="-1" *ngIf="isAddUserModalVisible" style="display: block; background: rgba(0,0,0,0.5);">
   <div class="modal-dialog">
@@ -80,8 +173,7 @@
         </div>
       </form>
     </div>
-  </div>
-</div>
+
 
 
 

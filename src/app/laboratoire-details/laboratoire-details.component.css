@@ -30,8 +30,9 @@
   padding: 20px;
   transition: margin-left 0.3s ease-in-out;
   background-color: rgba(58, 125, 169, 0.1); /* Fond clair */
-  height: 100%;
+  min-height: 100vh; /* Hauteur minimale à 100% de la hauteur de la fenêtre */
 }
+
 
 
 /* Styles généraux pour la sidebar */
