@@ -21,7 +21,9 @@ export class epreuveService{
   getepreuve(): Observable<epreuve[]> {
     return this.http.get<epreuve[]>(this.apiUrl);
   }
-
+  getAllEpreuvesByIdAnalyse(id:number): Observable<epreuve[]> {
+    return this.http.get<epreuve[]>(`${this.apiUrl}/byAnalyse/${id}`);
+  }
 
 
   addepreuve(epreuveData: epreuve): Observable<epreuve> {

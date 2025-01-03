@@ -633,7 +633,7 @@ export class LaboratoireDetailsComponent implements OnInit {
     console.log('Naviguer vers les détails de l\'épreuve:', id);
     this.showAnalyses = false;
     this.showEpreuves=true;
-    this.epreuveService.getepreuve().subscribe(
+    this.epreuveService.getAllEpreuvesByIdAnalyse(id).subscribe(
       (data) => {
         console.log('Toutes les épreuves reçues du backend :', data);
         this.epreuves = data.filter((epreuve: any) => epreuve.analyse?.id === id);
@@ -654,6 +654,7 @@ export class LaboratoireDetailsComponent implements OnInit {
       this.AnalyseService.deteleanalyse(id).subscribe({
         next: () => {
           alert('analyse supprimé avec succès.');
+
      this.showAnalyses=true;
         },
         error: (err) => console.error('Erreur lors du suppression :', err),

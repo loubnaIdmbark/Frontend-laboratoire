@@ -7,23 +7,18 @@ import { throwError } from 'rxjs';
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService); // Inject AuthService
 
-
-  // Exclude the refresh endpoint from adding Authorization headers
+  // Exclude the refresh, login, and public endpoints from adding Authorization headers
   const isRefreshEndpoint = req.url.includes('/refresh'); // Adjust the path as per your refresh endpoint
   const isLoginEndpoint = req.url.includes('/login'); // Adjust the path as per your login endpoint
   const isConsultationEndpoint = req.url.includes('/public'); // Adjust the path as per your consultation endpoint
 
-
-
-
   if (!isRefreshEndpoint && !isConsultationEndpoint && !isLoginEndpoint) {
-    let accessToken = authService.getAccessToken();
-    console.log('request intercepted:', req);
+    const accessToken = authService.getAccessToken();
+    console.log('Request intercepted:', req);
     req = req.clone({
-      setHeaders: { Authorization: `Bearer ${accessToken}` }
+      setHeaders: { Authorization: `Bearer ${accessToken}` } // Use backticks for string interpolation
     });
   }
-
 
   return next(req).pipe(
     catchError(error => {
@@ -34,12 +29,12 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
           switchMap((tokens: any) => {
             if (tokens) {
               authService.storeTokens(tokens); // Save new tokens
-              console.log("New token acquired:", tokens);
+              console.log('New token acquired:', tokens);
               const newToken = tokens.accessToken;
 
               // Clone the original request with the new token
               const clonedReq = req.clone({
-                setHeaders: { Authorization: `Bearer ${newToken}` }
+                setHeaders: { Authorization: `Bearer ${newToken}` } // Use backticks for string interpolation
               });
 
               // Retry the original request with the new token
@@ -51,8 +46,6 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
           }),
           catchError(refreshError => {
             console.error('Refresh token request failed:', refreshError);
-            // Optional: Log out or redirect to login
-            authService.logout();
             return throwError(() => refreshError);
           })
         );

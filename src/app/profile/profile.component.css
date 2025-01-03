@@ -228,6 +228,9 @@ button[type="submit"]:disabled {
 .avatar.docteur {
   background-image: url('../../assets/doc.png');
 }
+.avatar.ADMIN {
+  background-image: url('../../assets/doc.png');
+}
 
 .avatar.technicien {
   background-image: url('../../assets/tech.png');
