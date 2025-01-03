@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Laboratoire, LaboratoireService } from '../services/laboratoire.service';
-
+import { AuthService } from '../services/login.service';
 import {CommonModule, DatePipe} from '@angular/common';
 import {Router, RouterOutlet} from '@angular/router';
 import {SidebarComponent} from '../sidebar/sidebar.component';
@@ -35,7 +35,7 @@ export class LaboratoireComponent implements OnInit {
   contactForm: FormGroup;
   searchQuery: string = ''; // Valeur de recherche
 
-  constructor(private laboratoireService: LaboratoireService, private fb: FormBuilder,private router: Router) {
+  constructor(private laboratoireService: LaboratoireService, private fb: FormBuilder,private router: Router, private loginService: AuthService) {
     // Formulaire pour le laboratoire
     this.laboratoireForm = this.fb.group({
       nom: ['', Validators.required],
@@ -64,6 +64,7 @@ export class LaboratoireComponent implements OnInit {
 
   ngOnInit(): void {
     this.chargerLaboratoires();
+    console.log('User roles:', this.loginService.getUserRoles());
   }
 
   toggleModal(): void {

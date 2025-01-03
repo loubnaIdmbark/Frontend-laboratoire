@@ -48,8 +48,6 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
           }),
           catchError(refreshError => {
             console.error('Refresh token request failed:', refreshError);
-            // Optional: Log out or redirect to login
-            authService.logout();
             return throwError(() => refreshError);
           })
         );

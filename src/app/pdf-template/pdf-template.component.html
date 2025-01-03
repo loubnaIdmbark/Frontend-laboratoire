@@ -1,0 +1,60 @@
+<div id="pdf-template" class="pdf-template">
+    <!-- Header with Lab Name and Logo -->
+    <div class="header">
+      <div class="lab-details">
+        <img [src]="dossier?.laboDetails?.logo" alt="Lab Logo" class="lab-logo" />
+        <h1>{{ dossier?.laboDetails?.nom }}</h1>
+      </div>
+    </div>
+  
+    <!-- Patient and Doctor Details on the same line -->
+    <div class="details-section">
+      <div class="patient-details">
+        <h2>Patient Details</h2>
+        <p><strong>ID Patient:</strong> {{ dossier?.patientDetails?.idPatient }}</p>
+        <p><strong>Nom Complet:</strong> {{ dossier?.patientDetails?.nomComplet }}</p>
+        <p><strong>Date de Naissance:</strong> {{ dossier?.patientDetails?.dateNaissance | date : "dd/MM/yyyy" }}</p>
+      </div>
+      <div class="doctor-details">
+        <h2>Doctor Details</h2>
+        <p><strong>Nom Médecin:</strong> {{ dossier?.userDetails?.nomComplet }}</p>
+      </div>
+    </div>
+  
+    <!-- Examinations Table -->
+    <h2 class="h2-examination">Examinations</h2>
+    <table class="examinations-table">
+      <thead>
+        <tr>
+          <th>Nom Analyse</th>
+          <th>Nom Épreuve</th>
+          <th>Intervalle Min</th>
+          <th>Intervalle Max</th>
+          <th>Résultat</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let exam of selectedExamins">
+          <td>{{ exam.analyseDetails?.nomTest }}</td>
+          <td>{{ exam.epreuveDetails?.nom }}</td>
+          <td>{{ exam.analyseDetails?.intervalMinDeReference }}</td>
+          <td>{{ exam.analyseDetails?.intervalMaxDeReference }}</td>
+          <td>{{ exam.resultat }}</td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <!-- Footer with Contact Info -->
+    <footer>
+      <div class="footer-section">
+        <div>
+          <p><strong>Address:</strong> {{ dossier?.laboDetails?.contacts.adresse }}</p>
+        </div>
+        <div>
+          <p><strong>Phone:</strong> {{ dossier?.laboDetails?.contacts.numTel }}</p>
+          <p><strong>Email:</strong> {{ dossier?.laboDetails?.contacts.email }}</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+  
