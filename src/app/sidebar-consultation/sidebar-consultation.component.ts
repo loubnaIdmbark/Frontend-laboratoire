@@ -1,6 +1,7 @@
 import { NgClass, NgIf } from '@angular/common';
 import { Router } from '@angular/router';
 import { Component, EventEmitter, Output } from '@angular/core';
+import { Input } from '@angular/core';
 
 @Component({
   selector: 'app-sidebar',
@@ -13,6 +14,7 @@ export class SidebarConsultationComponent {
   @Output() tabSelected = new EventEmitter<string>();
   activeMenu: string = 'laboratoire'; // Default active menu
   isSidebarCollapsed: boolean = false;
+  @Input() labo : any;
 
   constructor(private router: Router) {}
 

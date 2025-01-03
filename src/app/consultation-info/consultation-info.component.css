@@ -1,58 +1,198 @@
+/* General Reset */
+body {
+  margin: 0;
+  font-family: 'Roboto', Arial, sans-serif;
+  background-color: #f5f7fa;
+  color: #333;
+  font-size: 16px; /* Increased base font size */
+  line-height: 1.6;
+}
+
+/* Main Container */
 .consultation-info-container {
-    display: flex;
-    margin-left: 300px;
+  display: flex;
+  margin-left: 260px;
+  max-width: 100%;
+  gap: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 250px;
+  background-color: #fff;
+  padding: 20px; /* Increased padding */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Content Section */
+.content {
+  flex: 1;
+  background: #fff;
+  padding: 25px; /* Increased padding */
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #eaeaea;
+  padding-bottom: 10px;
+}
+
+.tab {
+  padding: 12px 18px; /* Slightly increased padding */
+  cursor: pointer;
+  font-size: 16px; /* Increased font size */
+  font-weight: 500;
+  color: #555;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.tab:hover {
+  background-color: #f0f8ff;
+  color: #007bff;
+}
+
+.tab.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+/* Tab Content */
+.tab-content {
+  padding: 25px; /* Increased padding */
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 28px; /* Increased font size */
+  color: #007bff;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+/* Info Sections */
+.info-section {
+  background: #f9f9f9;
+  padding: 20px; /* Increased padding */
+  border-radius: 8px;
+  margin-bottom: 25px;
+  border: 1px solid #eaeaea;
+}
+
+.info-section h3 {
+  font-size: 22px; /* Increased font size */
+  color: #333;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 5px;
+  display: inline-block;
+}
+
+.info-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px 30px;
+  font-size: 16px; /* Increased font size */
+}
+
+.info-row p {
+  margin: 0;
+  line-height: 1.8; /* Increased line height */
+}
+
+.labo-logo {
+  max-width: 100px;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* Examinations Table */
+.examinations-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 25px; /* Increased margin */
+  font-size: 16px; /* Increased font size */
+}
+
+.examinations-table th {
+  background: #007bff;
+  color: #fff;
+  text-align: left;
+  padding: 12px; /* Increased padding */
+  font-weight: 600;
+}
+
+.examinations-table td {
+  border: 1px solid #eaeaea;
+  padding: 12px; /* Increased padding */
+  color: #555;
+}
+
+.examinations-table tr.selected {
+  background-color: #f0f8ff;
+}
+
+/* Filter Section */
+.filter-section {
+  margin-bottom: 20px; /* Increased margin */
+}
+
+.filter-section input {
+  width: 100%;
+  padding: 12px; /* Increased padding */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px; /* Increased font size */
+}
+
+/* Buttons */
+.generate-pdf-button {
+  display: inline-block;
+  margin-top: 25px; /* Increased margin */
+  padding: 12px 25px; /* Increased padding */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px; /* Increased font size */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.generate-pdf-button:hover {
+  background-color: #0056b3;
+}
+
+/* Hidden PDF Template */
+.hidden-template {
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: auto;
+  height: auto;
+  opacity: 1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .consultation-info-container {
+    flex-direction: column;
   }
-  
+
   .sidebar {
-    width: 250px;
-  }
-  
-  .content {
-    flex: 1;
-    padding: 20px;
-  }
-  
-  .tabs {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .tab {
-    padding: 10px 20px;
-    border: 1px solid #ccc;
-    background: #f9f9f9;
-    cursor: pointer;
-    border-radius: 5px;
-  }
-  
-  .tab.active {
-    background: #007bff;
-    color: white;
-    border-color: #007bff;
-  }
-  
-  .tab-content {
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background: #fff;
-  }
-  
-  .examinations-table {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
   }
-  
-  .examinations-table th,
-  .examinations-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: left;
+
+  .info-row {
+    flex-direction: column;
   }
-  
-  .examinations-table th {
-    background: #007bff;
-    color: white;
-  }
+}

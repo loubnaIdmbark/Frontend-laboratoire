@@ -111,6 +111,7 @@ export class ConsultationComponent {
         this.errorMessage = 'Un code de récupération a été envoyé à votre email.';
       },
       (error) => {
+        console.error('Error sending recovery code:', error);
         this.emailErrorMessage = "Erreur: Impossible d'envoyer le code de récupération. Veuillez vérifier votre email.";
       }
     );
