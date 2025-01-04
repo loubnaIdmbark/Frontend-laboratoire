@@ -56,7 +56,7 @@ export class LaboratoireDetailsComponent implements OnInit {
   analyseForm: FormGroup;
   currentStep = 1;
   testAnalyseForm: FormGroup;
-  epreuves: epreuve[] = [];
+
   editRoleForm: FormGroup;
   isAddUserModalVisible = false;
   showLaboratoire = true; // Affiché par défaut
@@ -64,7 +64,7 @@ export class LaboratoireDetailsComponent implements OnInit {
   showUtilisateurs = false;
   showAnalyses = false;
   showEpreuves = false;
-
+  epreuves: epreuve[] = [];
   analyses: any[] = [];
   showPatient: boolean = false;
   isModalVisible: boolean = false;
@@ -573,54 +573,57 @@ export class LaboratoireDetailsComponent implements OnInit {
 
     this.AnalyseService.addanalyse(analyseData).subscribe((response) => {
       console.log('Analyse ajoutée :', response);
-
       this.anaid = response.id;
-      this.currentStep = 2;
-
+      this.currentStep = 2; // Passer à l'étape 2
     });
   }
 
+  openModalForEpreuve(): void {
+    this.currentStep = 2;
+
+    console.log(this.anaid)
+    this.showModal = true;
+    this.epreuveForm.reset();
+    this.testAnalyseForm.reset(); // Réinitialiser le formulaire du test analyse
+  }
+
   submitEpreuveEtTestAnalyse(): void {
-    // Préparer les données pour l'épreuve
-    const epreuveData = {
-      ...this.epreuveForm.value,
-      analyse: {
-        id: this.anaid,
-      },
+    const testAnalyseData = {
+      ...this.testAnalyseForm.value,
     };
+    console.log(this.anaid)
+    this.testAnalyse.addtestdanalyse(testAnalyseData).subscribe(
+      (testAnalyseResponse) => {
+        console.log('Test Analyse ajouté :', testAnalyseResponse);
+        const testAnalyseId = testAnalyseResponse.id;
 
-    // Ajouter l'épreuve et attendre la réponse avant de procéder
-    this.epreuveService.addepreuve(epreuveData).subscribe(
-      (epreuveResponse) => {
-        console.log('Épreuve ajoutée :', epreuveResponse);
-
-        // Récupérer l'ID de l'épreuve ajoutée
-        const epreuveId = epreuveResponse.id;
-
-        // Préparer les données pour le testAnalyse avec l'ID de l'épreuve
-        const testAnalyseData = {
-          ...this.testAnalyseForm.value,
-          epreuve: {
-            id: epreuveId, // Associer l'ID de l'épreuve au testAnalyse
+        const epreuveData = {
+          ...this.epreuveForm.value,
+          analyse: {
+            id: this.anaid, // Associer l'analyse existante
+          },
+          testAnalyse: {
+            id: testAnalyseId,
           },
         };
 
-        // Ajouter le testAnalyse
-        this.testAnalyse.addtestdanalyse(testAnalyseData).subscribe(
-          (testAnalyseResponse) => {
-            console.log('Test Analyse ajouté :', testAnalyseResponse);
-            this.closeModal(); // Fermer la modal une fois les deux opérations terminées
+        this.epreuveService.addepreuve(epreuveData).subscribe(
+          (epreuveResponse) => {
+            console.log('Épreuve ajoutée :', epreuveResponse);
+            this.closeModal(); // Fermer la modal après avoir ajouté l'épreuve
           },
-          (testAnalyseError) => {
-            console.error('Erreur lors de l\'ajout du Test Analyse :', testAnalyseError);
+          (epreuveError) => {
+            console.error('Erreur lors de l\'ajout de l\'épreuve :', epreuveError);
           }
         );
       },
-      (epreuveError) => {
-        console.error('Erreur lors de l\'ajout de l\'épreuve :', epreuveError);
+      (testAnalyseError) => {
+        console.error('Erreur lors de l\'ajout du Test Analyse :', testAnalyseError);
       }
     );
+
   }
+
 
 
   nextStep(): void {
@@ -631,13 +634,14 @@ export class LaboratoireDetailsComponent implements OnInit {
 
   navigateToEpreuveDetails(id: number): void {
     console.log('Naviguer vers les détails de l\'épreuve:', id);
+    this.anaid=id;
     this.showAnalyses = false;
     this.showEpreuves=true;
     this.epreuveService.getAllEpreuvesByIdAnalyse(id).subscribe(
       (data) => {
         console.log('Toutes les épreuves reçues du backend :', data);
-        this.epreuves = data.filter((epreuve: any) => epreuve.analyse?.id === id);
-        console.log('Épreuves filtrées associées à l\'analyse :', this.epreuves);
+        this.epreuves = data; // Pas de filtre supplémentaire
+        console.log('Épreuves associées à l\'analyse :', this.epreuves);
 
         if (this.epreuves.length === 0) {
           console.warn('Aucune épreuve trouvée pour l\'analyse avec ID :', id);
@@ -647,6 +651,8 @@ export class LaboratoireDetailsComponent implements OnInit {
         console.error('Erreur lors de la récupération des épreuves :', error);
       }
     );
+
+
   }
 
   deleteAnalyse(id:number):void{
@@ -657,6 +663,7 @@ export class LaboratoireDetailsComponent implements OnInit {
 
      this.showAnalyses=true;
         },
+
         error: (err) => console.error('Erreur lors du suppression :', err),
       });
     }

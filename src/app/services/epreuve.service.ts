@@ -3,11 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { Observable} from 'rxjs';
 import {analyse} from './analyse.service';
 
+export interface TestAnalyse {
+  id: number;
+  nomTest: string;
+  sousEpreuve: string;
+  intervalMinDeReference: number;
+  intervalMaxDeReference: number;
+  uniteDeReference: string;
+  details: string | null;
+}
+
 export interface epreuve {
   id: number;
-  nom:string;
-  fkIdAnalyse:number;
-
+  nom: string;
+  testAnalyse?: TestAnalyse; // Ajout de la propriété testAnalyse
 }
 @Injectable({
   providedIn: 'root',

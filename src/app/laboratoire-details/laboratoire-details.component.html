@@ -261,32 +261,48 @@
     </div>
   </div>
 
-    <!-- Section des épreuves -->
-    <div *ngIf="showEpreuves">
-      <div class="card-header text-dark d-flex justify-content-between align-items-center">
-        <i class="fas fa-vials text-primary"></i>
-        <h5 class="mb-0">Épreuves associées</h5>
-        <button class="btn btn-primary btn-sm" (click)="toggleModal()">Ajouter Épreuve</button>
-      </div>
-      <div class="card-body">
+  <!-- Section des épreuves -->
+  <div *ngIf="showEpreuves">
+    <div class="card-header text-dark d-flex justify-content-between align-items-center">
+      <i class="fas fa-vials text-primary"></i>
+      <h5 class="mb-0">Épreuves associées</h5>
 
 
-        <div *ngIf="epreuves && epreuves.length > 0; else noEpreuves">
-          <div class="row mt-4">
-            <div *ngFor="let epreuve of epreuves" class="col-md-4 mb-3">
-              <div class="card h-100" (click)="navigateToEpreuveDetails(epreuve.id)">
-                <div class="card-body">
-                  <h5 class="card-title primary">{{ epreuve.nom }}</h5>
+      <button class="btn btn-primary btn-sm" (click)="openModalForEpreuve()">Ajouter Épreuve</button>
+
+    </div>
+    <div class="card-body">
+      <div *ngIf="epreuves && epreuves.length > 0; else noEpreuves">
+        <div class="row mt-4">
+          <div *ngFor="let epreuve of epreuves" class="col-md-4 mb-3">
+            <div class="card h-100" >
+              <div class="card-body">
+                <!-- Affichage du nom de l'épreuve -->
+                <h5 class="card-title text-primary">{{ epreuve.nom }}</h5>
+
+                <!-- Affichage des détails de testAnalyse -->
+                <div *ngIf="epreuve.testAnalyse">
+                  <p><strong>Nom du Test :</strong> {{ epreuve.testAnalyse.nomTest }}</p>
+                  <p><strong>Sous-Épreuve :</strong> {{ epreuve.testAnalyse.sousEpreuve }}</p>
+                  <p><strong>Intervalle de Référence :</strong>
+                    {{ epreuve.testAnalyse.intervalMinDeReference }} - {{ epreuve.testAnalyse.intervalMaxDeReference }} {{ epreuve.testAnalyse.uniteDeReference }}
+                  </p>
+                  <p *ngIf="epreuve.testAnalyse.details"><strong>Détails :</strong> {{ epreuve.testAnalyse.details }}</p>
+                </div>
+                <div *ngIf="!epreuve.testAnalyse" class="text-muted">
+                  Pas de testAnalyse associé.
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <ng-template #noEpreuves>
-          <p class="text-muted mt-3">Aucune épreuve trouvée pour cette analyse.</p>
-        </ng-template>
       </div>
+      <ng-template #noEpreuves>
+        <p class="text-muted mt-3">Aucune épreuve trouvée pour cette analyse.</p>
+      </ng-template>
     </div>
+  </div>
+
 
 
   <!-- Card patient -->
@@ -588,43 +604,6 @@
     </div>
   </div>
 </div>
-
-
-
-  <div
-    class="modal"
-    [ngClass]="{ 'show d-block': isEdiRoletModalVisible, 'd-none': !isEdiRoletModalVisible }"
-    tabindex="-1"
-    role="dialog"
-  >
-    <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Modifier le rôle</h5>
-        <button type="button" class="btn-close" aria-label="Close" (click)="isEdiRoletModalVisible = false"></button>
-      </div>
-
-      <div class="modal-body">
-        <form [formGroup]="editRoleForm" (ngSubmit)="onEditRoleSubmit()">
-          <div class="form-group">
-            <label for="role">Rôle :</label>
-            <select id="role" formControlName="role" class="form-control">
-              <option value="Docteur">Docteur</option>
-              <option value="Technicien">Technicien</option>
-            </select>
-          </div>
-          <div class="modal-footer">
-            <button type="submit" class="btn btn-primary">Modifier</button>
-            <button type="button" class="btn btn-secondary" (click)="isEdiRoletModalVisible = false">Annuler</button>
-          </div>
-        </form>
-      </div>
-    </div>
-    </div>
-  </div>
-
-
-
 
   <div
     class="modal"
