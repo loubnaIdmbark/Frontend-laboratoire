@@ -40,9 +40,8 @@
     <ul>
       <li>
         <a
-          href="profile"
-          [class.active]="activeMenu === 'profile'"
-          (click)="activeMenu = 'profile'"
+        [class.active]="activeMenu === 'profile'"
+        (click)="activeMenu = 'profile'; toggleSection('profile')"
         >
           <i class="fas fa-user"></i
           ><span *ngIf="!isSidebarCollapsed">Profile</span>

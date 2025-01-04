@@ -30,6 +30,7 @@ export class SidebarConsultationComponent {
 
   // Sets the active section and emits the selected tab
   toggleSection(section: string): void {
+    console.log('Section:', section);
     this.activeMenu = section;
     this.tabSelected.emit(section);
   }
