@@ -64,7 +64,7 @@ export class LaboratoireComponent implements OnInit {
 
   ngOnInit(): void {
     this.chargerLaboratoires();
-    console.log('User roles:', this.loginService.getUserRoles());
+    console.log('User logged in:', this.loginService.getUsername());
   }
 
   toggleModal(): void {
