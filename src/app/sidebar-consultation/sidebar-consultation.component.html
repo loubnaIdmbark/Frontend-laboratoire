@@ -10,8 +10,8 @@
 <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
   <!-- Logo et Nom du Laboratoire -->
   <div class="lab-header" *ngIf="!isSidebarCollapsed">
-    <img [src]="" alt="Logo du laboratoire" class="lab-logo" />
-    <h3 class="lab-name"></h3>
+    <img [src]="labo?.logo" alt="Logo du laboratoire" class="lab-logo" />
+    <h3 class="lab-name">{{ labo?.nom }}</h3>
   </div>
 
   <div class="sidebar-content">

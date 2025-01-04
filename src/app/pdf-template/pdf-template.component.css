@@ -1,0 +1,133 @@
+.pdf-template {
+  visibility: visible;
+  opacity: 1;
+  position: relative;
+  margin: auto;
+  padding: 30px;
+  font-family: 'Roboto', Arial, sans-serif;
+  color: #2c3e50;
+  width: 210mm; /* A4 Width */
+  height: 297mm; /* A4 Height */
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+}
+
+.lab-logo {
+  max-width: 60px;
+  margin-right: 15px;
+}
+
+.lab-details h1 {
+  color: #1abc9c;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.details-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.details-section h2 {
+  font-size: 14px;
+  color: #34495e;
+  font-weight: 600;
+  margin-bottom: 4px;
+  border-bottom: 2px solid #1abc9c;
+  padding-bottom: 1px;
+}
+
+.details-section p {
+  font-size: 12px;
+  margin: 4px 0;
+}
+
+.patient-details, .doctor-details {
+  background: #f8f9fa;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+}
+
+.h2-examination{
+  font-size: 14px;
+  color: #34495e;
+  font-weight: 600;
+  margin-bottom: 4px;
+  border-bottom: 2px solid #1abc9c;
+  padding-bottom: 1px;
+}
+
+.examinations-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.examinations-table th {
+  background-color: #1abc9c;
+  color: white;
+  text-align: left;
+  padding: 10px;
+  font-weight: 600;
+}
+
+.examinations-table td {
+  border: 1px solid #e0e0e0;
+  padding: 10px;
+}
+
+.examinations-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.examinations-table tr:hover {
+  background-color: #ecf0f1;
+}
+
+.footer-section {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px;
+  background-color: #f8f9fa; /* Match the overall theme */
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 2px solid #e0e0e0; /* Modern line to separate footer */
+}
+
+.footer-section div {
+  flex: 1;
+}
+
+.footer-section p {
+  margin: 5px 0;
+  font-size: 12px;
+  color: #7f8c8d;
+}
+
+footer {
+  text-align: center;
+  font-size: 11px;
+  color: #95a5a6;
+  margin-top: 10px;
+}

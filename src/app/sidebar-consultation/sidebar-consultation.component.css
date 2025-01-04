@@ -16,7 +16,7 @@
   }
 
   .sidebar-content {
-    margin-top: 300px;
+    margin-top: 250px;
     align-items: center;
   }
   
@@ -73,6 +73,27 @@
   .sidebar ul li a i {
     margin-right: 10px;
   }
+
+  .lab-logo {
+    width: 100%; /* Ajuste automatiquement la largeur au conteneur parent */
+    max-width: 200px; /* Taille maximale pour le logo */
+    height: auto; /* Maintient le ratio d'aspect */
+    object-fit: contain; /* Assure que l'image est entièrement visible sans distorsion */
+    margin: auto;
+  }
+  
+  .lab-name {
+    font-size: 1.5rem; /* Taille de police adaptée */
+    color: white; /* Couleur blanche pour correspondre à la sidebar */
+    font-weight: bold; /* Met en gras le nom */
+    text-align: center; /* Centre le texte */
+    text-transform: capitalize; /* Met la première lettre en majuscule */
+    margin: 0; /* Supprime les marges par défaut */
+    overflow: hidden; /* Évite les débordements */
+    text-overflow: ellipsis; /* Ajoute des points de suspension si le texte est trop long */
+    white-space: nowrap; /* Empêche les retours à la ligne */
+  }
+  
   
   .toggle-btn {
     position: absolute;

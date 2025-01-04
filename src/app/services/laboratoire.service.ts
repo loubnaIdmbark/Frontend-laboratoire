@@ -53,7 +53,9 @@ export class LaboratoireService {
     return this.http.get<Laboratoire>(`${this.apiUrl}/${id}`);
   }
 
-
+  publicGetLaboratoireById(id: number): Observable<Laboratoire> {
+    return this.http.get<Laboratoire>(`${this.apiUrl}/public/${id}`);
+  }
 
   getAdresse(): Observable<AdresseLaboratoire[]> {
     return this.http.get<AdresseLaboratoire[]>(this.adresseUrl);
