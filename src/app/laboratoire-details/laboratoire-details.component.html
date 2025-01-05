@@ -62,7 +62,14 @@
         <span *ngIf="!isSidebarCollapsed">Patients</span>
       </a>
     </li>
-
+    <li>
+      <a
+        [class.active]="activeMenu === 'dossiers'"
+        (click)="activeMenu = 'dossiers'; toggleSection('dossiers')">
+        <i class="fas fa-archive"></i>
+        <span *ngIf="!isSidebarCollapsed">Dossiers</span>
+      </a>
+    </li>
   </ul>
   <div class="sidebar-footer">
     <ul>
@@ -261,6 +268,51 @@
     </div>
   </div>
 
+  <!-- Section des examins -->
+  <div *ngIf="showExamins" >
+    <div class="card-header  text-dark d-flex justify-content-between align-items-center">
+      <i class="fas fa-vial text-primary me-2"></i>
+      <h5 class="mb-0">Examins associées à ce patient</h5>
+
+      <button class="btn btn-primary" (click)="toggleModalExamen(laboratoire.id)">
+        Ajouter Examin
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="container mt-3">
+        <div class="row">
+          <div *ngFor="let examin of examins" class="col-md-6 col-lg-4 mb-4">
+            <div class="card shadow-sm h-100"  style="cursor: pointer;">
+              <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <!-- Contenu aligné à gauche -->
+                  <div class="d-flex align-items-center flex-grow-1">
+                    <i class="fas fa-flask text-info me-3 fa-2x"></i>
+                    <h5 class="card-title  mb-0">{{ examin.nom }}</h5>
+                  </div>
+
+                  <!-- Icône de suppression alignée à droite -->
+                  <button class="btn btn-danger fa-2x" (click)="deleteAnalyse(examin.id)">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+
+                <p class="card-text text-muted">
+                  <strong>Description :</strong> {{ examin.resultat }}
+                </p>
+              </div>
+              <div class="card-footer text-end bg-light">
+                <button class="btn btn-outline-primary btn-sm"(click)="navigateToEpreuveDetails(examin.id)">
+                  Voir les epreuves <i class="fas fa-arrow-right"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- Section des épreuves -->
   <div *ngIf="showEpreuves">
     <div class="card-header text-dark d-flex justify-content-between align-items-center">
@@ -303,40 +355,100 @@
     </div>
   </div>
 
+  <div *ngIf="showDossiers" >
+    <div class="card-header  text-dark d-flex justify-content-between align-items-center">
+      <i class="fas fa-archive"></i>
+      <h5 class="mb-0">Vos Dossiers</h5>
+
+      <button class="btn " >
+
+      </button>
+    </div>
+
+    <div class="card-body">
+      <div class="container mt-3">
+        <div class="row">
+          <div *ngFor="let dossier of Dossiers" class="col-md-4 mb-4 card-container" (click)="navigateToExamin(dossier.numDossier)">
+            <div class="card shadow-sm border-0">
+              <div class="card-body text-center">
+                <!-- Icône de dossier -->
+                <i class="fas fa-folder-open fa-3x text-warning mb-3"></i>
+
+                <!-- Nom du patient -->
+                <h5 class="card-title">Dossier de
+                  {{  dossier.nomPatient }}
+                </h5>
+                <!-- Description -->
+
+
+                <!-- Bouton d'action -->
+                <button class="btn btn-primary btn-sm" (click)="ouvrirDossier()">
+                  Voir Examins
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="card add-card col-md-4 mb-4 card-container" (click)="toggleModalDossier()">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+            <div class="card-content">
+              Créer un dossier<br><br>
+              <i class="fas fa-plus"></i>
+            </div>
+          </div>
+  </div>
+  </div>
+  </div>
+  </div>
 
 
   <!-- Card patient -->
+
   <div  *ngIf="showPatient">
     <div class="card-header  text-dark d-flex justify-content-between align-items-center">
       <i class="fas fa-procedures text-primary"></i>
-      <h5 class="mb-0">Patients associés</h5>
+      <h5 class="mb-0">Patients associés à ce Laboratoire</h5>
       <button class="btn " >
 
       </button>
 
     </div>
-    <div class="card-body" *ngIf="showContacts">
+    <!-- Card Body -->
+    <div class="card-body">
       <div class="container mt-4">
-
         <div class="row">
-          <div *ngFor="let contact of laboratoire.contacts; let i = index" class="col-md-4 mb-3">
+          <!-- Loop through patients -->
+          <div *ngFor="let patient of patients" class="col-md-4 mb-3">
             <div class="card h-100">
+              <!-- Patient Information -->
               <div class="card-body">
-                <h5 class="card-title"> contact {{ i+1}}</h5>
+                <h6 class="card-title text-primary"><i class="fas fa-user me-2"></i>{{ patient.nomComplet }}</h6>
                 <p class="card-text">
-                  <strong>Email :</strong> {{ contact.email }} <br />
-                  <strong>Telephone :</strong> {{ contact.numTel }} <br />
-                  <strong>Fax :</strong> {{ contact.fax }}
+                  <strong>Date de Naissance :</strong> {{ patient.dateNaissance }} <br />
+                  <strong>Lieu de Naissance :</strong> {{ patient.lieuDeNaissance }} <br />
+                  <strong>Sexe :</strong> {{ patient.sexe }} <br />
+                  <strong>Numéro de Pièce d'Identité :</strong> {{ patient.numPieceIdentite }} <br />
+                  <strong>Adresse :</strong> {{ patient.adresse }} <br />
+                  <strong>Téléphone :</strong> {{ patient.numTel }} <br />
+                  <strong>Email :</strong> {{ patient.email }} <br />
+
+
                 </p>
               </div>
 
+              <!-- Footer with Actions -->
               <div class="card-footer text-center">
-                <button class="btn btn-danger" (click)="deleteContact(contact.id)"><i class="fas fa-trash"></i></button>
+                <button class="btn btn-warning btn-sm me-2" (click)="updatePatient(patient.idPatient)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-danger btn-sm" (click)="deletePatient(patient.idPatient)" >
+                  <i class="fas fa-trash"></i>
+                </button>
               </div>
             </div>
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -376,10 +488,11 @@
         </div>
       </div>
     </div>
-
-
     </div>
-  </div>
+
+
+
+
   <div
     class="modal"
     [ngClass]="{ 'show d-block': isModalVisible, 'd-none': !isModalVisible }"
@@ -605,6 +718,127 @@
   </div>
 </div>
 
+
+<div
+  class="modal"
+  [ngClass]="{ 'show d-block': isEditModalVisible2, 'd-none': !isEditModalVisible2 }"
+  tabindex="-1"
+  role="dialog"
+>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <!-- En-tête -->
+      <div class="modal-header">
+        <h5 class="modal-title">Modifier les Informations du Patient</h5>
+        <button
+          type="button"
+          class="btn-close"
+          aria-label="Close"
+          (click)="isEditModalVisible2 = false"
+        ></button>
+      </div>
+
+      <!-- Formulaire -->
+      <form [formGroup]="editPatientForm" (ngSubmit)="updatePatient(patient.idPatient)">
+        <div class="modal-body">
+          <!-- Nom complet -->
+          <div class="form-row mb-3">
+            <label for="nomComplet">Nom Complet :</label>
+            <input
+              id="nomComplet"
+              formControlName="nomComplet"
+              type="text"
+              class="form-control"
+              placeholder="Entrez le nom complet"
+            />
+          </div>
+
+          <!-- Date de naissance -->
+          <div class="form-row mb-3">
+            <label for="dateNaissance">Date de Naissance :</label>
+            <input
+              id="dateNaissance"
+              formControlName="dateNaissance"
+              type="date"
+              class="form-control"
+            />
+          </div>
+
+          <!-- Adresse -->
+          <div class="form-row mb-3">
+            <label for="adresse">Adresse :</label>
+            <input
+              id="adresse"
+              formControlName="adresse"
+              type="text"
+              class="form-control"
+              placeholder="Entrez l'adresse"
+            />
+          </div>
+
+          <!-- Sexe -->
+          <div class="form-row mb-3">
+            <label for="sexe">Sexe :</label>
+            <select
+              id="sexe"
+              formControlName="sexe"
+              class="form-select"
+            >
+              <option value="Homme">Homme</option>
+              <option value="Femme">Femme</option>
+            </select>
+          </div>
+
+          <!-- Téléphone -->
+          <div class="form-row mb-3">
+            <label for="numTel">Téléphone :</label>
+            <input
+              id="numTel"
+              formControlName="numTel"
+              type="number"
+              class="form-control"
+              placeholder="Entrez le numéro de téléphone"
+            />
+          </div>
+
+          <!-- Email -->
+          <div class="form-row mb-3">
+            <label for="email">Email :</label>
+            <input
+              id="email"
+              formControlName="email"
+              type="email"
+              class="form-control"
+              placeholder="Entrez l'email"
+            />
+          </div>
+        </div>
+
+        <!-- Pied de page -->
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="isEditModalVisible = false"
+          >
+            Annuler
+          </button>
+          <button
+            type="submit"
+            class="btn btn-primary"
+          >
+            Enregistrer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
   <div
     class="modal"
     [ngClass]="{ 'show d-block': isEditModalVisible, 'd-none': !isEditModalVisible }"
@@ -680,6 +914,117 @@
 
 
   </div>
+
+
+  <div
+    class="modal"
+    [ngClass]="{ 'show d-block': isAddPatientModalVisible, 'd-none': !isAddPatientModalVisible }"
+    tabindex="-1"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+
+          <h5 class="modal-title">Les informations du Patient</h5>
+          <button type="button" class="btn-close" aria-label="Close" (click)="toggleModalDossier()"></button>
+        </div>
+        <form [formGroup]="addPatientForm" (ngSubmit)="onAddPatientSubmit(laboratoire.id)">
+          <div class="modal-body">
+            <div class="form-row">
+              <label for="nomComplet">Nom Complet :</label>
+              <input id="nomComplet" formControlName="nomComplet" type="text" class="form-control" placeholder="Nom complet">
+            </div>
+            <div class="form-row">
+              <label for="dateNaissance">Date de Naissance :</label>
+              <input id="dateNaissance" formControlName="dateNaissance" type="date" class="form-control">
+            </div>
+            <div class="form-row">
+              <label for="lieuDeNaissance">Lieu de Naissance :</label>
+              <input id="lieuDeNaissance" formControlName="lieuDeNaissance" type="text" class="form-control" placeholder="Lieu de naissance">
+            </div>
+            <div class="form-row">
+              <label for="sexe">Sexe :</label>
+              <select id="sexe" formControlName="sexe" class="form-control">
+                <option value="" disabled selected>Sélectionnez le sexe</option>
+                <option value="Homme">Homme</option>
+                <option value="Femme">Femme</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="numPieceIdentite">Numéro de Pièce d'Identité :</label>
+              <input id="numPieceIdentite" formControlName="numPieceIdentite" type="text" class="form-control" placeholder="Numéro de pièce d'identité">
+            </div>
+            <div class="form-row">
+              <label for="adresse">Adresse :</label>
+              <input id="adresse" formControlName="adresse" type="text" class="form-control" placeholder="Adresse">
+            </div>
+            <div class="form-row">
+              <label for="numTel">Téléphone :</label>
+              <input id="numTel" formControlName="numTel" type="text" class="form-control" placeholder="Numéro de téléphone">
+            </div>
+            <div class="form-row">
+              <label for="email">Email :</label>
+              <input id="email" formControlName="email" type="email" class="form-control" placeholder="Email">
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!----------examin------->
+
+<div
+  class="modal"
+  [ngClass]="{ 'show d-block': isAddExamenModalVisible, 'd-none': !isAddExamenModalVisible }"
+  tabindex="-1"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ajouter un Examen</h5>
+        <button type="button" class="btn-close" aria-label="Close" ></button>
+      </div>
+      <form [formGroup]="addExamenForm" (ngSubmit)="onAddExamenSubmit()">
+        <div class="modal-body">
+          <div class="form-row">
+            <label for="fkIdEpreuve">Épreuve :</label>
+            <select id="fkIdEpreuve" formControlName="fkIdEpreuve" class="form-control">
+              <option value="" disabled selected>Sélectionnez une épreuve</option>
+              <option *ngFor="let epreuve of epreuves" [value]="epreuve.id">{{ epreuve.nom }}</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="fkIdTestAnalyse">Analyse :</label>
+            <select id="fkIdTestAnalyse" formControlName="fkIdTestAnalyse" class="form-control">
+              <option value="" disabled selected>Sélectionnez une analyse</option>
+              <option *ngFor="let analyse of analyses" [value]="analyse.id">{{ analyse.nom }}</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label for="resultat">Résultat :</label>
+            <input
+              id="resultat"
+              formControlName="resultat"
+              type="text"
+              class="form-control"
+              placeholder="Résultat"
+            />
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 
 

@@ -4,7 +4,7 @@ import {Observable} from 'rxjs';
 import {patient} from './patient.service';
 
 export interface dossier{
-  id:number;
+  numDossier:number;
   fkEmailUtilisateur:string;
   fkIdPatient:number;
   date:Date;
@@ -26,7 +26,7 @@ export class DossierService {
     return this.http.get<dossier[]>(this.dossierApiUrl);
   }
 
-  addDossier(DossierData: { date: string; fkIdPatient: any; fkEmailUtilisateur: string }):Observable<dossier> {
+  addDossier(DossierData: { date: string; fkIdPatient: number; fkEmailUtilisateur: string | null }):Observable<dossier> {
     return this.http.post<dossier>(`${this.dossierApiUrl}`, DossierData);
   }
 

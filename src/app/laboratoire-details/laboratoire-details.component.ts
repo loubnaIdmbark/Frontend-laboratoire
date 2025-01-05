@@ -30,6 +30,11 @@ import { ChartData, ChartType } from 'chart.js';
 import { AuthService } from '../services/login.service';
 import { testAnalyse } from '../services/testAnalyse.sevice';
 import {epreuve, epreuveService} from '../services/epreuve.service';
+import {PatientService,patient} from '../services/patient.service';
+import {DossierService,dossier} from '../services/dossier.service';
+import { forkJoin, map } from 'rxjs';
+import {serviceExamin} from '../services/examin.service';
+
 @Component({
   selector: 'app-laboratoire-details',
   templateUrl: './laboratoire-details.component.html',
@@ -56,20 +61,29 @@ export class LaboratoireDetailsComponent implements OnInit {
   analyseForm: FormGroup;
   currentStep = 1;
   testAnalyseForm: FormGroup;
-
+  username:string | null="null";
+  isEditModalVisible2: boolean=false;
   editRoleForm: FormGroup;
   isAddUserModalVisible = false;
   showLaboratoire = true; // Affiché par défaut
   showContacts = false;
   showUtilisateurs = false;
   showAnalyses = false;
+  showDossiers: boolean=false;
   showEpreuves = false;
+  showExamins:boolean=false;
+  examins:any;
+  isAddExamenModalVisible:boolean=false;
+  isAddPatientModalVisible:boolean=false;
   epreuves: epreuve[] = [];
+  patients: patient[]=[];
+  patient:any;
   analyses: any[] = [];
   showPatient: boolean = false;
   isModalVisible: boolean = false;
   contactForm: FormGroup;
   laboratoire: any;
+  dossiersAvecPatients:any;
   analyse: any;
   utilisateur: any;
   contacts: ContactLaboratoire[] = [];
@@ -93,6 +107,8 @@ export class LaboratoireDetailsComponent implements OnInit {
     ],
   };
   public anaid: number=0;
+  public numDossier: number=0;
+
   public utilisateurChartType: ChartType = 'bar';
   public analyseChartData: ChartData<'bar'> = {
     labels: ['Jan', 'Fév', 'Mar', 'Avr'], // Labels pour les axes
@@ -105,6 +121,8 @@ export class LaboratoireDetailsComponent implements OnInit {
       },
     ],
   };
+
+
 
   toggleModal2() {
     this.showModal = !this.showModal;
@@ -129,8 +147,10 @@ export class LaboratoireDetailsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private testAnalyse: testAnalyse,
-
+    private PatientService:PatientService,
+    private DossierService:DossierService,
     protected epreuveService:epreuveService,
+    private serviceExamin:serviceExamin,
     private utilisateurService: UtilisateurService,
     private AnalyseService: AnalyseService,
     private authService: AuthService,
@@ -173,6 +193,16 @@ export class LaboratoireDetailsComponent implements OnInit {
     });this.epreuveForm = this.fb.group({
       nom: [''],
 
+    });   this.editPatientForm = this.fb.group({
+      idPatient: [{value: '', disabled: true}], // Champ désactivé pour l'ID
+      nomComplet: ['', [Validators.required, Validators.minLength(3)]],
+      dateNaissance: ['', [Validators.required]],
+      adresse: ['', [Validators.required, Validators.minLength(5)]],
+      sexe: ['', [Validators.required]],
+      numTel: ['', [ Validators.required,],],
+      email: ['', [Validators.required, Validators.email,
+      ],
+      ],
     });
     this.editLaboratoireForm = this.fb.group({
       id: [{ value: '', disabled: true }],
@@ -181,6 +211,16 @@ export class LaboratoireDetailsComponent implements OnInit {
       logo: [null],
       dateActivation: ['', [Validators.required]],
       active: [false],
+    });this.addPatientForm = this.fb.group({
+      nomComplet: ['', [Validators.required]],
+      dateNaissance: ['', [Validators.required]],
+      lieuDeNaissance: ['', [Validators.required]],
+      sexe: ['', [Validators.required]],
+      numPieceIdentite: ['', [Validators.required]],
+      adresse: ['', [Validators.required]],
+      numTel: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
+      email: ['', [Validators.required, Validators.email]],
+      visiblePour: ['', [Validators.required]]
     });
   }
 
@@ -221,12 +261,18 @@ export class LaboratoireDetailsComponent implements OnInit {
   }
   isSidebarCollapsed: boolean = false;
   activeMenu: string = '';
+  editPatientForm:  FormGroup;
+  addPatientForm:FormGroup;
+  Dossiers: any;
+  addExamenForm: any;
+
 
   toggleSidebar() {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }
 
   ngOnInit(): void {
+    this.username = this.authService.getUsername();
     this.route.params.subscribe((params) => {
       console.log('Paramètres de la route :', params);
       const id = +params['id'];
@@ -234,6 +280,8 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.getLaboratoireDetails(id);
         this.getUtilisateur(id);
         this.getAnalyse(id);
+        this.getPatientsByLaboratoire(id);
+        this.chargerDossiersAvecPatients();
       } else {
         console.error('ID non trouvé dans les paramètres de la route.');
       }
@@ -670,6 +718,23 @@ export class LaboratoireDetailsComponent implements OnInit {
 
   }
 
+  getPatientsByLaboratoire(fkIdLaboratoire: number): void {
+    this.PatientService.getAllPatients().subscribe({
+      next: (response: patient[]) => {
+        console.log('Tous les patients récupérés :', response);
+
+
+        this.patients = response.filter(patient => patient.fkIdLaboratoire === fkIdLaboratoire);
+
+        console.log('Patients associés au laboratoire :', this.patients);
+      },
+      error: (err: any) => {
+        console.error('Erreur lors de la récupération des patients :', err);
+      },
+    });
+  }
+
+
   toggleSection(section: string) {
     switch (section) {
       case 'laboratoire':
@@ -679,6 +744,7 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.showContacts = false;
         this.showPatient = false;
         this.showEpreuves = false;
+        this.showExamins=false;
         break;
       case 'contacts':
         this.showContacts = true;
@@ -687,6 +753,7 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.showLaboratoire = false;
         this.showPatient = false;
         this.showEpreuves = false;
+        this.showDossiers=false;
         break;
       case 'utilisateurs':
         this.showUtilisateurs = true;
@@ -695,6 +762,8 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.showLaboratoire = false;
         this.showPatient = false;
         this.showEpreuves = false;
+        this.showDossiers=false;
+        this.showExamins=false;
         break;
       case 'analyses':
         this.showAnalyses = true;
@@ -703,6 +772,8 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.showLaboratoire = false;
         this.showPatient = false;
         this.showEpreuves = false;
+        this.showDossiers=false;
+        this.showExamins=false;
         break;
       case 'patients':
         this.showPatient = true;
@@ -711,6 +782,266 @@ export class LaboratoireDetailsComponent implements OnInit {
         this.showContacts = false;
         this.showLaboratoire = false;
         this.showEpreuves = false;
+        this.showDossiers=false;
+        this.showExamins=false;
+        break;
+       case 'dossiers':
+         this.showDossiers=true;
+         this.showPatient = false;
+         this.showAnalyses = false;
+         this.showUtilisateurs = false;
+         this.showContacts = false;
+         this.showLaboratoire = false;
+         this.showEpreuves = false;
+         this.showExamins=false;
     }
   }
+
+  deletePatient(idPatient: number) {
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet analyse ?')) {
+      this.PatientService.deletePatient(idPatient).subscribe({
+        next: () => {
+          alert('Analyse supprimée avec succès.');
+
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression de l’analyse:', err);
+          alert('Une erreur s’est produite lors de la suppression.');
+        }
+      });
+    }
+  }
+
+
+  updatePatient(idPatient: number) {
+
+    // Afficher le modal
+    this.isEditModalVisible2 = true;
+
+    this.PatientService.getPatient(idPatient).subscribe({
+      next: (response) => {
+        console.log('Détails du patient :', response);
+        this.patient = response;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des détails du laboratoire :', err);
+      },
+    });
+    // Pré-remplir les champs du formulaire avec les données actuelles
+    this.editPatientForm.patchValue({
+      idPatient: this.patient.idPatient,
+      nomComplet: this.patient.nomComplet,
+      dateNaissance: this.patient.dateNaissance,
+      adresse: this.patient.adresse,
+      sexe: this.patient.sexe,
+      telephone: this.patient.numTel,
+      email: this.patient.email,
+    });
+
+    // Récupérer les nouvelles valeurs du formulaire
+    const updatedPatient = this.editPatientForm.getRawValue();
+
+    // Créer un objet FormData pour envoyer les données
+    const formData = new FormData();
+
+    formData.append('nomComplet', updatedPatient.nomComplet);
+    formData.append('dateNaissance', updatedPatient.dateNaissance);
+    formData.append('adresse', updatedPatient.adresse);
+    formData.append('sexe', updatedPatient.sexe);
+    formData.append('numTel', updatedPatient.numTel);
+    formData.append('email', updatedPatient.email);
+
+    // Afficher les données dans la console pour vérification
+    console.log('Patient mis à jour :', updatedPatient);
+    console.log('FormData envoyé :', formData);
+
+    // Appel du service pour mettre à jour le patient
+    this.PatientService.updatePatient(idPatient, formData).subscribe({
+      next: (response) => {
+        console.log('Patient mis à jour avec succès !', response);
+        this.isEditModalVisible = false;
+        this.PatientService.getPatient(idPatient);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la mise à jour du patient :', err);
+      },
+    });
+  }
+
+  ouvrirDossier() {
+
+  }
+
+  navigateToExamin(numDossier:number) {
+this.showExamins=true;
+    this.showDossiers=false;
+    this.numDossier=numDossier;
+  }
+
+
+  onAddPatientSubmit(idlaboratoire:number) {
+
+
+    const patientData: patient = {
+      fkIdLaboratoire:idlaboratoire,
+      ...this.addPatientForm.value,
+    };
+
+    this.PatientService.addPatient(patientData).subscribe({
+      next: (response) => {
+        console.log('Patient ajouté avec succès', response);
+
+
+        const newPatientId = response.idPatient;
+
+
+        const dossierData = {
+          fkIdPatient: response.idPatient,
+          fkEmailUtilisateur: this.username,
+          date: new Date().toISOString().split('T')[0], // Exemple de date
+        };
+        this.DossierService.addDossier(dossierData).subscribe({
+          next: (dossierResponse) => {
+            console.log('Dossier créé avec succès :', dossierResponse);
+          },
+          error: (err) => {
+            console.error('Erreur lors de la création du dossier :', err);
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Erreur lors de l’ajout du patient :', err);
+      }
+    });
+  }
+  toggleModalDossier() {
+    this.isAddPatientModalVisible = !this.isAddPatientModalVisible;
+  }
+  chargerDossiersAvecPatients(): void {
+    this.DossierService.getDossiers().subscribe((dossiers: dossier[]) => {
+      // Filtrer les dossiers par fkEmailUtilisateur
+      const dossiersFiltres = dossiers.filter((dossier) => dossier.fkEmailUtilisateur === this.username);
+
+      // Mapper les dossiers filtrés avec les requêtes pour obtenir les patients
+      const requetesPatients = dossiersFiltres.map((dossier) =>
+        this.PatientService.getPatient(dossier.fkIdPatient).pipe(
+          map((patient: patient) => ({
+            ...dossier,
+            nomPatient: patient.nomComplet,
+          }))
+        )
+      );
+
+      // Attendre la fin de toutes les requêtes
+      forkJoin(requetesPatients).subscribe((resultats) => {
+        this.dossiersAvecPatients = resultats; // Dossiers enrichis avec les noms des patients
+        this.Dossiers = [...resultats]; // Initialiser les dossiers filtrés pour un usage futur
+      });
+    });
+  }
+  toggleModalExamen(laboratoireId: number) {
+    this.isAddExamenModalVisible = true;
+
+    // Réinitialisation des données
+    this.analyses = [];
+    this.epreuves = [];
+
+    // Récupération et filtrage des analyses par laboratoire
+    this.AnalyseService.getAnalyses().subscribe({
+      next: (analyses) => {
+        const filteredAnalyses = analyses.filter(
+          (analyse) => analyse.fkIdLaboratoire === laboratoireId
+        );
+
+        if (filteredAnalyses.length === 0) {
+          alert('Aucune analyse trouvée pour ce laboratoire.');
+          this.isAddExamenModalVisible = false; // Fermer le modal si aucune analyse trouvée
+          return;
+        }
+
+        console.log('Les analyses filtrées sont :', filteredAnalyses);
+        this.analyses = filteredAnalyses; // Stocker les analyses filtrées
+
+        // Récupérer toutes les épreuves pour les analyses filtrées
+        this.loadEpreuvesForAnalyses(filteredAnalyses);
+      },
+      error: (err) => {
+        console.error('Erreur lors du chargement des analyses :', err);
+        alert('Une erreur est survenue lors du chargement des analyses.');
+        this.isAddExamenModalVisible = false; // Fermer le modal en cas d'erreur
+      },
+    });
+  }
+
+// Fonction pour récupérer les épreuves associées à toutes les analyses filtrées
+  private loadEpreuvesForAnalyses(analyses: any[]) {
+    const epreuveRequests = analyses.map((analyse) =>
+      this.epreuveService.getAllEpreuvesByIdAnalyse(analyse.id)
+    );
+
+    // Exécuter toutes les requêtes en parallèle et combiner les résultats
+    forkJoin(epreuveRequests).subscribe({
+      next: (allEpreuves) => {
+        // `allEpreuves` est un tableau de tableaux d'épreuves
+        this.epreuves = allEpreuves.flat(); // Fusionner tous les tableaux en un seul
+        console.log('Toutes les épreuves récupérées :', this.epreuves);
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des épreuves :', err);
+        alert('Une erreur est survenue lors de la récupération des épreuves.');
+      },
+    });
+  }
+
+  onAddExamenSubmit() {
+    if (this.addExamenForm.invalid) {
+      alert('Veuillez remplir tous les champs requis.');
+      return;
+    }
+
+    const { fkIdEpreuve, fkIdTestAnalyse, resultat } = this.addExamenForm.value;
+
+    // Vérification si les analyses et les épreuves ont été récupérées
+    if (!this.analyses || !this.epreuves) {
+      alert('Les données nécessaires n\'ont pas été chargées. Veuillez réessayer.');
+      return;
+    }
+
+    // Vérification de l'épreuve sélectionnée
+    const selectedEpreuve = this.epreuves.find((e) => e.id === fkIdEpreuve);
+    if (!selectedEpreuve) {
+      alert('Épreuve introuvable pour cette analyse.');
+      return;
+    }
+
+    // Trouver l'analyse associée à l'épreuve sélectionnée
+    const selectedAnalyse = this.analyses.find((a) => a.id === selectedEpreuve.fkIdAnalyse);
+    if (!selectedAnalyse) {
+      alert('Analyse introuvable pour l\'épreuve sélectionnée.');
+      return;
+    }
+
+    // Construire l'objet pour l'examen avec l'ID de l'analyse et de l'épreuve
+    const examen = {
+      fkIdEpreuve: selectedEpreuve.id,   // ID de l'épreuve sélectionnée
+      fkIdAnalyse: selectedAnalyse.id,  // ID de l'analyse associée
+      resultat,                         // Résultat saisi dans le formulaire
+      fkIdTestAnalyse: selectedEpreuve.testAnalyse?.id,              // Autre champ provenant du formulaire
+     fkNumDossier:this.numDossier,
+    };
+
+    // Appel du service pour soumettre l'examen
+    this.serviceExamin.addExamin(examen).subscribe({
+      next: () => {
+        alert('Examen ajouté avec succès !');
+        this.toggleModalExamen(-1); // Fermer le modal après ajout
+        this.addExamenForm.reset();
+      },
+      error: (err) => {
+        console.error('Erreur lors de l\'ajout de l\'examen :', err);
+        alert('Une erreur est survenue. Veuillez réessayer.');
+      },
+    });
+  }
+
 }

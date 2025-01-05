@@ -14,6 +14,7 @@ export interface TestAnalyse {
 }
 
 export interface epreuve {
+  fkIdAnalyse:number;
   id: number;
   nom: string;
   testAnalyse?: TestAnalyse; // Ajout de la propriété testAnalyse

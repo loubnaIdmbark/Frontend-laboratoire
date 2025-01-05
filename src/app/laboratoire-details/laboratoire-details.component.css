@@ -34,6 +34,29 @@
 }
 
 
+.add-card {
+  border: 2px dashed #3498db;
+  background-color: #ecf6fc;
+  text-align: center;
+  color: #3498db;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+.add-card i {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.add-card:hover {
+  background-color: #dff3fd;
+}
+
 
 /* Styles généraux pour la sidebar */
 .sidebar {

@@ -15,6 +15,7 @@ export interface patient{
   numTel:string;
   email:string;
   visible_pour:string;
+  fkIdLaboratoire:number;
 }
 
 @Injectable({
@@ -22,7 +23,8 @@ export interface patient{
 })
 export class PatientService {
 
-  private apiUrlPatient ='http://localhost:8088/patients'
+  private apiUrlPatient = 'http://localhost:8088/patients'
+
   constructor(private http: HttpClient) {
   }
 
@@ -31,10 +33,22 @@ export class PatientService {
     return this.http.get<patient>(`${this.apiUrlPatient}/public/${fkIdPatient}`);
   }
 
-  addPatient(PatientData:patient):Observable<patient> {
+  getAllPatients(): Observable<patient[]> {
+    return this.http.get<patient[]>(`${this.apiUrlPatient}`);
+  }
+
+
+
+  deletePatient(idPatient: number):Observable<void> {
+    return this.http.delete<void>(`${this.apiUrlPatient}/${idPatient}`);}
+
+  addPatient(PatientData: patient): Observable<patient> {
     return this.http.post<patient>(`${this.apiUrlPatient}`, PatientData);
   }
-  updatePatient(idPatient:number,patientData:FormData): Observable<patient> {
-      return this.http.put<patient>(`${this.apiUrlPatient}/${idPatient}`, patientData);
-    }
+
+  updatePatient(idPatient: number, patientData: FormData): Observable<patient> {
+    return this.http.put<patient>(`${this.apiUrlPatient}/${idPatient}`, patientData);
+  }
+
+
 }
