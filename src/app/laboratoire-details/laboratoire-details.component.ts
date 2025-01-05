@@ -80,26 +80,32 @@ export class LaboratoireDetailsComponent implements OnInit {
   isEdiRoletModalVisible: boolean = false;
   laboratoires: Laboratoire[] = [];
   filteredLaboratoires: Laboratoire[] = [];
+  public username: string | null = null;
+  user: any = null;
+
+  profileForm!: FormGroup;
+  editMode = false;
+  isModifUserModalVisible: any;
   public utilisateurChartData = {
-    labels: ['techniciens', 'docteurs', 'patients'], // Ajoutez vos étiquettes ici
+    labels: ['techniciens', 'docteurs', 'admin'], 
     datasets: [
       {
-        label: 'Nom du dataset',
-        data: [20, 10, 30], // Les données numériques
-        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Facultatif
-        borderColor: 'rgba(75, 192, 192, 1)', // Facultatif
-        borderWidth: 1, // Facultatif
+        label: 'Utilisateurs',
+        data: [20, 10, 1], 
+        backgroundColor: 'rgba(75, 192, 192, 0.2)', 
+        borderColor: 'rgba(75, 192, 192, 1)', 
+        borderWidth: 1, 
       },
     ],
   };
   public anaid: number=0;
   public utilisateurChartType: ChartType = 'bar';
   public analyseChartData: ChartData<'bar'> = {
-    labels: ['Jan', 'Fév', 'Mar', 'Avr'], // Labels pour les axes
+    labels: ['Oct', 'Nov', 'Dec', 'Jan'], 
     datasets: [
       {
-        data: [10, 20, 30, 40], // Les valeurs des barres
-        label: 'Analyses', // Légende pour ce dataset
+        data: [150, 200, 190, 20], 
+        label: 'Analyses', 
         borderColor: 'rgb(84,111,239)',
         backgroundColor: 'rgba(84,111,239,0.38)',
       },
@@ -113,7 +119,7 @@ export class LaboratoireDetailsComponent implements OnInit {
   closeModal() {
     this.showModal = false;
     this.analyseId = null;
-    this.currentStep = 1; // Réinitialiser l'étape
+    this.currentStep = 1; 
   }
   previousStep() {
     if (this.currentStep > 1) {
@@ -121,10 +127,7 @@ export class LaboratoireDetailsComponent implements OnInit {
     }
   }
 
-
-  // Définir le type de graphique
   public analyseChartType: ChartType = 'bar';
-  /////////////
 
   constructor(
     private fb: FormBuilder,
@@ -146,8 +149,8 @@ export class LaboratoireDetailsComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
     });
     this.editRoleForm = this.fb.group({
-      email: ['', Validators.required], // Email de l'utilisateur
-      role: ['', Validators.required], // Nouveau rôle
+      email: ['', Validators.required], 
+      role: ['', Validators.required], 
     });
 
     this.addUtilisateurForm = this.fb.group({
@@ -253,16 +256,16 @@ export class LaboratoireDetailsComponent implements OnInit {
     }
   }
   editUserRole(user: any): void {
-    console.log('editUserRole called with:', user); // Debug log
+    console.log('editUserRole called with:', user); 
     this.editRoleForm.patchValue({
       email: user
     });
     console.log('values:', this.editRoleForm.value);
-    this.isEdiRoletModalVisible = true; // Affiche le modal
+    this.isEdiRoletModalVisible = true; 
   }
 
   toggleModalEdit(laboratoire: any): void {
-    console.log('openEditModal called with:', laboratoire); // Debug log
+    console.log('openEditModal called with:', laboratoire); 
     this.isEditModalVisible = true;
     this.isModalVisible = false;
     this.editLaboratoireForm.patchValue({
@@ -272,7 +275,7 @@ export class LaboratoireDetailsComponent implements OnInit {
       dateActivation: laboratoire.dateActivation,
       active: laboratoire.active,
     });
-    this.cdr.markForCheck(); // Forcer la mise à jour de l'affichage si nécessaire
+    this.cdr.markForCheck(); 
     console.log('isEditModalVisible:', this.isEditModalVisible);
   }
   closeEditModal(): void {
@@ -288,12 +291,12 @@ export class LaboratoireDetailsComponent implements OnInit {
       const reader = new FileReader();
 
       reader.onload = (e: any) => {
-        // Convert the file to a Base64 string with the appropriate MIME type
-        const base64String = e.target.result; // Already prefixed with data:image/...;base64,
+      
+        const base64String = e.target.result;
         this.editLaboratoireForm.patchValue({ logo: base64String });
       };
 
-      reader.readAsDataURL(file); // Read the file as a Data URL (Base64 encoded string)
+      reader.readAsDataURL(file);
     } else {
       console.warn('No file selected or input is empty.');
       this.editLaboratoireForm.patchValue({ logo: null });
@@ -318,7 +321,6 @@ export class LaboratoireDetailsComponent implements OnInit {
   getAnalyse(id: number): void {
     this.AnalyseService.getAnalyses().subscribe(
       (analyse) => {
-        // Filtrage des utilisateurs par fkIdLaboratoire
         this.analyse = analyse.filter(
           (analyse) => analyse.fkIdLaboratoire === id
         );
@@ -333,19 +335,15 @@ export class LaboratoireDetailsComponent implements OnInit {
 
   onEditLaboratoireSubmit(id: number): void {
     if (this.editLaboratoireForm.valid) {
-      // Extract the form values
       const rawValues = this.editLaboratoireForm.getRawValue();
 
-      // Convert the form values into a JSON object
       const payload: any = { ...rawValues };
 
-      // Handle the file separately, convert it to Base64 (if applicable)
       if (payload.logo instanceof File) {
         const reader = new FileReader();
         reader.onload = (event: any) => {
-          payload.logo = event.target.result.split(',')[1]; // Extract the Base64 string
+          payload.logo = event.target.result.split(',')[1];
 
-          // Send the JSON payload
           this.laboratoireService.updateLaboratoroire(id, payload).subscribe({
             next: () => {
               this.isEditModalVisible = false;
@@ -360,9 +358,8 @@ export class LaboratoireDetailsComponent implements OnInit {
             },
           });
         };
-        reader.readAsDataURL(payload.logo); // Read the file as Base64
+        reader.readAsDataURL(payload.logo); 
       } else {
-        // If no file, send the JSON payload directly
         this.laboratoireService.updateLaboratoroire(id, payload).subscribe({
           next: () => {
             this.isEditModalVisible = false;
@@ -384,25 +381,19 @@ export class LaboratoireDetailsComponent implements OnInit {
     this.laboratoireService.getLaboratoireById(id).subscribe({
       next: (laboratoire: Laboratoire) => {
         if (laboratoire) {
-          // Modify the 'active' attribute
           laboratoire.active = false;
 
-          // Prepare the payload
           const payload: any = { ...laboratoire };
 
-          // Handle the logo file if it exists
           if (payload.logo instanceof File) {
             const reader = new FileReader();
             reader.onload = (event: any) => {
-              // Convert the logo to Base64 and update the payload
               payload.logo = event.target.result.split(',')[1];
 
-              // Send the JSON payload with the Base64 string
               this.sendDesactivateRequest(id, payload);
             };
-            reader.readAsDataURL(payload.logo); // Read the file as Base64
+            reader.readAsDataURL(payload.logo); 
           } else {
-            // If no file, send the JSON payload directly
             this.sendDesactivateRequest(id, payload);
           }
         }
@@ -449,7 +440,7 @@ export class LaboratoireDetailsComponent implements OnInit {
   toggleModal(): void {
     this.isModalVisible = !this.isModalVisible;
     if (this.isModalVisible) {
-      this.isEditModalVisible = false; // S'assurer que le modal de modification est fermé
+      this.isEditModalVisible = false; 
     } else {
       this.resetForms();
     }
@@ -669,6 +660,7 @@ export class LaboratoireDetailsComponent implements OnInit {
     }
 
   }
+  
 
   toggleSection(section: string) {
     switch (section) {

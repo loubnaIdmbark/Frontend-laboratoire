@@ -52,7 +52,7 @@
     font-size: 1.2rem;
   }
   .auth-container {
-    background-image: url("../../../public/img_1.png");
+    background-image: url("../../assets/labo-image.jpg");
     background-size: cover;
     background-position: center;
     display: flex;
@@ -64,10 +64,9 @@
   }
   
   .auth-card {
-    background-color: transparent;
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 2rem;
     border-radius: 12px;
-    box-shadow: 0 8px 16px rgb(28, 26, 26);
     text-align: center;
     width: 100%;
     max-width: 400px;
@@ -105,7 +104,7 @@
     padding: 0.8rem;
     font-size: 16px;
     color: #fff;
-    background-color: #007bff;
+    background-color: #81c785;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -114,7 +113,7 @@
   }
   
   .auth-card button:hover {
-    background-color: #0056b3;
+    background-color: #6bdf70;
     transform: translateY(-2px); /* Effet de survol sur le bouton */
   }
   
@@ -124,14 +123,14 @@
   
   .auth-card a {
     font-size: 14px;
-    color: #007bff;
+    color: #81c785;
     text-decoration: none;
     margin-top: 1rem;
     transition: color 0.3s;
   }
   
   .auth-card a:hover {
-    color: #0056b3;
+    color: #6bdf70;
     text-decoration: underline;
   }
   
@@ -224,7 +223,7 @@ button {
   padding: 0.8rem;
   font-size: 16px;
   color: #fff;
-  background-color: #007bff; /* Consistent button color */
+  background-color: #81c785; /* Consistent button color */
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -233,7 +232,7 @@ button {
 }
 
 .modal-content button:hover {
-  background-color: #0056b3; /* Same hover effect */
+  background-color: #6bdf70; /* Same hover effect */
   transform: translateY(-2px);
 }
 

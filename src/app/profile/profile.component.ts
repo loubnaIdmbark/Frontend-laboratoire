@@ -24,12 +24,8 @@ export class ProfileComponent implements OnInit {
   constructor(private fb: FormBuilder, private authService: AuthService, private http: HttpClient) {}
 
   ngOnInit(): void {
-    // Récupérer le nom d'utilisateur
     this.username = this.authService.getUsername();
-    console.log('Username in ProfileComponent:', this.username);
-
     if (this.username) {
-      // Récupérer les données utilisateur en fonction du username
       this.getUserData(this.username);
     }
   }
