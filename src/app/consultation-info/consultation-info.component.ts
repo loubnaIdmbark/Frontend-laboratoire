@@ -5,7 +5,7 @@ import { DossierService } from '../services/dossier.service';
 import { CommonModule } from '@angular/common';
 import { UtilisateurService } from '../services/utilisateurs.service';
 import { PatientService } from '../services/patient.service';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { generatePdf } from '../utils/generatePdf';
 import { PdfTemplateComponent } from '../pdf-template/pdf-template.component';
 import { LaboratoireService } from '../services/laboratoire.service';
@@ -14,42 +14,57 @@ import { LaboratoireService } from '../services/laboratoire.service';
   selector: 'app-consultation-info',
   standalone: true,
   imports: [
-    CommonModule, SidebarConsultationComponent, FormsModule, PdfTemplateComponent
+    CommonModule, SidebarConsultationComponent, FormsModule, ReactiveFormsModule, PdfTemplateComponent
   ],
   templateUrl: './consultation-info.component.html',
   styleUrls: ['./consultation-info.component.css']
 })
 export class ConsultationInfoComponent implements OnInit {
-  activeTab: string = 'laboratoire';
+  activeTab: string = 'laboratoire';  // Default tab
   codeDossier: string | null = null;
   dossier: any;
   filterKeyword: string = '';
   filteredExamins: any[] = [];
   selectedExam: any = null;
+  isEditingProfile: boolean = false;
+  profileFormData: any = {};
+  profileForm: FormGroup;
+  editMode = false;
 
   constructor(private route: ActivatedRoute, 
     private dossierService: DossierService,
     private utilisateurService: UtilisateurService,
     private patientService: PatientService, 
-    private laboratoireService: LaboratoireService
-  ) {}
+    private laboratoireService: LaboratoireService,
+    private fb: FormBuilder
+  ) {
+    this.profileForm = this.fb.group({
+      nomComplet: ['', Validators.required],
+      dateNaissance: ['', Validators.required],
+      lieuDeNaissance: ['', Validators.required],
+      sexe: ['', Validators.required],
+      adresse: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      numTel: ['', Validators.required]
+    });
+  }
 
   ngOnInit(): void {
     // Retrieve the codeDossier from route parameters
     this.codeDossier = this.route.snapshot.paramMap.get('codeDossier');
     console.log('Code Dossier:', this.codeDossier);
-  
+
     // Fetch dossier information
     this.loadDossierInfo();
   }
-  
+
   loadDossierInfo(): void {
     if (this.codeDossier) {
       this.dossierService.getDossierByCode(this.codeDossier).subscribe(
         (dossierResponse) => {
           console.log('Dossier Info:', dossierResponse);
           this.dossier = dossierResponse;
-  
+
           // Fetch related information
           this.fetchAdditionalInfo(dossierResponse);
 
@@ -61,11 +76,9 @@ export class ConsultationInfoComponent implements OnInit {
         }
       );
     }
-
   }
-  
-  fetchAdditionalInfo(dossier: any): void {
 
+  fetchAdditionalInfo(dossier: any): void {
     // Fetch user details
     if (dossier.fkEmailUtilisateur) {
       this.utilisateurService.getUtilisateurByEmail(dossier.fkEmailUtilisateur).subscribe(
@@ -78,7 +91,7 @@ export class ConsultationInfoComponent implements OnInit {
         }
       );
     }
-  
+
     // Fetch patient details
     if (dossier.fkIdPatient) {
       this.patientService.getPatient(dossier.fkIdPatient).subscribe(
@@ -102,7 +115,7 @@ export class ConsultationInfoComponent implements OnInit {
         }
       );
     }
-  
+
     // Fetch epreuve and analyse details for each examination
     if (dossier.examins) {
       dossier.examins.forEach((examin: any) => {
@@ -117,7 +130,7 @@ export class ConsultationInfoComponent implements OnInit {
             }
           );
         }
-  
+
         if (examin.fkIdTestAnalyse) {
           this.dossierService.getTestAnalyseByEpreuve(examin.fkIdTestAnalyse).subscribe(
             (analyseResponse) => {
@@ -152,14 +165,14 @@ export class ConsultationInfoComponent implements OnInit {
   onGeneratePdf(): void {
     console.log('Filtered Examins:', this.filteredExamins);
     const selectedExamins = this.filteredExamins.filter((exam: any) => exam.selected);
-  
+
     if (selectedExamins.length === 0) {
       alert('Please select at least one examination to generate a PDF report.');
       return;
     }
-  
+
     this.selectedExam = selectedExamins;
-  
+
     // Use timeout to ensure the template is updated before fetching the element
     setTimeout(() => {
       const element = document.getElementById('pdf-template');
@@ -173,5 +186,30 @@ export class ConsultationInfoComponent implements OnInit {
 
   onTabSelected(tab: string): void {
     this.activeTab = tab;
+  }
+
+  toggleProfileEdit(): void {
+    this.isEditingProfile = !this.isEditingProfile;
+  }
+
+  cancelEdit(): void {
+    this.isEditingProfile = false;
+    this.profileFormData = {};
+  }
+
+  saveProfile(): void {
+    if (this.profileForm.valid) {
+      const updatedProfile = this.profileForm.value;
+      this.patientService.updatePatient(this.dossier.fkIdPatient, updatedProfile).subscribe(
+        (response) => {
+          console.log('Profile updated successfully:', response);
+          this.dossier.userDetails = updatedProfile;
+          this.isEditingProfile = false;
+        },
+        (error) => {
+          console.error('Error updating profile:', error);
+        }
+      );
+    }
   }
 }
