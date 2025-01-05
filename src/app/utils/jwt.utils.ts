@@ -8,6 +8,8 @@ export function isTokenExpired(token: string): boolean {
   return payload.exp < currentTime;
 }
 
+
+
 export function getRolesFromToken(token: string): string[] {
   if (!token) {
     return [];
@@ -22,4 +24,5 @@ export function getRolesFromToken(token: string): string[] {
     return [];
   }
 }
+
 

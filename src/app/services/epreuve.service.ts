@@ -28,8 +28,8 @@ export class epreuveService{
   constructor(private http: HttpClient) {
   }
 
-  getepreuve(): Observable<epreuve[]> {
-    return this.http.get<epreuve[]>(this.apiUrl);
+  getepreuve(id:number): Observable<epreuve> {
+    return this.http.get<epreuve>(`${this.apiUrl}/${id}`);
   }
   getAllEpreuvesByIdAnalyse(id:number): Observable<epreuve[]> {
     return this.http.get<epreuve[]>(`${this.apiUrl}/byAnalyse/${id}`);

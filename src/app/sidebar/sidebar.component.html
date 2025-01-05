@@ -9,6 +9,7 @@
   <ul>
     <li>
       <a
+        *ngIf="isRole('ADMIN')"
         href="laboratoire"
         [class.active]="activeMenu === 'laboratoires'"
         (click)="activeMenu = 'laboratoires'"
@@ -19,6 +20,7 @@
     </li>
     <li>
       <a
+        *ngIf="isRole('ADMIN')"
         href="NonActifs"
         [class.active]="activeMenu === 'archive'"
         (click)="activeMenu = 'archive'"

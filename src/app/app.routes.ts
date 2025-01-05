@@ -16,6 +16,7 @@ export const appRoutes: Routes = [
   { path: 'consultation', component: ConsultationComponent },
   { path: 'laboratoire', component: LaboratoireComponent },
 
+
   { path: 'patient/:fkIdPatient', component: PatientComponent },
   { path: 'NonActifs', component: LaboratoiresNonActivesComponent },
   { path: 'profile', component: ProfileComponent },
@@ -26,5 +27,6 @@ export const appRoutes: Routes = [
   { path: 'login/:mode', component: LoginComponent },
   { path: 'laboratoire', component: LaboratoireComponent },
   { path: '', redirectTo: '/login', pathMatch: 'full' }, // Redirection par défaut vers /login
-  { path: '**', redirectTo: '/login' }, // Route wildcard pour les URL non trouvées
+  { path: 'not-authorized', redirectTo: '/login' }, // Route wildcard pour les URL non trouvées
+
 ];

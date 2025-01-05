@@ -6,6 +6,7 @@ import {CommonModule, DatePipe} from '@angular/common';
 import {Router, RouterOutlet} from '@angular/router';
 import {SidebarComponent} from '../sidebar/sidebar.component';
 import {NavbarComponent} from "../navbar/navbar.component";
+
 @Component({
   selector: 'app-laboratoire',
   templateUrl: './laboratoire.component.html',
@@ -35,7 +36,7 @@ export class LaboratoireComponent implements OnInit {
   contactForm: FormGroup;
   searchQuery: string = ''; // Valeur de recherche
 
-  constructor(private laboratoireService: LaboratoireService, private fb: FormBuilder,private router: Router, private loginService: AuthService) {
+  constructor(private authService:AuthService,private laboratoireService: LaboratoireService, private fb: FormBuilder,private router: Router, private loginService: AuthService) {
     // Formulaire pour le laboratoire
     this.laboratoireForm = this.fb.group({
       nom: ['', Validators.required],
@@ -73,7 +74,10 @@ export class LaboratoireComponent implements OnInit {
       this.resetForms();
     }
   }
+  isRole(role: string): boolean {
+    return this.authService.getUserRoles().includes(role);
 
+  }
   toggleSidebar(): void {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }

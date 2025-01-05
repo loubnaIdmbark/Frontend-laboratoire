@@ -38,7 +38,7 @@
     </li>
     <li>
       <a
-
+       *ngIf="isRole('ADMIN')"
         [class.active]="activeMenu === 'analyses'"
         (click)="activeMenu = 'analyses';toggleSection('analyses')">
         <i class="fas fa-vial"></i>
@@ -47,7 +47,7 @@
     </li>
     <li>
       <a
-
+        *ngIf="isRole('ADMIN')"
         [class.active]="activeMenu === 'utilisateurs'"
         (click)="activeMenu = 'utilisateurs'; toggleSection('utilisateurs')">
         <i class="fas fa-users"></i>
@@ -56,6 +56,7 @@
     </li>
     <li>
       <a
+        *ngIf="isRole('ADMIN')"
         [class.active]="activeMenu === 'patients'"
         (click)="activeMenu = 'patients'; toggleSection('patients')">
         <i class="fas fa-procedures"></i>
@@ -64,6 +65,7 @@
     </li>
     <li>
       <a
+        *ngIf="isRole('technicien')"
         [class.active]="activeMenu === 'dossiers'"
         (click)="activeMenu = 'dossiers'; toggleSection('dossiers')">
         <i class="fas fa-archive"></i>
@@ -271,7 +273,8 @@
   <!-- Section des examins -->
   <div *ngIf="showExamins" >
     <div class="card-header  text-dark d-flex justify-content-between align-items-center">
-      <i class="fas fa-vial text-primary me-2"></i>
+      <i class="fas fa-heartbeat text-info me-3 fa-2x"></i>
+
       <h5 class="mb-0">Examins associées à ce patient</h5>
 
       <button class="btn btn-primary" (click)="toggleModalExamen(laboratoire.id)">
@@ -288,25 +291,22 @@
                 <div class="d-flex align-items-center justify-content-between mb-3">
                   <!-- Contenu aligné à gauche -->
                   <div class="d-flex align-items-center flex-grow-1">
-                    <i class="fas fa-flask text-info me-3 fa-2x"></i>
-                    <h5 class="card-title  mb-0">{{ examin.nom }}</h5>
+                    <i class="fas fa-heartbeat text-info me-3 fa-2x"></i>
+
+                    <h5 class="card-title  mb-0">{{ examin.id }}</h5>
                   </div>
 
                   <!-- Icône de suppression alignée à droite -->
-                  <button class="btn btn-danger fa-2x" (click)="deleteAnalyse(examin.id)">
+                  <button class="btn btn-danger fa-2x" (click)="deleteExamin(examin.id)">
                     <i class="fas fa-trash"></i>
                   </button>
                 </div>
 
                 <p class="card-text text-muted">
-                  <strong>Description :</strong> {{ examin.resultat }}
+                  <strong>Resultats :</strong> {{ examin.resultat }}
                 </p>
               </div>
-              <div class="card-footer text-end bg-light">
-                <button class="btn btn-outline-primary btn-sm"(click)="navigateToEpreuveDetails(examin.id)">
-                  Voir les epreuves <i class="fas fa-arrow-right"></i>
-                </button>
-              </div>
+
             </div>
           </div>
         </div>

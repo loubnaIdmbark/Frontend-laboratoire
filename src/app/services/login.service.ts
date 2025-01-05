@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
-import { isTokenExpired, getRolesFromToken } from '../utils/jwt.utils';
+import {isTokenExpired, getRolesFromToken} from '../utils/jwt.utils';
 
 @Injectable({
   providedIn: 'root',
@@ -111,9 +111,10 @@ export class AuthService {
     sessionStorage.removeItem(this.usernameKey);
     console.log('Username removed from session');
   }
-  
+
   getUserRoles(): string[] {
     const token = this.getAccessToken();
     return token ? getRolesFromToken(token) : [];
   }
+
 }

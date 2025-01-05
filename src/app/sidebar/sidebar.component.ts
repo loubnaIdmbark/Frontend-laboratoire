@@ -20,7 +20,10 @@ export class SidebarComponent {
     this.authService.logout();
     this.router.navigate(['/login']);
   }
+  isRole(role: string): boolean {
+    return this.authService.getUserRoles().includes(role);
 
+  }
   toggleSidebar(): void {
     this.isSidebarCollapsed = !this.isSidebarCollapsed;
   }

@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services/login.service';
 import { catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
+import {UtilisateurService,utilisateur} from '../services/utilisateurs.service';
 
 @Component({
     selector: 'app-login',
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private UtilisateurService:UtilisateurService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -76,9 +78,33 @@ export class LoginComponent implements OnInit {
         .subscribe((response) => {
           if (response) {
             console.log('Login successful', response);
-            this.router.navigate(['/laboratoire']); // Navigate to dashboard on success
+
+            // Récupérer les rôles
+            const roles = this.authService.getUserRoles();
+
+
+            this.UtilisateurService.getUtilisateurByEmail(email).subscribe((utilisateur) => {
+              if (utilisateur) {
+                const laboratoireId = utilisateur.fkIdLaboratoire;
+                console.log('Laboratoire ID:', laboratoireId);
+
+                // Rediriger selon le rôle
+                if (roles.includes('ADMIN')) {
+                  this.router.navigate(['/laboratoire']);
+                } else if (roles.includes('Technicien') || roles.includes('adminlabo')) {
+                  this.router.navigate([`/details/:${laboratoireId}`]);
+                } else {
+                  this.router.navigate(['/not-authorized']);
+                }
+              } else {
+                console.error('Utilisateur introuvable.');
+                this.errorMessage = 'User not found. Please contact support.';
+              }
+            });
           }
         });
     }
   }
+
+
 }

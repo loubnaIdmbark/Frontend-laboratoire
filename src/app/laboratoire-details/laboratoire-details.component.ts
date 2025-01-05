@@ -32,8 +32,8 @@ import { testAnalyse } from '../services/testAnalyse.sevice';
 import {epreuve, epreuveService} from '../services/epreuve.service';
 import {PatientService,patient} from '../services/patient.service';
 import {DossierService,dossier} from '../services/dossier.service';
-import { forkJoin, map } from 'rxjs';
-import {serviceExamin} from '../services/examin.service';
+import {forkJoin, map, Observable} from 'rxjs';
+import {examin, serviceExamin} from '../services/examin.service';
 
 @Component({
   selector: 'app-laboratoire-details',
@@ -59,6 +59,7 @@ export class LaboratoireDetailsComponent implements OnInit {
   analyseId: number | null = null;
   epreuveForm: FormGroup;
   analyseForm: FormGroup;
+
   currentStep = 1;
   testAnalyseForm: FormGroup;
   username:string | null="null";
@@ -72,11 +73,13 @@ export class LaboratoireDetailsComponent implements OnInit {
   showDossiers: boolean=false;
   showEpreuves = false;
   showExamins:boolean=false;
-  examins:any;
+  examins:examin[]= [];
   isAddExamenModalVisible:boolean=false;
   isAddPatientModalVisible:boolean=false;
   epreuves: epreuve[] = [];
   patients: patient[]=[];
+
+  epreuve:any;
   patient:any;
   analyses: any[] = [];
   showPatient: boolean = false;
@@ -146,6 +149,7 @@ export class LaboratoireDetailsComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
+
     private testAnalyse: testAnalyse,
     private PatientService:PatientService,
     private DossierService:DossierService,
@@ -221,6 +225,11 @@ export class LaboratoireDetailsComponent implements OnInit {
       numTel: ['', [Validators.required, Validators.pattern('^[0-9]{10}$')]],
       email: ['', [Validators.required, Validators.email]],
       visiblePour: ['', [Validators.required]]
+    });this.addExamenForm = this.fb.group({
+      fkIdEpreuve: [null, Validators.required],
+      fkIdTestAnalyse: [null, Validators.required],
+      resultat: ['', Validators.required],
+
     });
   }
 
@@ -264,7 +273,7 @@ export class LaboratoireDetailsComponent implements OnInit {
   editPatientForm:  FormGroup;
   addPatientForm:FormGroup;
   Dossiers: any;
-  addExamenForm: any;
+  addExamenForm!: FormGroup;
 
 
   toggleSidebar() {
@@ -872,10 +881,23 @@ export class LaboratoireDetailsComponent implements OnInit {
 
   }
 
-  navigateToExamin(numDossier:number) {
-this.showExamins=true;
-    this.showDossiers=false;
-    this.numDossier=numDossier;
+  navigateToExamin(numDossier: number) {
+    this.showExamins = true; // Affiche les examens
+    this.showDossiers = false; // Masque les dossiers
+    this.numDossier = numDossier; // Stocke le numéro de dossier
+    console.log(this.numDossier);
+
+    // Appel du service pour récupérer les examens
+    this.serviceExamin.getExamins().subscribe({
+      next: (response) => {
+        console.log('Examens récupérés avec succès', response);
+        this.examins = response;
+      },
+      error: (err) => {
+        console.error('Erreur lors de la récupération des examens :', err);
+        alert('Impossible de récupérer les examens. Veuillez réessayer.');
+      },
+    });
   }
 
 
@@ -946,7 +968,7 @@ this.showExamins=true;
     this.analyses = [];
     this.epreuves = [];
 
-    // Récupération et filtrage des analyses par laboratoire
+
     this.AnalyseService.getAnalyses().subscribe({
       next: (analyses) => {
         const filteredAnalyses = analyses.filter(
@@ -973,7 +995,7 @@ this.showExamins=true;
     });
   }
 
-// Fonction pour récupérer les épreuves associées à toutes les analyses filtrées
+
   private loadEpreuvesForAnalyses(analyses: any[]) {
     const epreuveRequests = analyses.map((analyse) =>
       this.epreuveService.getAllEpreuvesByIdAnalyse(analyse.id)
@@ -994,48 +1016,31 @@ this.showExamins=true;
   }
 
   onAddExamenSubmit() {
+    // Vérifiez si le formulaire est valide
     if (this.addExamenForm.invalid) {
       alert('Veuillez remplir tous les champs requis.');
       return;
     }
 
-    const { fkIdEpreuve, fkIdTestAnalyse, resultat } = this.addExamenForm.value;
+    // Récupération des données du formulaire
+    const { fkIdEpreuve, resultat } = this.addExamenForm.value;
+     this.epreuve =this.epreuveService.getepreuve(fkIdEpreuve);
 
-    // Vérification si les analyses et les épreuves ont été récupérées
-    if (!this.analyses || !this.epreuves) {
-      alert('Les données nécessaires n\'ont pas été chargées. Veuillez réessayer.');
-      return;
-    }
+      const examen = {
+        fkIdEpreuve,
+        fkIdAnalyse: this.epreuve.testAnalyse,
+        resultat,
+        fkNumDossier: this.numDossier,
 
-    // Vérification de l'épreuve sélectionnée
-    const selectedEpreuve = this.epreuves.find((e) => e.id === fkIdEpreuve);
-    if (!selectedEpreuve) {
-      alert('Épreuve introuvable pour cette analyse.');
-      return;
-    }
-
-    // Trouver l'analyse associée à l'épreuve sélectionnée
-    const selectedAnalyse = this.analyses.find((a) => a.id === selectedEpreuve.fkIdAnalyse);
-    if (!selectedAnalyse) {
-      alert('Analyse introuvable pour l\'épreuve sélectionnée.');
-      return;
-    }
-
-    // Construire l'objet pour l'examen avec l'ID de l'analyse et de l'épreuve
-    const examen = {
-      fkIdEpreuve: selectedEpreuve.id,   // ID de l'épreuve sélectionnée
-      fkIdAnalyse: selectedAnalyse.id,  // ID de l'analyse associée
-      resultat,                         // Résultat saisi dans le formulaire
-      fkIdTestAnalyse: selectedEpreuve.testAnalyse?.id,              // Autre champ provenant du formulaire
-     fkNumDossier:this.numDossier,
-    };
+      };
+    console.log(examen)
 
     // Appel du service pour soumettre l'examen
     this.serviceExamin.addExamin(examen).subscribe({
       next: () => {
         alert('Examen ajouté avec succès !');
         this.toggleModalExamen(-1); // Fermer le modal après ajout
-        this.addExamenForm.reset();
+        this.addExamenForm.reset(); // Réinitialiser le formulaire
       },
       error: (err) => {
         console.error('Erreur lors de l\'ajout de l\'examen :', err);
@@ -1044,4 +1049,19 @@ this.showExamins=true;
     });
   }
 
+  deleteExamin(id:number){
+    if (confirm('Êtes-vous sûr de vouloir supprimer cet examin ?')) {
+    this.serviceExamin.deleteExamin(id).subscribe({
+      next: () => {
+        alert('examin supprimé avec succès.');
+
+      },
+      error: (err) => console.error('Erreur lors du suppression :', err),
+    });
+    }
+  }
+  isRole(role: string): boolean {
+    return this.authService.getUserRoles().includes(role);
+
+  }
 }
