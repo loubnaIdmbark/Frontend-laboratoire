@@ -84,6 +84,7 @@ export class LoginComponent implements OnInit {
 
 
             this.UtilisateurService.getUtilisateurByEmail(email).subscribe((utilisateur) => {
+              console.log('Utilisateur:', utilisateur);
               if (utilisateur) {
                 const laboratoireId = utilisateur.fkIdLaboratoire;
                 console.log('Laboratoire ID:', laboratoireId);
@@ -91,8 +92,9 @@ export class LoginComponent implements OnInit {
                 // Rediriger selon le rôle
                 if (roles.includes('ADMIN')) {
                   this.router.navigate(['/laboratoire']);
-                } else if (roles.includes('Technicien') || roles.includes('adminlabo')) {
-                  this.router.navigate([`/details/:${laboratoireId}`]);
+                } else if (roles.includes('technicien') || roles.includes('adminlabo')) {
+                  console.log('Technicien ou adminlabo');
+                  this.router.navigate([`/details/${laboratoireId}`]);
                 } else {
                   this.router.navigate(['/not-authorized']);
                 }
