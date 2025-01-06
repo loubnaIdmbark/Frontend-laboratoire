@@ -1,10 +1,4 @@
 <div class="sidebar" [class.collapsed]="isSidebarCollapsed">
-  <button class="toggle-btn" (click)="toggleSidebar()">
-    <i
-      class="fas"
-      [ngClass]="isSidebarCollapsed ? 'fa-chevron-right' : 'fa-chevron-left'"
-    ></i>
-  </button>
   <h3 *ngIf="!isSidebarCollapsed">Menu</h3>
   <ul>
     <li>
