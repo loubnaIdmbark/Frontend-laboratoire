@@ -1,166 +1,157 @@
 .sidebar {
-    position: fixed;
-    left: 0;
-    height: 100vh;
-    width: 250px;
-    background-color: #439247;
-    color: white;
-    padding: 20px;
-    transition: width 0.3s ease-in-out;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    z-index: 1000;
-    box-sizing: border-box;
-    overflow-x: hidden; /* Prevent horizontal scroll */
-  }
+  position: fixed;
+  left: 0;
+  height: 100vh;
+  width: 250px;
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+  transition: width 0.3s ease-in-out;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  box-sizing: border-box;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
 
-  .sidebar-content {
-    margin: auto;
-    margin-left: 0;
-    align-items: center;
-  }
+.sidebar-content {
+  margin-top: 150px;
+  align-items: center;
+}
 
-  .lab-header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .sidebar.collapsed {
-    width: 80px;
-  }
-  
-  .sidebar.collapsed ul li a {
-    padding-left: 10px;
-  }
-  
-  .sidebar.collapsed ul li a i {
-    font-size: 1.2rem; /* Adjust icon size */
-  }
-  
-  .sidebar h3 {
-    margin: 0 0 20px;
-    font-size: 1.2rem;
-  }
-  
-  .sidebar.collapsed h3 {
-    display: none;
-  }
-  
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .sidebar ul li {
-    margin-bottom: 15px;
-  }
-  
-  .sidebar ul li a {
-    text-decoration: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    font-size: 1.1rem;
-    padding: 10px;
-    border-radius: 8px;
-    transition: background 0.3s ease;
-  }
-  
-  .sidebar ul li a:hover {
-    background-color: #175e1a;
-  }
-  
-  .sidebar ul li a.active {
-    background-color: #175e1a;
-  }
-  
-  .sidebar ul li a i {
-    margin-right: 10px;
-  }
+.sidebar.collapsed {
+  width: 80px;
+}
 
-  .lab-logo {
-    width: 150px; 
-    height: 150px; 
-    margin: auto;
-    border-radius: 50%;
-  }
-  
-  .lab-name {
-    font-size: 1.5rem;
-    color: white;
-    font-weight: bold;
-    text-align: center;
-    text-transform: capitalize;
-    margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-  
-  
-  .toggle-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background-color: #2c3e50;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 16px;
-    transition: transform 0.3s ease;
-  }
-  
-  .sidebar.collapsed .toggle-btn {
-    right: 10px;
-  }
-  
-  .sidebar.collapsed + .main-content {
-    margin-left: 80px;
-    width: calc(100% - 80px);
-  }
-  
-  
-  .sidebar a.active {
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 4px;
-    font-weight: bold;
-  }
-  
-  .sidebar a.active i {
-    color: #fff;
-  }
-  
-  .sidebar-footer {
-    position: relative; /* Changed to relative */
-    margin-top: auto; /* Ensure it stays at the bottom without overlapping content */
-    width: 100%; /* Adjust width for full content */
-    background-color: #439247;
-    color: white;
-    font-size: 0.8rem;
-  }
-  
-  .logout-btn {
-    background-color: #e74c3c;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 25px;
-    font-size: 14px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: background-color 0.3s ease;
-    margin: auto;
-  }
-  
-  .logout-btn i {
-    margin-right: 10px;
-  }
-  
+.sidebar.collapsed ul li a {
+  padding-left: 10px;
+}
+
+.sidebar.collapsed ul li a i {
+  font-size: 1.2rem; /* Adjust icon size */
+}
+
+.sidebar h3 {
+  margin: 0 0 20px;
+  font-size: 1.2rem;
+}
+
+.sidebar.collapsed h3 {
+  display: none;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar ul li {
+  margin-bottom: 15px;
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: white;
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+  background-color: #34495e;
+}
+
+.sidebar ul li a.active {
+  background-color: #1abc9c;
+}
+
+.sidebar ul li a i {
+  margin-right: 10px;
+}
+
+.lab-logo {
+  width: 100%; /* Ajuste automatiquement la largeur au conteneur parent */
+  max-width: 200px; /* Taille maximale pour le logo */
+  height: auto; /* Maintient le ratio d'aspect */
+  object-fit: contain; /* Assure que l'image est entièrement visible sans distorsion */
+  margin: auto;
+}
+
+.lab-name {
+  font-size: 1.5rem; /* Taille de police adaptée */
+  color: white; /* Couleur blanche pour correspondre à la sidebar */
+  font-weight: bold; /* Met en gras le nom */
+  text-align: center; /* Centre le texte */
+  text-transform: capitalize; /* Met la première lettre en majuscule */
+  margin: 0; /* Supprime les marges par défaut */
+  overflow: hidden; /* Évite les débordements */
+  text-overflow: ellipsis; /* Ajoute des points de suspension si le texte est trop long */
+  white-space: nowrap; /* Empêche les retours à la ligne */
+}
+
+
+.toggle-btn {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.3s ease;
+}
+
+.sidebar.collapsed .toggle-btn {
+  right: 10px;
+}
+
+.sidebar.collapsed + .main-content {
+  margin-left: 80px;
+  width: calc(100% - 80px);
+}
+
+
+.sidebar a.active {
+  background-color: #007bff;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.sidebar a.active i {
+  color: #fff;
+}
+
+.sidebar-footer {
+  position: relative; /* Changed to relative */
+  margin-top: auto; /* Ensure it stays at the bottom without overlapping content */
+  width: 100%; /* Adjust width for full content */
+  background-color: #2c3e50;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.logout-btn {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  transition: background-color 0.3s ease;
+}
+
+.logout-btn i {
+  margin-right: 10px;
+}

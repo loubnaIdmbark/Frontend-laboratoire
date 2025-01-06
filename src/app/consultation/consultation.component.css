@@ -1,211 +1,93 @@
 
 .page-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh; /* Utilise toute la hauteur de l'écran */
-  }
-  .navbar {
-  
-    width: 100%;
-    height: 7%;
-    background-color: rgba(51, 51, 51, 0.8);
-    color: white;
-    padding: 15px 0;
-    display: flex;
-    justify-content: space-between;
-  
-    align-items: center;
-  }
-  footer {
-    background-color: rgba(51, 51, 51, 0.8);
-    color: white;
-    padding: 20px 0;
-    align-items: center;
-  }
-  
-  footer p {
-    margin: 0;
-    font-size: 14px;
-  }
-  .navbar .container {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  
-  .navbar-links, .navbar-social {
-    display: flex;
-    gap: 20px;
-  }
-  
-  .navbar-links li {
-    list-style: none;
-  }
-  
-  .navbar-links a, .navbar-social a {
-    color: white;
-    text-decoration: none;
-    font-size: 1rem;
-  }
-  
-  .navbar-social a {
-    font-size: 1.2rem;
-  }
-  .auth-container {
-    background-image: url("../../assets/labo-image.jpg");
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  
-    backdrop-filter: blur(10px);
-  }
-  
-  .auth-card {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 2rem;
-    border-radius: 12px;
-    text-align: center;
-    width: 100%;
-    max-width: 400px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .auth-card h2 {
-    font-size: 28px;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-    color: #1c1a1a;
-  }
-  
-  .auth-card form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .auth-card input {
-    background-color: #f9f9f9;
-    margin-bottom: 1rem;
-    padding: 0.8rem;
-    font-size: 16px;
-    border: 1px solid rgba(218, 206, 211, 0.35);
-    border-radius: 8px;
-    outline: none;
-    transition: border-color 0.3s;
-  }
-  
-  .auth-card input:focus {
-    border-color: rgb(28, 26, 26); /* Changer la couleur de la bordure lorsqu'un champ est sélectionné */
-  }
-  
-  .auth-card button {
-    padding: 0.8rem;
-    font-size: 16px;
-    color: #fff;
-    background-color: #81c785;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    margin-top: 1rem;
-    transition: background-color 0.3s, transform 0.2s;
-  }
-  
-  .auth-card button:hover {
-    background-color: #6bdf70;
-    transform: translateY(-2px); /* Effet de survol sur le bouton */
-  }
-  
-  .auth-card button:active {
-    transform: translateY(0); /* Réinitialise l'effet de survol lors du clic */
-  }
-  
-  .auth-card a {
-    font-size: 14px;
-    color: #81c785;
-    text-decoration: none;
-    margin-top: 1rem;
-    transition: color 0.3s;
-  }
-  
-  .auth-card a:hover {
-    color: #6bdf70;
-    text-decoration: underline;
-  }
-  
-  /* Styles for the verification modal */
-.verification-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  height: 100vh; /* Utilise toute la hauteur de l'écran */
+}
+.navbar {
+
+  width: 100%;
+  height: 7%;
+  background-color: rgba(51, 51, 51, 0.8);
+  color: white;
+  padding: 15px 0;
+  display: flex;
+  justify-content: space-between;
+
+  align-items: center;
+}
+footer {
+  background-color: rgba(51, 51, 51, 0.8);
+  color: white;
+  padding: 20px 0;
   align-items: center;
 }
 
-.modal-content {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 8px;
-  width: 300px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+footer p {
+  margin: 0;
+  font-size: 14px;
+}
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.modal-content h3 {
-  margin-bottom: 15px;
+.navbar-links, .navbar-social {
+  display: flex;
+  gap: 20px;
 }
 
-button {
-  margin-top: 10px;
+.navbar-links li {
+  list-style: none;
 }
 
-.error-message {
-  color: red;
-  margin-top: 10px;
+.navbar-links a, .navbar-social a {
+  color: white;
+  text-decoration: none;
+  font-size: 1rem;
 }
 
-.verification-modal, .email-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7); /* Darker backdrop for emphasis */
+.navbar-social a {
+  font-size: 1.2rem;
+}
+.auth-container {
+  background-image: url("../../../public/img_1.png");
+  background-size: cover;
+  background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  height: 100vh;
+
+  backdrop-filter: blur(10px);
 }
 
-.modal-content {
-  background-color: #f9f9f9; /* Matches input field background */
+.auth-card {
+  background-color: transparent;
   padding: 2rem;
-  border-radius: 12px; /* Same as auth-card */
-  box-shadow: 0 8px 16px rgba(28, 26, 26, 0.5); /* Consistent shadow */
-  width: 90%; /* Makes it responsive */
-  max-width: 500px; /* Slightly larger than before */
+  border-radius: 12px;
+  box-shadow: 0 8px 16px rgb(28, 26, 26);
   text-align: center;
-  animation: fadeIn 0.3s ease-in-out; /* Smooth animation */
+  width: 100%;
+  max-width: 400px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.modal-content h3 {
-  font-size: 24px;
+.auth-card h2 {
+  font-size: 28px;
   font-weight: 600;
   margin-bottom: 1.5rem;
-  color: #1c1a1a; /* Matches form text color */
+  color: #1c1a1a;
 }
 
-.modal-content form {
+.auth-card form {
   display: flex;
   flex-direction: column;
 }
 
-.modal-content input {
-  background-color: #f9f9f9; /* Same as auth-card input */
+.auth-card input {
+  background-color: #f9f9f9;
   margin-bottom: 1rem;
   padding: 0.8rem;
   font-size: 16px;
@@ -215,15 +97,15 @@ button {
   transition: border-color 0.3s;
 }
 
-.modal-content input:focus {
-  border-color: rgb(28, 26, 26); /* Same border focus effect */
+.auth-card input:focus {
+  border-color: rgb(28, 26, 26); /* Changer la couleur de la bordure lorsqu'un champ est sélectionné */
 }
 
-.modal-content button {
+.auth-card button {
   padding: 0.8rem;
   font-size: 16px;
   color: #fff;
-  background-color: #81c785; /* Consistent button color */
+  background-color: #007bff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -231,28 +113,147 @@ button {
   transition: background-color 0.3s, transform 0.2s;
 }
 
-.modal-content button:hover {
-  background-color: #6bdf70; /* Same hover effect */
-  transform: translateY(-2px);
+.auth-card button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px); /* Effet de survol sur le bouton */
 }
 
-.modal-content button:active {
-  transform: translateY(0);
+.auth-card button:active {
+  transform: translateY(0); /* Réinitialise l'effet de survol lors du clic */
+}
+
+.auth-card a {
+  font-size: 14px;
+  color: #007bff;
+  text-decoration: none;
+  margin-top: 1rem;
+  transition: color 0.3s;
+}
+
+.auth-card a:hover {
+  color: #0056b3;
+  text-decoration: underline;
+}
+
+/* Styles for the verification modal */
+.verification-modal {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.5);
+display: flex;
+justify-content: center;
+align-items: center;
+}
+
+.modal-content {
+background-color: #fff;
+padding: 20px;
+border-radius: 8px;
+width: 300px;
+box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+margin-bottom: 15px;
+}
+
+button {
+margin-top: 10px;
 }
 
 .error-message {
-  color: red;
-  margin-top: 1rem;
-  font-size: 14px; /* Matches the font size of form text */
+color: red;
+margin-top: 10px;
+}
+
+.verification-modal, .email-modal {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+bottom: 0;
+background-color: rgba(0, 0, 0, 0.7); /* Darker backdrop for emphasis */
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 1000;
+}
+
+.modal-content {
+background-color: #f9f9f9; /* Matches input field background */
+padding: 2rem;
+border-radius: 12px; /* Same as auth-card */
+box-shadow: 0 8px 16px rgba(28, 26, 26, 0.5); /* Consistent shadow */
+width: 90%; /* Makes it responsive */
+max-width: 500px; /* Slightly larger than before */
+text-align: center;
+animation: fadeIn 0.3s ease-in-out; /* Smooth animation */
+}
+
+.modal-content h3 {
+font-size: 24px;
+font-weight: 600;
+margin-bottom: 1.5rem;
+color: #1c1a1a; /* Matches form text color */
+}
+
+.modal-content form {
+display: flex;
+flex-direction: column;
+}
+
+.modal-content input {
+background-color: #f9f9f9; /* Same as auth-card input */
+margin-bottom: 1rem;
+padding: 0.8rem;
+font-size: 16px;
+border: 1px solid rgba(218, 206, 211, 0.35);
+border-radius: 8px;
+outline: none;
+transition: border-color 0.3s;
+}
+
+.modal-content input:focus {
+border-color: rgb(28, 26, 26); /* Same border focus effect */
+}
+
+.modal-content button {
+padding: 0.8rem;
+font-size: 16px;
+color: #fff;
+background-color: #007bff; /* Consistent button color */
+border: none;
+border-radius: 8px;
+cursor: pointer;
+margin-top: 1rem;
+transition: background-color 0.3s, transform 0.2s;
+}
+
+.modal-content button:hover {
+background-color: #0056b3; /* Same hover effect */
+transform: translateY(-2px);
+}
+
+.modal-content button:active {
+transform: translateY(0);
+}
+
+.error-message {
+color: red;
+margin-top: 1rem;
+font-size: 14px; /* Matches the font size of form text */
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+from {
+  opacity: 0;
+  transform: scale(0.9);
+}
+to {
+  opacity: 1;
+  transform: scale(1);
+}
 }

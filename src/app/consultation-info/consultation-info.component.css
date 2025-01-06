@@ -11,7 +11,7 @@ body {
 /* Main Container */
 .consultation-info-container {
   display: flex;
-  margin-left: 240px;
+  margin-left: 260px;
   max-width: 100%;
   gap: 20px;
 }
@@ -27,12 +27,11 @@ body {
 
 /* Content Section */
 .content {
+  flex: 1;
   background: #fff;
   padding: 25px; /* Increased padding */
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  height: 100%;
-  width: 100%;
 }
 
 /* Tabs */
@@ -125,7 +124,7 @@ body {
 }
 
 .examinations-table th {
-  background: #51a758;
+  background: #007bff;
   color: #fff;
   text-align: left;
   padding: 12px; /* Increased padding */
@@ -160,7 +159,7 @@ body {
   display: inline-block;
   margin-top: 25px; /* Increased margin */
   padding: 12px 25px; /* Increased padding */
-  background-color: #51a758;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
@@ -170,7 +169,7 @@ body {
 }
 
 .generate-pdf-button:hover {
-  background-color: #6bdf70;
+  background-color: #0056b3;
 }
 
 /* Hidden PDF Template */
@@ -198,6 +197,184 @@ body {
   }
 }
 
+.vh-100 {
+  height: 100vh;
+  background-color: rgba(58, 125, 169, 0.1);
+}
+
+.container-fluid{
+  background-color: rgba(58, 125, 169, 0.1);
+height: 100%;
+
+}
+
+/* Formulaire (Modal) */
+.modal {
+  display: none; /* Par défaut, le modal est caché */
+}
+
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+
+
+.modal-content {
+  background: linear-gradient(135deg, #e4f1fa, #e2e7ea);
+  border-radius: 20px;
+  width: 700px; /* Augmenté pour plus d'horizontalité */
+  padding: 40px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+  transform: scale(0.9);
+  animation: pop-in 0.3s forwards ease-in-out;
+  color: #1c1a1a;
+  font-family: 'Poppins', sans-serif;
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Espace entre les éléments */
+}
+
+/* Animation d'apparition */
+@keyframes pop-in {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.modal-content h2 {
+  font-size: 2rem;
+  margin-bottom: 25px;
+  color: #1c1a1a;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+/* Bouton de fermeture */
+.close-modal {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #1c1a1a;
+  transition: transform 0.2s ease;
+}
+
+.close-modal:hover {
+  transform: rotate(90deg);
+}
+
+/* Formulaire */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Espace entre le label et l'input */
+  margin-bottom: 20px;
+}
+
+.form-row label {
+  flex: 0 0 150px; /* Taille fixe pour les labels */
+  font-size: 0.95rem;
+  color: rgb(28, 26, 26);
+  font-weight: 500;
+  text-align: right; /* Aligne le texte à droite */
+}
+
+.form-row input[type="text"],
+.form-row input[type="email"],
+.form-row input[type="password"],
+.form-row input[type="number"],
+.form-row input[type="date"],
+.form-row input[type="file"] {
+  flex: 1; /* Les inputs prennent tout l'espace restant */
+  padding: 12px 15px;
+  border: 1px solid rgb(28, 26, 26);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(51, 51, 51, 0.66);
+  font-size: 1rem;
+  outline: none;
+  transition: background 0.3s, border 0.3s;
+}
+
+.form-row input[type="text"]:focus,
+.form-row input[type="email"]:focus,
+.form-row input[type="password"]:focus,
+.form-row input[type="date"]:focus,
+.form-row input[type="number"]:focus,
+.form-row input[type="file"]:focus {
+  background: rgba(218, 206, 211, 0.35);
+  border-color: #1c1a1a;
+}
+.form-row select {
+  flex: 1; /* Les selects prennent tout l'espace restant */
+  padding: 12px 15px;
+  border: 1px solid rgb(28, 26, 26);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(51, 51, 51, 0.66);
+  font-size: 1rem;
+  outline: none;
+  transition: background 0.3s, border 0.3s;
+}
+
+.form-row select:focus {
+  background: rgba(218, 206, 211, 0.35);
+  border-color: #1c1a1a;
+}
+
+
+.submit {
+  margin-left: 40%;
+  padding: 15px;
+  background-color: #3a7da9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(106, 17, 203, 0.3);
+}
+
+button[type="submit"]:disabled {
+  background: linear-gradient(90deg, #ccc, #ddd);
+  cursor: not-allowed;
+}
+
+.custom-margin {
+  margin-right: 20px; /* Ajustez la valeur selon vos besoins */
+}
+.btn-custom {
+  padding: 10px 15px; /* Ajuste le padding pour la taille */
+  font-size: 18px; /* Taille du texte */
+  width: 150px; /* Largeur du bouton */
+  height: 50px; /* Hauteur du bouton */
+
+}
 /* Profile Section */
 .profile-container {
   display: flex;
@@ -300,3 +477,4 @@ body {
     font-size: 14px;
   }
 }
+
